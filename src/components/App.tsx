@@ -1,0 +1,135 @@
+import { Container, Stack } from "@mui/material";
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { useAppSelector } from "../hooks/redux";
+import AuthPage from "../pages/auth/AuthPage";
+import ServerPage from "../pages/discord/ServerPage";
+import ValidatePage from "../pages/discord/ValidatePage";
+import Page404 from "../pages/Page404";
+import SettingsPage from "../pages/settings/SettingsPage";
+import ThemesPage from "../pages/settings/ThemesPage";
+import Head from "./ui/Head";
+import PageWrapper from "./ui/PageWrapper";
+import Sidebar from "./ui/Sidebar/Sidebar";
+
+function App() {
+  const redirect = useAppSelector((state) => state.settings.redirect);
+  const onServer = useAppSelector((state) => state.userData.onServer);
+  const isValidated = useAppSelector((state) => state.userData.isValidated);
+  const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
+  const isLoading = useAppSelector((state) => state.userData.isLoading);
+
+  return (
+    <Container
+      maxWidth={false}
+      disableGutters={true}
+      sx={{
+        background: (theme) => theme.palette.background.default,
+        color: (theme) => theme.palette.text.primary,
+        minHeight: "100vh",
+        "*::selection": {
+          background: (theme) => theme.palette.primary.dark,
+        },
+        "*::-webkit-scrollbar": {
+          width: "0.4em",
+        },
+        "*::-webkit-scrollbar-track": {
+          boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+        },
+        "*::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(0,0,0,.1)",
+          outline: "1px solid slategrey",
+        },
+      }}
+    >
+      <Stack spacing={0} direction={"row"} sx={{ position: "relative" }}>
+        <Sidebar />
+
+        {!isLoading && (
+          <>
+            {!isLoggedIn && (
+              <PageWrapper>
+                <Head name="Авторизация" />
+                <AuthPage />
+              </PageWrapper>
+            )}
+
+            {!isValidated && !onServer && isLoggedIn && (
+              <PageWrapper>
+                <Head name="Вас нет на сервере" />
+                <ServerPage />
+              </PageWrapper>
+            )}
+
+            {!isValidated && onServer && isLoggedIn && (
+              <PageWrapper>
+                <Head name="Вы не подтвержденны" />
+                <ValidatePage />
+              </PageWrapper>
+            )}
+
+            {isValidated && onServer && isLoggedIn && (
+              <Switch>
+                <Route exact path="/profile/:id">
+                  <Head name="" />
+                  <PageWrapper>Профиль</PageWrapper>
+                </Route>
+                <Route exact path="/shop">
+                  <Head name="Товары" />
+                  <PageWrapper>Товары</PageWrapper>
+                </Route>
+                <Route exact path="/services">
+                  <Head name="Услуги" />
+                  <PageWrapper>Услуги</PageWrapper>
+                </Route>
+                <Route exact path="/chats">
+                  <Head name="Чаты" />
+                  <PageWrapper>Чаты</PageWrapper>
+                </Route>
+                <Route exact path="/profiles">
+                  <Head name="Профили" />
+                  <PageWrapper>Профили</PageWrapper>
+                </Route>
+                <Route exact path="/donate">
+                  <Head name="Донат" />
+                  <PageWrapper>Донат</PageWrapper>
+                </Route>
+                <Route exact path="/info">
+                  <Head name="Информация" />
+                  <PageWrapper>Информация</PageWrapper>
+                </Route>
+                <Route exact path="/settings">
+                  <Head name="Настройки" />
+                  <PageWrapper>
+                    <SettingsPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/settings/themes">
+                  <Head name="Внешний вид" />
+                  <PageWrapper>
+                    <ThemesPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/report">
+                  <Head name="Репорт" />
+                  <PageWrapper>Репорт</PageWrapper>
+                </Route>
+                <Route exact path="/">
+                  <Redirect to={redirect} />
+                </Route>
+                <Route exact path="*">
+                  <Head name="Ошибка 404" />
+                  <PageWrapper>
+                    <Page404 />
+                  </PageWrapper>
+                </Route>
+              </Switch>
+            )}
+          </>
+        )}
+      </Stack>
+    </Container>
+  );
+}
+
+export default App;
