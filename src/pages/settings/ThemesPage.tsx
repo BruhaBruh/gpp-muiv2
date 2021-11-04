@@ -66,360 +66,365 @@ const ThemesPage = () => {
         maxWidth: (theme) => theme.breakpoints.values.lg,
       }}
     >
-      <Paper sx={{ overflow: "hidden" }}>
-        <Typography
-          variant="body2"
-          sx={{
-            padding: (theme) => `${theme.spacing(1)} ${theme.spacing(2)}`,
-            color: (theme) => theme.palette.text.secondary,
-            textTransform: "uppercase",
-          }}
-        >
-          Палитра
-        </Typography>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: lower ? "repeat(4, 1fr)" : "repeat(6, 1fr)",
-            gridTemplateAreas: lower ? `"m m p p" "l d b t"` : `"l m d b p t"`,
-            gridTemplateRows: lower ? "1fr 1fr" : undefined,
-          }}
-        >
-          <Button
-            color="inherit"
+      <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
+        <Stack spacing={2}>
+          <Typography
+            variant="body2"
             sx={{
-              aspectRatio: "1 / 1",
-              borderRadius: 0,
-              padding: 0,
-              position: "relative",
-              gridArea: "l",
-              minWidth: "auto",
-              background: (theme) => theme.palette.primary.light,
-              "&:hover": {
+              color: (theme) => theme.palette.text.secondary,
+              textTransform: "uppercase",
+            }}
+          >
+            Палитра
+          </Typography>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: lower ? "repeat(4, 1fr)" : "repeat(6, 1fr)",
+              gridTemplateAreas: lower
+                ? `"m m p p" "l d b t"`
+                : `"l m d b p t"`,
+              gridTemplateRows: lower ? "1fr 1fr" : undefined,
+            }}
+          >
+            <Button
+              color="inherit"
+              sx={{
+                aspectRatio: "1 / 1",
+                borderRadius: 0,
+                padding: 0,
+                position: "relative",
+                gridArea: "l",
+                minWidth: "auto",
                 background: (theme) => theme.palette.primary.light,
-              },
-            }}
-          >
-            <ListItemText
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                maxWidth: "100%",
-                margin: 0,
-                marginTop: (theme) => theme.spacing(1),
-                marginLeft: (theme) => theme.spacing(1),
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.primary.light),
-              }}
-              primary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{
-                    textAlign: "left",
-                    textTransform: "none",
-                    fontSize: "0.75rem !important",
-                  }}
-                >
-                  light
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
-                >
-                  {theme.palette.primary.light}
-                </Typography>
-              }
-            />
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              aspectRatio: lower ? "2 / 1" : "1 / 1",
-              borderRadius: 0,
-              padding: 0,
-              position: "relative",
-              gridArea: "m",
-              minWidth: "auto",
-              background: (theme) => theme.palette.primary.main,
-              "&:hover": {
-                background: (theme) => theme.palette.primary.main,
-              },
-            }}
-          >
-            <ListItemText
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                maxWidth: "100%",
-                margin: 0,
-                marginTop: (theme) => theme.spacing(1),
-                marginLeft: (theme) => theme.spacing(1),
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.primary.main),
-              }}
-              primary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{
-                    textAlign: "left",
-                    textTransform: "none",
-                    fontSize: "0.75rem !important",
-                  }}
-                >
-                  main
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
-                >
-                  {theme.palette.primary.main}
-                </Typography>
-              }
-            />
-            <Box
-              sx={{
-                borderRadius: "999px",
-                background: (theme) => theme.palette.background.default,
-                padding: (theme) => theme.spacing(1),
-                width: "20px",
-                height: "20px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontWeight: "bold",
-                fontSize: (theme) => theme.spacing(2),
-                color: (theme) => theme.palette.primary.main,
+                "&:hover": {
+                  background: (theme) => theme.palette.primary.light,
+                },
               }}
             >
-              P
-            </Box>
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              aspectRatio: "1 / 1",
-              borderRadius: 0,
-              padding: 0,
-              position: "relative",
-              gridArea: "d",
-              minWidth: "auto",
-              background: (theme) => theme.palette.primary.dark,
-              "&:hover": {
+              <ListItemText
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  maxWidth: "100%",
+                  margin: 0,
+                  marginTop: (theme) => theme.spacing(1),
+                  marginLeft: (theme) => theme.spacing(1),
+                  color: (theme) =>
+                    theme.palette.getContrastText(theme.palette.primary.light),
+                }}
+                primary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{
+                      textAlign: "left",
+                      textTransform: "none",
+                      fontSize: "0.75rem !important",
+                    }}
+                  >
+                    light
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
+                  >
+                    {theme.palette.primary.light}
+                  </Typography>
+                }
+              />
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                aspectRatio: lower ? "2 / 1" : "1 / 1",
+                borderRadius: 0,
+                padding: 0,
+                position: "relative",
+                gridArea: "m",
+                minWidth: "auto",
+                background: (theme) => theme.palette.primary.main,
+                "&:hover": {
+                  background: (theme) => theme.palette.primary.main,
+                },
+              }}
+            >
+              <ListItemText
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  maxWidth: "100%",
+                  margin: 0,
+                  marginTop: (theme) => theme.spacing(1),
+                  marginLeft: (theme) => theme.spacing(1),
+                  color: (theme) =>
+                    theme.palette.getContrastText(theme.palette.primary.main),
+                }}
+                primary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{
+                      textAlign: "left",
+                      textTransform: "none",
+                      fontSize: "0.75rem !important",
+                    }}
+                  >
+                    main
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
+                  >
+                    {theme.palette.primary.main}
+                  </Typography>
+                }
+              />
+              <Box
+                sx={{
+                  borderRadius: "999px",
+                  background: (theme) => theme.palette.background.default,
+                  padding: (theme) => theme.spacing(1),
+                  width: "20px",
+                  height: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontWeight: "bold",
+                  fontSize: (theme) => theme.spacing(2),
+                  color: (theme) => theme.palette.primary.main,
+                }}
+              >
+                P
+              </Box>
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                aspectRatio: "1 / 1",
+                borderRadius: 0,
+                padding: 0,
+                position: "relative",
+                gridArea: "d",
+                minWidth: "auto",
                 background: (theme) => theme.palette.primary.dark,
-              },
-            }}
-          >
-            <ListItemText
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                maxWidth: "100%",
-                margin: 0,
-                marginTop: (theme) => theme.spacing(1),
-                marginLeft: (theme) => theme.spacing(1),
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.primary.dark),
+                "&:hover": {
+                  background: (theme) => theme.palette.primary.dark,
+                },
               }}
-              primary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{
-                    textAlign: "left",
-                    textTransform: "none",
-                    fontSize: "0.75rem !important",
-                  }}
-                >
-                  dark
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
-                >
-                  {theme.palette.primary.dark}
-                </Typography>
-              }
-            />
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              aspectRatio: "1 / 1",
-              borderRadius: 0,
-              padding: 0,
-              position: "relative",
-              gridArea: "b",
-              minWidth: "auto",
-              background: (theme) => theme.palette.background.default,
-              "&:hover": {
+            >
+              <ListItemText
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  maxWidth: "100%",
+                  margin: 0,
+                  marginTop: (theme) => theme.spacing(1),
+                  marginLeft: (theme) => theme.spacing(1),
+                  color: (theme) =>
+                    theme.palette.getContrastText(theme.palette.primary.dark),
+                }}
+                primary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{
+                      textAlign: "left",
+                      textTransform: "none",
+                      fontSize: "0.75rem !important",
+                    }}
+                  >
+                    dark
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
+                  >
+                    {theme.palette.primary.dark}
+                  </Typography>
+                }
+              />
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                aspectRatio: "1 / 1",
+                borderRadius: 0,
+                padding: 0,
+                position: "relative",
+                gridArea: "b",
+                minWidth: "auto",
                 background: (theme) => theme.palette.background.default,
-              },
-            }}
-          >
-            <ListItemText
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                maxWidth: "100%",
-                margin: 0,
-                marginTop: (theme) => theme.spacing(1),
-                marginLeft: (theme) => theme.spacing(1),
-                color: (theme) =>
-                  theme.palette.getContrastText(
-                    theme.palette.background.default
-                  ),
+                "&:hover": {
+                  background: (theme) => theme.palette.background.default,
+                },
               }}
-              primary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{
-                    textAlign: "left",
-                    textTransform: "none",
-                    fontSize: "0.75rem !important",
-                  }}
-                >
-                  default
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
-                >
-                  {theme.palette.background.default}
-                </Typography>
-              }
-            />
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              aspectRatio: lower ? "2 / 1" : "1 / 1",
-              borderRadius: 0,
-              padding: 0,
-              position: "relative",
-              gridArea: "p",
-              minWidth: "auto",
-              background: (theme) => theme.palette.background.paper,
-              "&:hover": {
+            >
+              <ListItemText
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  maxWidth: "100%",
+                  margin: 0,
+                  marginTop: (theme) => theme.spacing(1),
+                  marginLeft: (theme) => theme.spacing(1),
+                  color: (theme) =>
+                    theme.palette.getContrastText(
+                      theme.palette.background.default
+                    ),
+                }}
+                primary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{
+                      textAlign: "left",
+                      textTransform: "none",
+                      fontSize: "0.75rem !important",
+                    }}
+                  >
+                    default
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
+                  >
+                    {theme.palette.background.default}
+                  </Typography>
+                }
+              />
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                aspectRatio: lower ? "2 / 1" : "1 / 1",
+                borderRadius: 0,
+                padding: 0,
+                position: "relative",
+                gridArea: "p",
+                minWidth: "auto",
                 background: (theme) => theme.palette.background.paper,
-              },
-            }}
-          >
-            <ListItemText
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                maxWidth: "100%",
-                margin: 0,
-                marginTop: (theme) => theme.spacing(1),
-                marginLeft: (theme) => theme.spacing(1),
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.background.paper),
+                "&:hover": {
+                  background: (theme) => theme.palette.background.paper,
+                },
               }}
-              primary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{
-                    textAlign: "left",
-                    textTransform: "none",
-                    fontSize: "0.75rem !important",
-                  }}
-                >
-                  paper
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
-                >
-                  {theme.palette.background.paper}
-                </Typography>
-              }
-            />
-          </Button>
-          <Button
-            color="inherit"
-            sx={{
-              aspectRatio: "1 / 1",
-              borderRadius: 0,
-              padding: 0,
-              position: "relative",
-              gridArea: "t",
-              minWidth: "auto",
-              background: (theme) => theme.palette.text.primary,
-              "&:hover": {
+            >
+              <ListItemText
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  maxWidth: "100%",
+                  margin: 0,
+                  marginTop: (theme) => theme.spacing(1),
+                  marginLeft: (theme) => theme.spacing(1),
+                  color: (theme) =>
+                    theme.palette.getContrastText(
+                      theme.palette.background.paper
+                    ),
+                }}
+                primary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{
+                      textAlign: "left",
+                      textTransform: "none",
+                      fontSize: "0.75rem !important",
+                    }}
+                  >
+                    paper
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
+                  >
+                    {theme.palette.background.paper}
+                  </Typography>
+                }
+              />
+            </Button>
+            <Button
+              color="inherit"
+              sx={{
+                aspectRatio: "1 / 1",
+                borderRadius: 0,
+                padding: 0,
+                position: "relative",
+                gridArea: "t",
+                minWidth: "auto",
                 background: (theme) => theme.palette.text.primary,
-              },
-            }}
-          >
-            <ListItemText
-              sx={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                maxWidth: "100%",
-                margin: 0,
-                marginTop: (theme) => theme.spacing(1),
-                marginLeft: (theme) => theme.spacing(1),
-                color: (theme) =>
-                  theme.palette.getContrastText(theme.palette.text.primary),
+                "&:hover": {
+                  background: (theme) => theme.palette.text.primary,
+                },
               }}
-              primary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{
-                    textAlign: "left",
-                    textTransform: "none",
-                    fontSize: "0.75rem !important",
-                  }}
-                >
-                  text
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  fontWeight="bold"
-                  sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
-                >
-                  {theme.palette.text.primary}
-                </Typography>
-              }
-            />
-          </Button>
-        </Box>
+            >
+              <ListItemText
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  maxWidth: "100%",
+                  margin: 0,
+                  marginTop: (theme) => theme.spacing(1),
+                  marginLeft: (theme) => theme.spacing(1),
+                  color: (theme) =>
+                    theme.palette.getContrastText(theme.palette.text.primary),
+                }}
+                primary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{
+                      textAlign: "left",
+                      textTransform: "none",
+                      fontSize: "0.75rem !important",
+                    }}
+                  >
+                    text
+                  </Typography>
+                }
+                secondary={
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    sx={{ textAlign: "left", fontSize: "0.75rem !important" }}
+                  >
+                    {theme.palette.text.primary}
+                  </Typography>
+                }
+              />
+            </Button>
+          </Box>
+        </Stack>
       </Paper>
 
       <Paper
         sx={{
-          padding: (theme) => `${theme.spacing(1)} ${theme.spacing(2)}`,
+          padding: (theme) => theme.spacing(2),
           alignSelf: "stretch",
         }}
       >
-        <Stack spacing={1}>
+        <Stack spacing={2}>
           <Typography
             variant="body2"
             sx={{

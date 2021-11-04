@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ReactElement } from "react";
 import {
   darkThemeOptions,
   lightThemeOptions,
@@ -11,13 +12,19 @@ const loadCustomThemes = (): ThemeOption[] => {
   const themes = localStorage.getItem("customThemes");
   if (themes === null) {
     return [
-      { name: "Темная", theme: darkThemeOptions },
+      { name: "Тёмная", theme: darkThemeOptions },
       { name: "Светлая", theme: lightThemeOptions },
       { name: "OLED", theme: oledThemeOptions },
-      { name: "Ночной", theme: nightThemeOptions },
+      { name: "Ночная", theme: nightThemeOptions },
     ];
   } else {
-    return JSON.parse(themes);
+    return [
+      { name: "Тёмная", theme: darkThemeOptions },
+      { name: "Светлая", theme: lightThemeOptions },
+      { name: "OLED", theme: oledThemeOptions },
+      { name: "Ночная", theme: nightThemeOptions },
+      ...(JSON.parse(themes) as ThemeOption[]).slice(4),
+    ];
   }
 };
 
@@ -32,6 +39,7 @@ const loadTheme = (): number => {
 };
 
 export const initialState: UIState = {
+  modal: null,
   sidebarHeader: null,
   header: null,
   theme: loadTheme(),
@@ -42,6 +50,9 @@ export const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
+    setModal: (state, action: PayloadAction<ReactElement | null>) => {
+      state.modal = action.payload;
+    },
     setSidebarHeader: (state, action: PayloadAction<any>) => {
       state.sidebarHeader = action.payload;
     },
@@ -64,6 +75,7 @@ export const uiSlice = createSlice({
 });
 
 export const {
+  setModal,
   setTheme,
   setSidebarHeader,
   setHeader,

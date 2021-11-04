@@ -1,4 +1,4 @@
-import { alpha, darken, lighten, Theme, ThemeOptions } from "@mui/material";
+import { alpha, darken, lighten, ThemeOptions } from "@mui/material";
 
 export const defaultThemeOptions: ThemeOptions = {
   typography: {
@@ -75,17 +75,15 @@ export const defaultThemeOptions: ThemeOptions = {
       defaultProps: { arrow: false },
     },
     MuiBadge: {
-      defaultProps: {
-        sx: {
-          ".MuiBadge-dot": {
-            border: (theme: Theme) =>
-              `2px solid ${theme.palette.background.paper}`,
-            minWidth: "auto",
-            width: "7px",
-            height: "7px",
-            borderRadius: "0.10px",
-            boxSizing: "content-box",
-          },
+      styleOverrides: {
+        dot: {
+          border: `2px solid #000000`,
+          borderColor: "background.paper",
+          minWidth: "auto",
+          width: "7px",
+          height: "7px",
+          borderRadius: "0.10px",
+          boxSizing: "content-box",
         },
       },
     },

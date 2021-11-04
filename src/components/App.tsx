@@ -6,6 +6,8 @@ import AuthPage from "../pages/auth/AuthPage";
 import ServerPage from "../pages/discord/ServerPage";
 import ValidatePage from "../pages/discord/ValidatePage";
 import Page404 from "../pages/Page404";
+import ProfilePage from "../pages/profile/ProfilePage";
+import InterfacePage from "../pages/settings/InterfacePage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
@@ -63,7 +65,9 @@ function App() {
               <Switch>
                 <Route exact path="/profile/:id">
                   <Head name="" />
-                  <PageWrapper>Профиль</PageWrapper>
+                  <PageWrapper>
+                    <ProfilePage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/shop">
                   <Head name="Товары" />
@@ -105,6 +109,12 @@ function App() {
                   <Head name="Создание темы" />
                   <PageWrapper>
                     <ThemeCreatePage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/settings/interface">
+                  <Head name="Настройка интерфейса" />
+                  <PageWrapper>
+                    <InterfacePage />
                   </PageWrapper>
                 </Route>
                 <Route exact path="/report">

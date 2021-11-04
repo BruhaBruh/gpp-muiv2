@@ -34,6 +34,12 @@ const IndexWithProviders = () => {
   const onClickDismiss = (key: any) => () => {
     notistackRef.current.closeSnackbar(key);
   };
+  const h: any = useAppSelector(
+    (state) => state.settings.horizontalSnackbarPosition
+  );
+  const v: any = useAppSelector(
+    (state) => state.settings.verticalSnackbarPosition
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -41,7 +47,7 @@ const IndexWithProviders = () => {
         <SnackbarProvider
           ref={notistackRef}
           preventDuplicate
-          anchorOrigin={{ horizontal: "center", vertical: "top" }}
+          anchorOrigin={{ horizontal: h, vertical: v }}
           dense
           action={(key) => (
             <IconButton size="small" onClick={onClickDismiss(key)}>

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Permissions, Rating, Role, Sex } from "../../graphql/graphql";
 
 export const checkPermissions = (
@@ -61,23 +62,15 @@ export const minuteToNum = (n: number): string => {
 };
 
 export const getLastOnline = (lo: string): string => {
-  const now = new Date();
-  const lastOnline = new Date(lo);
+  const now = dayjs(new Date());
+  const lastOnline = dayjs(new Date(lo));
   const differense = {
-    inMinutes: Math.floor((now.getTime() - lastOnline.getTime()) / (60 * 1000)),
-    inHours: Math.floor((now.getTime() - lastOnline.getTime()) / (3600 * 1000)),
-    inDays: Math.floor(
-      (now.getTime() - lastOnline.getTime()) / (24 * 3600 * 1000)
-    ),
-    inWeeks: Math.floor(
-      (now.getTime() - lastOnline.getTime()) / (24 * 3600 * 1000) / 7
-    ),
-    inMonth: Math.floor(
-      (now.getTime() - lastOnline.getTime()) / (24 * 3600 * 1000 * 30)
-    ),
-    inYears: Math.floor(
-      (now.getTime() - lastOnline.getTime()) / (24 * 3600 * 1000 * 365)
-    ),
+    inMinutes: lastOnline.diff(now, "m"),
+    inHours: lastOnline.diff(now, "h"),
+    inDays: lastOnline.diff(now, "d"),
+    inWeeks: lastOnline.diff(now, "w"),
+    inMonth: lastOnline.diff(now, "M"),
+    inYears: lastOnline.diff(now, "y"),
   };
   if (differense.inYears > 0) {
     if (differense.inYears === 1) {

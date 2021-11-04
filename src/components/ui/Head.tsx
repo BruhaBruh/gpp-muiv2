@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppDispatch } from "../../hooks/redux";
-import { setHeader } from "../../redux/ui/reducer";
+import { setHeader, setSidebarHeader } from "../../redux/ui/reducer";
 
 const Head: React.FC<{ name: string }> = ({ name }) => {
   const dispatch = useAppDispatch();
@@ -9,6 +9,7 @@ const Head: React.FC<{ name: string }> = ({ name }) => {
     if (name === undefined) return;
     document.title = name ? name : "GPPlanet";
     dispatch(setHeader(name));
+    dispatch(setSidebarHeader(null));
   }, [name, dispatch]);
 
   return <></>;

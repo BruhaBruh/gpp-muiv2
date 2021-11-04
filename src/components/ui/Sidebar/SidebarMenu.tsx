@@ -42,7 +42,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
         <>
           {!!profileId && (
             <SidebarCell
-              to="/profile/id"
+              to={"/profile/" + profileId}
               startIcon={
                 <IconWrapper
                   size={size}

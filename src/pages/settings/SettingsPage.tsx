@@ -9,9 +9,11 @@ import {
 import React from "react";
 import CellR from "../../components/ui/CellR";
 import IconWrapper from "../../components/ui/IconWrapper";
+import { useAppSelector } from "../../hooks/redux";
 
 const SettingsPage = () => {
   const size = 28;
+  const profileId = useAppSelector((state) => state.userData.profileId);
 
   return (
     <Paper
@@ -49,6 +51,7 @@ const SettingsPage = () => {
         </CellR>
         <CellR
           to="/settings/blacklist"
+          disabled={!profileId}
           startIcon={
             <IconWrapper
               component="span"

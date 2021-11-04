@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Icon16Pen, Icon24Back } from "@vkontakte/icons";
+import { useSnackbar } from "notistack";
 import React from "react";
 import { HexColorPicker } from "react-colorful";
 import CellR from "../../components/ui/CellR";
@@ -39,6 +40,7 @@ const ThemeCreatePage = () => {
   const dispatch = useAppDispatch();
   const [isDarkType, setIsDarkType] = React.useState(true);
   const [themeEdit, setThemeEdit] = React.useState(darkThemeOptions);
+  const { enqueueSnackbar } = useSnackbar();
   const themeNames = useAppSelector((state) =>
     state.ui.themes.map((t) => t.name)
   );
@@ -248,67 +250,68 @@ const ThemeCreatePage = () => {
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            paddingBottom: (theme) => theme.spacing(2),
-            color: (theme) => theme.palette.text.secondary,
-            textTransform: "uppercase",
-          }}
-        >
-          Предпросмотр
-        </Typography>
-        <ThemeProvider theme={t}>
-          <Paper
+        <Stack spacing={2}>
+          <Typography
+            variant="body2"
             sx={{
-              background: (theme) => theme.palette.background.default,
-              padding: (theme) => theme.spacing(2),
+              color: (theme) => theme.palette.text.secondary,
+              textTransform: "uppercase",
             }}
           >
-            <Stack spacing={2}>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                  gap: (theme) => theme.spacing(2),
-                }}
-              >
-                <Paper sx={{ height: "128px" }} />
-                <Paper sx={{ height: "128px" }} elevation={1} />
-                <Paper sx={{ height: "128px" }} elevation={2} />
-              </Box>
-              <Stack spacing={2} direction="row" sx={{ flexWrap: "wrap" }}>
-                <Button size="medium" color="primary" variant="contained">
-                  Кнопка
-                </Button>
-                <Button size="medium" color="primary" variant="outlined">
-                  Кнопка
-                </Button>
-                <Button size="medium" color="primary" variant="text">
-                  Кнопка
-                </Button>
+            Предпросмотр
+          </Typography>
+          <ThemeProvider theme={t}>
+            <Paper
+              sx={{
+                background: (theme) => theme.palette.background.default,
+                padding: (theme) => theme.spacing(2),
+              }}
+            >
+              <Stack spacing={2}>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr",
+                    gap: (theme) => theme.spacing(2),
+                  }}
+                >
+                  <Paper sx={{ height: "128px" }} />
+                  <Paper sx={{ height: "128px" }} elevation={1} />
+                  <Paper sx={{ height: "128px" }} elevation={2} />
+                </Box>
+                <Stack spacing={2} direction="row" sx={{ flexWrap: "wrap" }}>
+                  <Button size="medium" color="primary" variant="contained">
+                    Кнопка
+                  </Button>
+                  <Button size="medium" color="primary" variant="outlined">
+                    Кнопка
+                  </Button>
+                  <Button size="medium" color="primary" variant="text">
+                    Кнопка
+                  </Button>
+                </Stack>
+                <ListItemText
+                  primary={
+                    <Typography
+                      variant="body1"
+                      sx={{ color: (theme) => theme.palette.text.primary }}
+                    >
+                      У этого текста цвет text.primary
+                    </Typography>
+                  }
+                  secondary={
+                    <Typography
+                      variant="body1"
+                      sx={{ color: (theme) => theme.palette.text.secondary }}
+                    >
+                      А у этого - text.secondary
+                    </Typography>
+                  }
+                />
               </Stack>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="body1"
-                    sx={{ color: (theme) => theme.palette.text.primary }}
-                  >
-                    У этого текста цвет text.primary
-                  </Typography>
-                }
-                secondary={
-                  <Typography
-                    variant="body1"
-                    sx={{ color: (theme) => theme.palette.text.secondary }}
-                  >
-                    А у этого - text.secondary
-                  </Typography>
-                }
-              />
-            </Stack>
-          </Paper>
-        </ThemeProvider>
+            </Paper>
+          </ThemeProvider>
+        </Stack>
       </Paper>
       <Paper
         sx={{
@@ -316,17 +319,16 @@ const ThemeCreatePage = () => {
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <Typography
-          variant="body2"
-          sx={{
-            paddingBottom: (theme) => theme.spacing(2),
-            color: (theme) => theme.palette.text.secondary,
-            textTransform: "uppercase",
-          }}
-        >
-          Палитра
-        </Typography>
         <Stack spacing={2}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: (theme) => theme.palette.text.secondary,
+              textTransform: "uppercase",
+            }}
+          >
+            Палитра
+          </Typography>
           <Stack spacing={1}>
             <Typography variant="body1">Тип темы</Typography>
             <RadioGroup
@@ -684,6 +686,7 @@ const ThemeCreatePage = () => {
                 );
                 setName("");
                 setIsDarkType((prev) => !prev);
+                enqueueSnackbar("Успешно!", { variant: "success" });
               }}
               fullWidth
               size="large"

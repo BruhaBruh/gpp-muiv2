@@ -49,6 +49,7 @@ const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
           position: "fixed",
           bottom: (theme) => theme.spacing(2),
           right: (theme) => theme.spacing(2),
+          zIndex: 1000,
         }}
         onClick={() => setShowDrawer(true)}
       >

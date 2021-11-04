@@ -11,6 +11,7 @@ const CellR: React.FC<props> = ({
   startIcon,
   endIcon,
   sx,
+  disabled,
   ...props
 }) => {
   return (
@@ -18,6 +19,7 @@ const CellR: React.FC<props> = ({
       color="inherit"
       {...(props as any)}
       size="medium"
+      disabled={disabled}
       sx={{
         ...sx,
         display: "flex",
@@ -29,7 +31,13 @@ const CellR: React.FC<props> = ({
           {startIcon}
         </Box>
       )}
-      <Box sx={{ color: (theme) => theme.palette.text.primary, flex: 1 }}>
+      <Box
+        sx={{
+          color: (theme) =>
+            disabled ? theme.palette.text.disabled : theme.palette.text.primary,
+          flex: 1,
+        }}
+      >
         {children}
       </Box>
       {endIcon && (

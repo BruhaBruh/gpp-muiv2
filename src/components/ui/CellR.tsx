@@ -13,6 +13,7 @@ const CellR: React.FC<props> = ({
   endIcon,
   sx,
   to,
+  disabled,
   ...props
 }) => {
   return (
@@ -21,6 +22,7 @@ const CellR: React.FC<props> = ({
       {...(props as any)}
       to={to}
       size="medium"
+      disabled={disabled}
       sx={{
         ...sx,
         display: "flex",
@@ -28,11 +30,22 @@ const CellR: React.FC<props> = ({
       }}
     >
       {startIcon && (
-        <Box component="span" sx={{ marginRight: (theme) => theme.spacing(1) }}>
+        <Box
+          component="span"
+          sx={{
+            marginRight: (theme) => theme.spacing(1),
+          }}
+        >
           {startIcon}
         </Box>
       )}
-      <Box sx={{ color: (theme) => theme.palette.text.primary, flex: 1 }}>
+      <Box
+        sx={{
+          color: (theme) =>
+            disabled ? theme.palette.text.disabled : theme.palette.text.primary,
+          flex: 1,
+        }}
+      >
         {children}
       </Box>
       {endIcon && (

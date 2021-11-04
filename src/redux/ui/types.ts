@@ -1,6 +1,8 @@
 import { ThemeOptions } from "@mui/material";
+import { ReactElement } from "react";
 
 export interface UIState {
+  modal: ReactElement | null;
   sidebarHeader: any;
   header: any;
   theme: number;
