@@ -5,7 +5,6 @@ export interface UIState {
   header: any;
   theme: number;
   themes: ThemeOption[];
-  customThemes: ThemeOption[];
 }
 
 export interface ThemeOption {

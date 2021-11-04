@@ -5,19 +5,37 @@ import {
   nightThemeOptions,
   oledThemeOptions,
 } from "../../utils/theme";
-import { Theme, UIState } from "./types";
+import { Theme, ThemeOption, UIState } from "./types";
+
+const loadCustomThemes = (): ThemeOption[] => {
+  const themes = localStorage.getItem("customThemes");
+  if (themes === null) {
+    return [
+      { name: "Темная", theme: darkThemeOptions },
+      { name: "Светлая", theme: lightThemeOptions },
+      { name: "OLED", theme: oledThemeOptions },
+      { name: "Ночной", theme: nightThemeOptions },
+    ];
+  } else {
+    return JSON.parse(themes);
+  }
+};
+
+const loadTheme = (): number => {
+  const i = localStorage.getItem("selectedTheme");
+  if (i === null) {
+    return 0;
+  } else {
+    const n = JSON.parse(i);
+    return n < loadCustomThemes().length && n >= 0 ? n : 0;
+  }
+};
 
 export const initialState: UIState = {
   sidebarHeader: null,
   header: null,
-  theme: Theme.DARK,
-  themes: [
-    { name: "Темная", theme: darkThemeOptions },
-    { name: "Светлая", theme: lightThemeOptions },
-    { name: "OLED", theme: oledThemeOptions },
-    { name: "Ночной", theme: nightThemeOptions },
-  ],
-  customThemes: [],
+  theme: loadTheme(),
+  themes: loadCustomThemes(),
 };
 
 export const uiSlice = createSlice({
@@ -29,13 +47,28 @@ export const uiSlice = createSlice({
     },
     setTheme: (state, action: PayloadAction<Theme>) => {
       state.theme = action.payload;
+      localStorage.setItem("selectedTheme", JSON.stringify(action.payload));
     },
     setHeader: (state, action: PayloadAction<any>) => {
       state.header = action.payload;
     },
+    addCustomTheme: (state, action: PayloadAction<ThemeOption>) => {
+      state.themes = [...(state.themes as any), action.payload];
+      localStorage.setItem("customThemes", JSON.stringify(state.themes));
+    },
+    removeCustomTheme: (state, action: PayloadAction<string>) => {
+      state.themes = state.themes.filter((c) => c.name !== action.payload);
+      localStorage.setItem("customThemes", JSON.stringify(state.themes));
+    },
   },
 });
 
-export const { setTheme, setSidebarHeader, setHeader } = uiSlice.actions;
+export const {
+  setTheme,
+  setSidebarHeader,
+  setHeader,
+  addCustomTheme,
+  removeCustomTheme,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

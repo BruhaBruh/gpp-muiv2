@@ -9,13 +9,17 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Icon24Add, Icon24Back } from "@vkontakte/icons";
+import { Icon24Add, Icon24Back, Icon28DeleteOutline } from "@vkontakte/icons";
 import React from "react";
 import ButtonR from "../../components/ui/ButtonR";
 import CellR from "../../components/ui/CellR";
 import IconWrapper from "../../components/ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setSidebarHeader, setTheme } from "../../redux/ui/reducer";
+import {
+  removeCustomTheme,
+  setSidebarHeader,
+  setTheme,
+} from "../../redux/ui/reducer";
 import { darkThemeOptions } from "../../utils/theme";
 
 const ThemesPage = () => {
@@ -485,68 +489,28 @@ const ThemesPage = () => {
                         />
                       </Box>
                     </Button>
-                    <Typography variant="body2" sx={{ textAlign: "center" }}>
-                      {t.name}
-                    </Typography>
-                  </Stack>
-                ))}
-              {themes
-                .map((t) => ({ name: t.name, theme: createTheme(t.theme) }))
-                .map((t, i) => (
-                  <Stack spacing={1}>
-                    <Button
-                      color="inherit"
+                    <Typography
+                      variant="body2"
                       sx={{
-                        overflow: "hidden",
-                        border: (theme) => `1px solid ${theme.palette.divider}`,
-                        padding: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
-                      onClick={() => dispatch(setTheme(i))}
                     >
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          gridTemplateRows: "1fr 1fr",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            background: t.theme.palette.primary.main,
-                            aspectRatio: "3 / 4",
-                            width: "48px",
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            background: t.theme.palette.background.default,
-                            aspectRatio: "3 / 4",
-                          }}
-                        />
-                        <Box
-                          sx={{
-                            gridColumn: "1 / -1",
-                            background: t.theme.palette.background.paper,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                          children={
-                            <Radio
-                              checked={i === themeIndex}
-                              sx={{
-                                color: (theme) =>
-                                  theme.palette.getContrastText(
-                                    t.theme.palette.background.paper
-                                  ),
-                              }}
-                            />
-                          }
-                        />
-                      </Box>
-                    </Button>
-                    <Typography variant="body2" sx={{ textAlign: "center" }}>
                       {t.name}
+                      {i > 3 && (
+                        <IconWrapper
+                          size={20}
+                          sx={{
+                            color: (theme) => theme.palette.error.main,
+                            cursor: "pointer",
+                            marginLeft: (theme) => theme.spacing(1),
+                          }}
+                          onClick={() => dispatch(removeCustomTheme(t.name))}
+                        >
+                          <Icon28DeleteOutline />
+                        </IconWrapper>
+                      )}
                     </Typography>
                   </Stack>
                 ))}

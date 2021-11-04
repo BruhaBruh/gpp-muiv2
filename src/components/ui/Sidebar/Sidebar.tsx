@@ -1,6 +1,5 @@
 import {
   Box,
-  Drawer,
   Fab,
   Paper,
   PaperProps,
@@ -13,6 +12,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import logo from "../../../assets/images/logo.png";
 import { useAppSelector } from "../../../hooks/redux";
 import ButtonR from "../ButtonR";
+import Drawer from "../Drawer";
 import SidebarMenu from "./SidebarMenu";
 
 const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
@@ -37,22 +37,9 @@ const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
   return hide ? (
     <>
       <Drawer
-        anchor={"bottom"}
         open={showDrawer}
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
-        sx={{
-          "& .MuiPaper-root": {
-            background: (theme) => theme.palette.background.paper,
-            borderRadius: (theme) => theme.spacing(2),
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            paddingLeft: (theme) => theme.spacing(1),
-            paddingRight: (theme) => theme.spacing(1),
-            marginLeft: (theme) => theme.spacing(1),
-            marginRight: (theme) => theme.spacing(1),
-          },
-        }}
       >
         <SidebarMenu showBack setShow={setShowDrawer} />
       </Drawer>

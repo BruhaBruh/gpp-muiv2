@@ -7,6 +7,7 @@ import ServerPage from "../pages/discord/ServerPage";
 import ValidatePage from "../pages/discord/ValidatePage";
 import Page404 from "../pages/Page404";
 import SettingsPage from "../pages/settings/SettingsPage";
+import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
 import Head from "./ui/Head";
 import PageWrapper from "./ui/PageWrapper";
@@ -29,16 +30,6 @@ function App() {
         minHeight: "100vh",
         "*::selection": {
           background: (theme) => theme.palette.primary.dark,
-        },
-        "*::-webkit-scrollbar": {
-          width: "0.4em",
-        },
-        "*::-webkit-scrollbar-track": {
-          boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-        },
-        "*::-webkit-scrollbar-thumb": {
-          backgroundColor: "rgba(0,0,0,.1)",
-          outline: "1px solid slategrey",
         },
       }}
     >
@@ -108,6 +99,12 @@ function App() {
                   <Head name="Внешний вид" />
                   <PageWrapper>
                     <ThemesPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/settings/themes/create">
+                  <Head name="Создание темы" />
+                  <PageWrapper>
+                    <ThemeCreatePage />
                   </PageWrapper>
                 </Route>
                 <Route exact path="/report">

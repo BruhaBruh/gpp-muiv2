@@ -16,6 +16,7 @@
     "graphql": "^16.0.1",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
+    "react-colorful": "^5.5.0",
     "react-dom": "^17.0.2",
     "react-lazy-load-image-component": "^1.5.1",
     "react-redux": "^7.2.6",
