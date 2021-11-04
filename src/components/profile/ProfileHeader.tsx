@@ -24,6 +24,7 @@ const ProfileHeader: React.FC<props> = ({ updateProfile }) => {
         <LazyLoadImage
           src={currentProfile.banner}
           style={{ aspectRatio: "722 / 185", width: "100%" }}
+          draggable={false}
         />
       )}
       <Paper
@@ -41,6 +42,7 @@ const ProfileHeader: React.FC<props> = ({ updateProfile }) => {
             variant="rounded"
             src={currentProfile.avatar}
             children={currentProfile.nickname.substring(0, 2)}
+            draggable={false}
             sx={{
               height: isMobile ? 64 : 128,
               width: isMobile ? 64 : 128,
@@ -49,7 +51,10 @@ const ProfileHeader: React.FC<props> = ({ updateProfile }) => {
           />
         </LazyLoadComponent>
         <ProfileHeaderMainInfo updateProfile={updateProfile} />
-        <ProfileIcons height={isMobile ? 64 : 128} />
+        <ProfileIcons
+          permissions={currentProfile.user.permissions}
+          height={isMobile ? 64 : 128}
+        />
       </Paper>
     </Paper>
   ) : (

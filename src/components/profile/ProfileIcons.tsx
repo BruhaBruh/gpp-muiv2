@@ -2,17 +2,14 @@ import { Box, Paper, Tooltip } from "@mui/material";
 import { Icon24CrownOutline, Icon24DoneOutline } from "@vkontakte/icons";
 import React from "react";
 import { Permissions } from "../../graphql/graphql";
-import { useAppSelector } from "../../hooks/redux";
 import { checkPermissions } from "../../redux/userData/types";
 
 interface props {
   height?: any;
+  permissions: Permissions[];
 }
 
-const ProfileIcons: React.FC<props> = ({ height }) => {
-  const permissions = useAppSelector(
-    (state) => state.currentProfile.profile?.user.permissions
-  );
+const ProfileIcons: React.FC<props> = ({ height, permissions }) => {
   return (
     <Box
       sx={{

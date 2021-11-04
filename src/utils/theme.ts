@@ -75,14 +75,20 @@ export const defaultThemeOptions: ThemeOptions = {
       defaultProps: { arrow: false },
     },
     MuiBadge: {
+      defaultProps: {
+        sx: {
+          "& .MuiBadge-dot": {
+            border: (theme) => `2px solid ${theme.palette.background.paper}`,
+          },
+        },
+      },
       styleOverrides: {
         dot: {
-          border: `2px solid #000000`,
-          borderColor: "background.paper",
+          borderColor: "primary",
           minWidth: "auto",
           width: "7px",
           height: "7px",
-          borderRadius: "0.10px",
+          borderRadius: "10px",
           boxSizing: "content-box",
         },
       },

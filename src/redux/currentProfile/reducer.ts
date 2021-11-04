@@ -15,7 +15,8 @@ export const settingsSlice = createSlice({
       state.status = action.payload;
     },
     clearCurrentProfile: (state) => {
-      state = initialState;
+      state.status = undefined;
+      state.profile = undefined;
     },
   },
 });

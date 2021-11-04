@@ -44,6 +44,8 @@ const CellR: React.FC<props> = ({
           color: (theme) =>
             disabled ? theme.palette.text.disabled : theme.palette.text.primary,
           flex: 1,
+          display: "flex",
+          justifyContent: "start",
         }}
       >
         {children}

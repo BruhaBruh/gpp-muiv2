@@ -3,6 +3,7 @@ import { LinearProgress, Stack } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
+import ProfileBody from "../../components/profile/ProfileBody";
 import ProfileHeader from "../../components/profile/ProfileHeader";
 import Head from "../../components/ui/Head";
 import { Profile, ProfileStatus } from "../../graphql/graphql";
@@ -195,7 +196,8 @@ const ProfilePage = () => {
           profileData ? "Профиль " + profileData.profile.nickname : "Профиль"
         }
       />
-      <ProfileHeader updateProfile={updateProfile} />
+      {currentProfile && <ProfileHeader updateProfile={updateProfile} />}
+      {currentProfile && <ProfileBody updateProfile={updateProfile} />}
     </Stack>
   );
 };

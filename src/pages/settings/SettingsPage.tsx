@@ -3,7 +3,6 @@ import {
   Icon24HideOutline,
   Icon28ChevronRightOutline,
   Icon28GridLayoutOutline,
-  Icon28LockOutline,
   Icon28PaletteOutline,
 } from "@vkontakte/icons";
 import React from "react";
@@ -99,31 +98,6 @@ const SettingsPage = () => {
           }
         >
           Настройки интерфейса
-        </CellR>
-        <CellR
-          to="/settings/privacy"
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={size}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon28LockOutline />
-            </IconWrapper>
-          }
-          endIcon={
-            <IconWrapper
-              component="span"
-              size={size}
-              sx={{
-                color: (theme) => theme.palette.info.main,
-              }}
-            >
-              <Icon28ChevronRightOutline />
-            </IconWrapper>
-          }
-        >
-          Приватность
         </CellR>
       </Stack>
     </Paper>

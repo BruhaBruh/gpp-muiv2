@@ -40,6 +40,7 @@ const IndexWithProviders = () => {
   const v: any = useAppSelector(
     (state) => state.settings.verticalSnackbarPosition
   );
+  const modal = useAppSelector((state) => state.ui.modal);
 
   return (
     <ThemeProvider theme={theme}>
@@ -93,6 +94,7 @@ const IndexWithProviders = () => {
             ),
           }}
         >
+          {modal}
           <AuthLoader />
           <App />
         </SnackbarProvider>
