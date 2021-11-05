@@ -32,34 +32,33 @@ import { Permissions, Product } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
 import { checkPermissions, getLastOnline } from "../../redux/userData/types";
+import ProductCardMessageForm from "../product/ProductCardMessageForm";
 import IconWrapper from "../ui/IconWrapper";
 import LinkR from "../ui/LinkR";
-import ProductCardMessageForm from "./ProductCardMessageForm";
-import ProductEdit from "./ProductEdit";
+import ServiceEdit from "./ServiceEdit";
 
 interface props {
   product: Product;
-  removeProduct: () => void;
+  removeService: () => void;
   isProfile?: boolean;
   isChat?: boolean;
 }
 
-const ProductCard: React.FC<props> = ({
+const ServiceCard: React.FC<props> = ({
   product,
-  removeProduct: removeProductFromArray,
+  removeService: removeServiceFromArray,
   isProfile,
   isChat,
 }) => {
   const profileId = useAppSelector((state) => state.userData.profileId);
   const permissions = useAppSelector((state) => state.userData.permissions);
   const dispatch = useAppDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const [showDescription, setShowDescription] = React.useState(false);
   const [removeProduct, { data: removeSuccess, error: removeError }] =
     useMutation(
       gql`
-        mutation removeProduct($id: ObjectID!) {
-          removeProduct(id: $id) {
+        mutation removeService($id: ObjectID!) {
+          removeService(id: $id) {
             id
           }
         }
@@ -70,18 +69,19 @@ const ProductCard: React.FC<props> = ({
         },
       }
     );
+  const { enqueueSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     if (!removeSuccess) return;
     enqueueSnackbar("Удачно!", { variant: "success" });
-    removeProductFromArray();
+    removeServiceFromArray();
     dispatch(setModal(null));
-  }, [removeSuccess, dispatch, enqueueSnackbar, removeProductFromArray]);
+  }, [removeSuccess, dispatch, removeServiceFromArray, enqueueSnackbar]);
 
   React.useEffect(() => {
     if (!removeError) return;
     enqueueSnackbar(removeError?.message, { variant: "error" });
-  }, [removeError, enqueueSnackbar, dispatch]);
+  }, [removeError, enqueueSnackbar]);
 
   const openConfirmToDelete = () => {
     dispatch(
@@ -94,11 +94,11 @@ const ProductCard: React.FC<props> = ({
           maxWidth="sm"
         >
           <DialogTitle id="alert-dialog-title">
-            Удаление товара {product.icon.name}
+            Удаление услугу {product.icon.name}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Вы уверены, что хотите удалить товар?
+              Вы уверены, что хотите удалить услугу?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -132,11 +132,11 @@ const ProductCard: React.FC<props> = ({
   };
 
   const openEditForm = () =>
-    dispatch(setModal(<ProductEdit product={product} />));
+    dispatch(setModal(<ServiceEdit product={product} />));
 
   return (
     <Paper
-      elevation={isProfile ? 3 : 0}
+      elevation={isProfile ? 6 : 3}
       sx={{
         padding: (theme) => theme.spacing(1.5),
         border: "2px solid",
@@ -309,7 +309,7 @@ const ProductCard: React.FC<props> = ({
               product.owner.user.permissions
             ) && (
               <Tooltip title="Premium пользователь" placement="left">
-                <LinkR to="/donate">
+                <LinkR to="/donate" id="test">
                   <IconButton
                     sx={{
                       marginBottom: (theme) => theme.spacing(1),
@@ -412,4 +412,4 @@ const ProductCard: React.FC<props> = ({
   );
 };
 
-export default ProductCard;
+export default ServiceCard;

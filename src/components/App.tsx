@@ -8,11 +8,13 @@ import ValidatePage from "../pages/discord/ValidatePage";
 import Page404 from "../pages/Page404";
 import ProfilePage from "../pages/profile/ProfilePage";
 import ProfilesPage from "../pages/profile/ProfilesPage";
+import ServicesPage from "../pages/services/ServicesPage";
 import BlacklistPage from "../pages/settings/BlacklistPage";
 import InterfacePage from "../pages/settings/InterfacePage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
+import ProductsPage from "../pages/shop/ProductsPage";
 import Head from "./ui/Head";
 import PageWrapper from "./ui/PageWrapper";
 import Sidebar from "./ui/Sidebar/Sidebar";
@@ -73,11 +75,15 @@ function App() {
                 </Route>
                 <Route exact path="/shop">
                   <Head name="Товары" />
-                  <PageWrapper>Товары</PageWrapper>
+                  <PageWrapper>
+                    <ProductsPage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/services">
                   <Head name="Услуги" />
-                  <PageWrapper>Услуги</PageWrapper>
+                  <PageWrapper>
+                    <ServicesPage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/chats">
                   <Head name="Чаты" />

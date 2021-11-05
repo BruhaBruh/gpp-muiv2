@@ -5,11 +5,12 @@ import React from "react";
 import { useParams } from "react-router";
 import { ProductSearchResult, ProductSort } from "../../graphql/graphql";
 import { useAppSelector } from "../../hooks/redux";
+import ProductsList from "../product/ProductsList";
+import ServicesList from "../services/ServicesList";
 import StyledTab from "../ui/StyledTab";
 import StyledTabs from "../ui/StyledTabs";
 import ProfileBodyDescription from "./ProfileBodyDescription";
 import ProfileBodyInfo from "./ProfileBodyInfo";
-import ProfileBodyProducts from "./ProfileBodyProducts";
 import ProfileBodySettings from "./ProfileBodySettings";
 
 interface props {
@@ -201,10 +202,10 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
           )}
         </StyledTabs>
         {profileProducts && currentTab === tabs.products && (
-          <ProfileBodyProducts products={profileProducts.products.result} />
+          <ProductsList products={profileProducts.products.result} />
         )}
         {profileServices && currentTab === tabs.services && (
-          <ProfileBodyProducts products={profileServices.services.result} />
+          <ServicesList services={profileServices.services.result} />
         )}
         {currentTab === tabs.info && (
           <ProfileBodyInfo updateProfile={updateProfile} />

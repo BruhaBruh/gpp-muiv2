@@ -126,7 +126,7 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
     if (!createSuccess) return;
     enqueueSnackbar("Удачно!", { variant: "success" });
     dispatch(setModal(null));
-  }, [createSuccess, enqueueSnackbar]);
+  }, [createSuccess, enqueueSnackbar, dispatch]);
 
   React.useEffect(() => {
     if (!createError) return;

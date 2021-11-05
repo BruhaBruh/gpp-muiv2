@@ -1,13 +1,12 @@
-import { Box } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 import { Product } from "../../graphql/graphql";
-import ProductCard from "../product/ProductCard";
+import ProductCard from "./ProductCard";
 
 interface props {
   products: Product[];
 }
-
-const ProfileBodyProducts: React.FC<props> = ({ products }) => {
+const ProductsList: React.FC<props> = ({ products }) => {
   return (
     <Box
       sx={{
@@ -30,4 +29,4 @@ const ProfileBodyProducts: React.FC<props> = ({ products }) => {
   );
 };
 
-export default ProfileBodyProducts;
+export default ProductsList;
