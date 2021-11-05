@@ -7,6 +7,8 @@ import ServerPage from "../pages/discord/ServerPage";
 import ValidatePage from "../pages/discord/ValidatePage";
 import Page404 from "../pages/Page404";
 import ProfilePage from "../pages/profile/ProfilePage";
+import ProfilesPage from "../pages/profile/ProfilesPage";
+import BlacklistPage from "../pages/settings/BlacklistPage";
 import InterfacePage from "../pages/settings/InterfacePage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
@@ -82,8 +84,10 @@ function App() {
                   <PageWrapper>Чаты</PageWrapper>
                 </Route>
                 <Route exact path="/profiles">
-                  <Head name="Профили" />
-                  <PageWrapper>Профили</PageWrapper>
+                  <Head name="Все профили" />
+                  <PageWrapper>
+                    <ProfilesPage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/donate">
                   <Head name="Донат" />
@@ -97,6 +101,12 @@ function App() {
                   <Head name="Настройки" />
                   <PageWrapper>
                     <SettingsPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/settings/blacklist">
+                  <Head name="Чёрный список" />
+                  <PageWrapper>
+                    <BlacklistPage />
                   </PageWrapper>
                 </Route>
                 <Route exact path="/settings/themes">

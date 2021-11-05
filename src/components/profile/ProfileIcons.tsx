@@ -3,6 +3,7 @@ import { Icon24CrownOutline, Icon24DoneOutline } from "@vkontakte/icons";
 import React from "react";
 import { Permissions } from "../../graphql/graphql";
 import { checkPermissions } from "../../redux/userData/types";
+import LinkR from "../ui/LinkR";
 
 interface props {
   height?: any;
@@ -38,8 +39,8 @@ const ProfileIcons: React.FC<props> = ({ height, permissions }) => {
       )}
       {!checkPermissions(Permissions.All, permissions) &&
         checkPermissions(Permissions.PremiumSubscription, permissions) && (
-          <Tooltip title="Premium пользователь" placement="left">
-            <Box component="a" href="/donate">
+          <LinkR to="/donate" onClick={(e) => e.stopPropagation()}>
+            <Tooltip title="Premium пользователь" placement="left">
               <Paper
                 elevation={3}
                 sx={{ padding: (theme) => theme.spacing(0.5) }}
@@ -48,13 +49,13 @@ const ProfileIcons: React.FC<props> = ({ height, permissions }) => {
                   style={{ color: process.env.REACT_APP_PREMIUM_COLOR }}
                 />
               </Paper>
-            </Box>
-          </Tooltip>
+            </Tooltip>
+          </LinkR>
         )}
       {!checkPermissions(Permissions.All, permissions) &&
         checkPermissions(Permissions.LiteSubscription, permissions) && (
-          <Tooltip title="Lite пользователь" placement="left">
-            <Box component="a" href="/donate">
+          <LinkR to="/donate" onClick={(e) => e.stopPropagation()}>
+            <Tooltip title="Lite пользователь" placement="left">
               <Paper
                 elevation={3}
                 sx={{ padding: (theme) => theme.spacing(0.5) }}
@@ -63,8 +64,8 @@ const ProfileIcons: React.FC<props> = ({ height, permissions }) => {
                   style={{ color: process.env.REACT_APP_LITE_COLOR }}
                 />
               </Paper>
-            </Box>
-          </Tooltip>
+            </Tooltip>
+          </LinkR>
         )}
     </Box>
   );

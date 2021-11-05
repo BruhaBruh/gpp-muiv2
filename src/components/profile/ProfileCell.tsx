@@ -60,10 +60,19 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
         backgroundClip: "border-box",
         height: "min-content",
         cursor: "pointer",
+        flex: 1,
       }}
       elevation={1}
     >
-      <CellR to={"/profile/" + profile.id}>
+      <CellR
+        to={"/profile/" + profile.id}
+        sx={{
+          background: "#00000077",
+          "&:hover": {
+            background: "#00000066",
+          },
+        }}
+      >
         <Badge
           anchorOrigin={{
             vertical: "bottom",
@@ -114,7 +123,7 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
               color: (theme: Theme) =>
                 profile.id === "6171b40cc87c467779872271"
                   ? theme.palette.success.light
-                  : undefined,
+                  : "#FFFFFF",
             }}
           >
             {getImageByRole() !== null && (
@@ -134,24 +143,26 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
             )}{" "}
             {profile.nickname}
           </Typography>
-          <Typography
-            variant="subtitle2"
-            sx={{
-              color: JSON.parse(JSON.stringify(profile.roles))
-                .sort((a: Role, b: Role) => b.position - a.position)
-                .shift().color,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              textTransform: "none",
-            }}
-          >
-            {
-              JSON.parse(JSON.stringify(profile.roles))
-                .sort((a: Role, b: Role) => b.position - a.position)
-                .shift().name
-            }
-          </Typography>
+          {profile.roles.length !== 0 && (
+            <Typography
+              variant="subtitle2"
+              sx={{
+                color: JSON.parse(JSON.stringify(profile.roles))
+                  .sort((a: Role, b: Role) => b.position - a.position)
+                  .shift().color,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                textTransform: "none",
+              }}
+            >
+              {
+                JSON.parse(JSON.stringify(profile.roles))
+                  .sort((a: Role, b: Role) => b.position - a.position)
+                  .shift().name
+              }
+            </Typography>
+          )}
         </Box>
         <ProfileIcons permissions={profile.user.permissions} height={48} />
       </CellR>

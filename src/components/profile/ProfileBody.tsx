@@ -7,8 +7,10 @@ import { ProductSearchResult, ProductSort } from "../../graphql/graphql";
 import { useAppSelector } from "../../hooks/redux";
 import StyledTab from "../ui/StyledTab";
 import StyledTabs from "../ui/StyledTabs";
+import ProfileBodyDescription from "./ProfileBodyDescription";
 import ProfileBodyInfo from "./ProfileBodyInfo";
 import ProfileBodyProducts from "./ProfileBodyProducts";
+import ProfileBodySettings from "./ProfileBodySettings";
 
 interface props {
   updateProfile: () => void;
@@ -206,6 +208,12 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
         )}
         {currentTab === tabs.info && (
           <ProfileBodyInfo updateProfile={updateProfile} />
+        )}
+        {currentTab === tabs.settings && (
+          <ProfileBodySettings updateProfile={updateProfile} />
+        )}
+        {currentTab === tabs.description && currentProfile && (
+          <ProfileBodyDescription text={currentProfile.description} />
         )}
       </Stack>
     </Paper>
