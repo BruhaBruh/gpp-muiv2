@@ -5,6 +5,8 @@ import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
 import ServerPage from "../pages/discord/ServerPage";
 import ValidatePage from "../pages/discord/ValidatePage";
+import InfoPage from "../pages/info/InfoPage";
+import NewsPage from "../pages/news/NewsPage";
 import Page404 from "../pages/Page404";
 import ProfilePage from "../pages/profile/ProfilePage";
 import ProfilesPage from "../pages/profile/ProfilesPage";
@@ -102,7 +104,14 @@ function App() {
                 </Route>
                 <Route exact path="/info">
                   <Head name="Информация" />
-                  <PageWrapper>Информация</PageWrapper>
+                  <PageWrapper>
+                    <InfoPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/news/:id">
+                  <PageWrapper>
+                    <NewsPage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/settings">
                   <Head name="Настройки" />
