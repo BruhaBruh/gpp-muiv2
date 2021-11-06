@@ -28,18 +28,23 @@ import {
   Category,
   IconSearchResult,
   Permissions,
-  Product,
   ProductSearchResult,
   ProductSort,
 } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  addProducts,
+  clearProducts,
+  incPage,
+  setPage,
+} from "../../redux/products/reducer";
 import { setModal } from "../../redux/ui/reducer";
 import { checkPermissions } from "../../redux/userData/types";
 import ProductCreate from "../product/ProductCreate";
 import ProductsList from "../product/ProductsList";
 
 const List = () => {
-  const [page, setPage] = React.useState(1);
+  const page = useAppSelector((state) => state.products.page);
   const permissions = useAppSelector((state) => state.userData.permissions);
   const { data: categoriesData } = useQuery<{
     categories: Category[];
@@ -132,7 +137,7 @@ const List = () => {
         },
       }
     );
-  const [products, setProducts] = React.useState<Product[]>([]);
+  const products = useAppSelector((state) => state.products.products);
   const form = useFormik({
     initialValues: {
       sort: ProductSort.Default,
@@ -141,7 +146,7 @@ const List = () => {
       icon: "",
     },
     onSubmit: (values) => {
-      setProducts([]);
+      dispatch(clearProducts());
       getProducts({
         variables: {
           sort: form.values.sort,
@@ -151,11 +156,11 @@ const List = () => {
           search: form.values.search,
         },
       });
-      setPage(2);
+      dispatch(setPage(2));
       dispatch(setModal(null));
     },
     onReset: (values) => {
-      setProducts([]);
+      dispatch(clearProducts());
       getProducts({
         variables: {
           sort: form.values.sort,
@@ -177,16 +182,14 @@ const List = () => {
   );
   const [filtersIsOpen, setFiltersIsOpen] = React.useState(false);
   const isMobileButtonsOn = useMediaQuery("(max-width: 600px)");
+  const [hasMore, setHasMore] = React.useState(true);
 
   React.useEffect(() => {
     if (!productsData) return;
-    setProducts((prev) => [
-      ...prev,
-      ...productsData.products.result.filter(
-        (p) => !prev.map((i) => i.id).includes(p.id)
-      ),
-    ]);
-  }, [productsData]);
+
+    dispatch(addProducts(productsData.products.result));
+    setHasMore(false);
+  }, [productsData, dispatch, setHasMore]);
 
   React.useEffect(() => {
     if (
@@ -207,16 +210,17 @@ const List = () => {
             search: form.values.search,
           },
         });
-        setPage((prev) => prev + 1);
+        dispatch(incPage());
       }
     };
     observer.current = new IntersectionObserver(cb);
     observer.current.observe(lastElementRef.current);
     // eslint-disable-next-line
-  }, [lastElementRef, productsLoading, products, page, getProducts]);
+  }, [lastElementRef, productsLoading, products, page, getProducts, dispatch]);
 
   React.useEffect(() => {
-    setProducts([]);
+    if (products.length !== 0) return;
+    dispatch(clearProducts());
     getProducts({
       variables: {
         sort: form.values.sort,
@@ -226,9 +230,9 @@ const List = () => {
         search: form.values.search,
       },
     });
-    setPage(2);
+    dispatch(setPage(2));
     // eslint-disable-next-line
-  }, [form.values.category, form.values.sort, form.values.icon]);
+  }, [dispatch]);
 
   React.useEffect(() => {
     getIcons({ variables: { category: form.values.category } });
@@ -510,7 +514,7 @@ const List = () => {
       />
 
       {productsLoading && <LinearProgress />}
-      {productsData?.products.hasMore && !productsLoading && (
+      {((productsData?.products.hasMore && !productsLoading) || hasMore) && (
         <div style={{ minHeight: "10px" }} ref={lastElementRef}></div>
       )}
     </Stack>

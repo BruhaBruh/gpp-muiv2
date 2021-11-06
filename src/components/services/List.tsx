@@ -22,17 +22,22 @@ import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import {
   IconSearchResult,
-  Product,
   ProductSearchResult,
   ProductSort,
 } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  addServices,
+  clearServices,
+  incPage,
+  setPage,
+} from "../../redux/services/reducer";
 import { setModal } from "../../redux/ui/reducer";
 import ServiceCreate from "./ServiceCreate";
 import ServicesList from "./ServicesList";
 
 const List = () => {
-  const [page, setPage] = React.useState(1);
+  const page = useAppSelector((state) => state.services.page);
   const { data: iconsData, loading: iconsLoading } = useQuery<{
     icons: IconSearchResult;
   }>(
@@ -113,7 +118,7 @@ const List = () => {
         },
       }
     );
-  const [products, setProducts] = React.useState<Product[]>([]);
+  const products = useAppSelector((state) => state.services.services);
   const form = useFormik({
     initialValues: {
       sort: ProductSort.Default,
@@ -121,7 +126,7 @@ const List = () => {
       icon: "",
     },
     onSubmit: (values) => {
-      setProducts([]);
+      dispatch(clearServices());
       getServices({
         variables: {
           sort: form.values.sort,
@@ -130,11 +135,11 @@ const List = () => {
           search: form.values.search,
         },
       });
-      setPage(2);
+      dispatch(setPage(2));
       dispatch(setModal(null));
     },
     onReset: (values) => {
-      setProducts([]);
+      dispatch(clearServices());
       getServices({
         variables: {
           sort: form.values.sort,
@@ -143,7 +148,7 @@ const List = () => {
           search: form.values.search,
         },
       });
-      setPage(2);
+      dispatch(setPage(2));
     },
   });
   const lastElementRef = React.useRef<HTMLDivElement | null>(null);
@@ -155,16 +160,14 @@ const List = () => {
   );
   const [filtersIsOpen, setFiltersIsOpen] = React.useState(false);
   const isMobileButtonsOn = useMediaQuery("(max-width: 600px)");
+  const [hasMore, setHasMore] = React.useState(true);
 
   React.useEffect(() => {
     if (!servicesData) return;
-    setProducts((prev) => [
-      ...prev,
-      ...servicesData.services.result.filter(
-        (p) => !prev.map((i) => i.id).includes(p.id)
-      ),
-    ]);
-  }, [servicesData]);
+
+    dispatch(addServices(servicesData.services.result));
+    setHasMore(false);
+  }, [servicesData, setHasMore, dispatch]);
 
   React.useEffect(() => {
     if (
@@ -184,7 +187,7 @@ const List = () => {
             search: form.values.search,
           },
         });
-        setPage((prev) => prev + 1);
+        dispatch(incPage());
       }
     };
     observer.current = new IntersectionObserver(cb);
@@ -193,7 +196,8 @@ const List = () => {
   }, [lastElementRef, servicesLoading, products, page, getServices]);
 
   React.useEffect(() => {
-    setProducts([]);
+    if (products.length !== 0) return;
+    dispatch(clearServices());
     getServices({
       variables: {
         sort: form.values.sort,
@@ -202,9 +206,9 @@ const List = () => {
         search: form.values.search,
       },
     });
-    setPage(2);
+    dispatch(setPage(2));
     // eslint-disable-next-line
-  }, [form.values.sort, form.values.icon]);
+  }, [dispatch]);
 
   React.useEffect(() => {
     if (!iconsData) return;
@@ -426,7 +430,7 @@ const List = () => {
           <LinearProgress />
         </Box>
       )}
-      {servicesData?.services.hasMore && !servicesLoading && (
+      {((servicesData?.services.hasMore && !servicesLoading) || hasMore) && (
         <div style={{ minHeight: "10px" }} ref={lastElementRef}></div>
       )}
     </Stack>

@@ -1,5 +1,7 @@
 import CurrentProfileReducer from "./currentProfile/reducer";
 import GlobalChatReducer from "./globalchat/reducer";
+import ProductsReducer from "./products/reducer";
+import ServicesReducer from "./services/reducer";
 import SettingsReducer from "./settings/reducer";
 import UIReducer from "./ui/reducer";
 import UserDataReducer from "./userData/reducer";
@@ -10,4 +12,6 @@ export const reducers = {
   userData: UserDataReducer,
   currentProfile: CurrentProfileReducer,
   globalChat: GlobalChatReducer,
+  products: ProductsReducer,
+  services: ServicesReducer,
 };
