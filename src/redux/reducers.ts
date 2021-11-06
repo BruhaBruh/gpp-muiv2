@@ -1,3 +1,4 @@
+import ChatsReducer from "./chats/reducer";
 import CurrentProfileReducer from "./currentProfile/reducer";
 import GlobalChatReducer from "./globalchat/reducer";
 import ProductsReducer from "./products/reducer";
@@ -14,4 +15,5 @@ export const reducers = {
   globalChat: GlobalChatReducer,
   products: ProductsReducer,
   services: ServicesReducer,
+  chats: ChatsReducer,
 };

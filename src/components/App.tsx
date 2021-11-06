@@ -3,6 +3,8 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
+import ChatPage from "../pages/chat/ChatPage";
+import ChatsPage from "../pages/chat/ChatsPage";
 import ServerPage from "../pages/discord/ServerPage";
 import ValidatePage from "../pages/discord/ValidatePage";
 import DonatePage from "../pages/donate/DonatePage";
@@ -92,7 +94,15 @@ function App() {
                 </Route>
                 <Route exact path="/chats">
                   <Head name="Чаты" />
-                  <PageWrapper>Чаты</PageWrapper>
+                  <PageWrapper>
+                    <ChatsPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/chat/:id">
+                  <Head name="Чат" />
+                  <PageWrapper>
+                    <ChatPage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/profiles">
                   <Head name="Все профили" />
