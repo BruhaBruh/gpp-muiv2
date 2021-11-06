@@ -5,12 +5,14 @@ import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
 import ServerPage from "../pages/discord/ServerPage";
 import ValidatePage from "../pages/discord/ValidatePage";
+import DonatePage from "../pages/donate/DonatePage";
 import InfoPage from "../pages/info/InfoPage";
 import NewsPage from "../pages/news/NewsPage";
 import Page404 from "../pages/Page404";
 import ProfilePage from "../pages/profile/ProfilePage";
 import ProfilesPage from "../pages/profile/ProfilesPage";
 import ReportPage from "../pages/report/ReportPage";
+import ReportsPage from "../pages/report/ReportsPage";
 import ServicesPage from "../pages/services/ServicesPage";
 import BlacklistPage from "../pages/settings/BlacklistPage";
 import InterfacePage from "../pages/settings/InterfacePage";
@@ -100,7 +102,9 @@ function App() {
                 </Route>
                 <Route exact path="/donate">
                   <Head name="Донат" />
-                  <PageWrapper>Донат</PageWrapper>
+                  <PageWrapper>
+                    <DonatePage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/info">
                   <Head name="Информация" />
@@ -144,6 +148,12 @@ function App() {
                   </PageWrapper>
                 </Route>
                 <Route exact path="/report">
+                  <Head name="Репорты" />
+                  <PageWrapper>
+                    <ReportsPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/report/:id">
                   <Head name="Репорт" />
                   <PageWrapper>
                     <ReportPage />

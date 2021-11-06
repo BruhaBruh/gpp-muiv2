@@ -126,14 +126,6 @@ export type CreateProductInput = {
   server: Scalars['ObjectID'];
 };
 
-/** Поля ввода для создания репорта */
-export type CreateReportInput = {
-  /** Сообщение */
-  message: Scalars['String'];
-  /** Тип репорта */
-  type: ReportType;
-};
-
 /** Поля для создания сервера */
 export type CreateServerInput = {
   /** id discord ролей для скрытия отображние в профиле */
@@ -385,6 +377,7 @@ export type Mutation = {
   createNewsTag: NewsTag;
   /** Создание товара */
   createProduct: Product;
+  createReport: ReportChat;
   /** Создание сервера */
   createServer: Server;
   /** Создание Сервиса */
@@ -428,14 +421,14 @@ export type Mutation = {
   removeMessage: Message;
   /** Удаление товара */
   removeProduct: Product;
+  removeReport: ReportChat;
   /** Удаление Сервиса */
   removeService: Product;
-  /** Создать репорт */
-  report: Scalars['Boolean'];
   /** Выбор/Создание профиля по id сервера */
   selectProfile: Profile;
   /** Отправка сообещиня */
   sendMessage: Message;
+  sendReportMessage: ReportMessage;
   /** Установить рейтинг профилю с id */
   setRating: Profile;
   /** Стать подписчиком профиля под id */
@@ -498,6 +491,11 @@ export type MutationCreateNewsTagArgs = {
 
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
+};
+
+
+export type MutationCreateReportArgs = {
+  input: ReportCreateInput;
 };
 
 
@@ -622,13 +620,13 @@ export type MutationRemoveProductArgs = {
 };
 
 
-export type MutationRemoveServiceArgs = {
+export type MutationRemoveReportArgs = {
   id: Scalars['ObjectID'];
 };
 
 
-export type MutationReportArgs = {
-  input: CreateReportInput;
+export type MutationRemoveServiceArgs = {
+  id: Scalars['ObjectID'];
 };
 
 
@@ -639,6 +637,12 @@ export type MutationSelectProfileArgs = {
 
 export type MutationSendMessageArgs = {
   input: SendMessageInput;
+};
+
+
+export type MutationSendReportMessageArgs = {
+  id: Scalars['ObjectID'];
+  input: ReportMessageInput;
 };
 
 
@@ -707,6 +711,8 @@ export enum Permissions {
   UserPreventBan = 'USER_PREVENT_BAN',
   /** Право на возможность разбана пользователей */
   UserRemoveBan = 'USER_REMOVE_BAN',
+  /** Просмотр репортов */
+  UserReport = 'USER_REPORT',
   /** Право на возможность бана пользователей */
   UserSetBan = 'USER_SET_BAN'
 }
@@ -836,6 +842,8 @@ export type Query = {
   categories: Array<Category>;
   /** Категория по его id */
   category?: Maybe<Category>;
+  /** Чат по id */
+  chat?: Maybe<Chat>;
   /** Все чаты профиля */
   chats: Array<Chat>;
   /** Профили чата */
@@ -853,6 +861,7 @@ export type Query = {
   icons: IconSearchResult;
   /** Сообщения чата */
   messages: MessageSearchResult;
+  myReports: Array<ReportChat>;
   news: NewsResult;
   newsByID: News;
   /** Товар по id */
@@ -863,6 +872,9 @@ export type Query = {
   profile?: Maybe<Profile>;
   /** Все профили */
   profiles: ProfileSearchResult;
+  report: ReportChat;
+  reportMessages: Array<ReportMessage>;
+  reports: Array<ReportChat>;
   /** Сервер по id */
   server?: Maybe<Server>;
   /** Сервера */
@@ -882,6 +894,11 @@ export type Query = {
 
 
 export type QueryCategoryArgs = {
+  id: Scalars['ObjectID'];
+};
+
+
+export type QueryChatArgs = {
   id: Scalars['ObjectID'];
 };
 
@@ -926,6 +943,11 @@ export type QueryMessagesArgs = {
 };
 
 
+export type QueryMyReportsArgs = {
+  profile: Scalars['ObjectID'];
+};
+
+
 export type QueryNewsArgs = {
   limit?: Maybe<Scalars['Int']>;
   page?: Maybe<Scalars['Int']>;
@@ -964,6 +986,16 @@ export type QueryProfilesArgs = {
   role?: Maybe<Scalars['ID']>;
   search?: Maybe<Scalars['String']>;
   server: Scalars['ObjectID'];
+};
+
+
+export type QueryReportArgs = {
+  id: Scalars['ObjectID'];
+};
+
+
+export type QueryReportMessagesArgs = {
+  id: Scalars['ObjectID'];
 };
 
 
@@ -1019,13 +1051,41 @@ export type RemoveGlobalChatMessageInput = {
   server: Scalars['ObjectID'];
 };
 
-/** Тип репорта */
+export type ReportChat = {
+  __typename?: 'ReportChat';
+  id: Scalars['ObjectID'];
+  owner: Profile;
+  server: Scalars['ObjectID'];
+  type: ReportType;
+};
+
+export type ReportCreateInput = {
+  message: Scalars['String'];
+  server: Scalars['ObjectID'];
+  type: ReportType;
+};
+
+export type ReportMessage = {
+  __typename?: 'ReportMessage';
+  createdAt: Scalars['Date'];
+  id: Scalars['ObjectID'];
+  message: Scalars['String'];
+  owner: Profile;
+  type: ReportMessageType;
+};
+
+export type ReportMessageInput = {
+  message: Scalars['String'];
+};
+
+export enum ReportMessageType {
+  Admin = 'ADMIN',
+  User = 'USER'
+}
+
 export enum ReportType {
-  /** Баг */
   Bug = 'BUG',
-  /** Предложение */
   Feature = 'FEATURE',
-  /** Жалоба на игрока/пользователя */
   Report = 'REPORT'
 }
 
@@ -1111,8 +1171,10 @@ export type Subscription = {
   globalChatMessageCreated: GlobalChatMessage;
   /** Удаленное глобальное сообщение */
   globalChatMessageRemoved: GlobalChatRemove;
+  newChat: Chat;
   /** Новое сообщение */
   newMessage: Message;
+  newReportMessage: ReportMessage;
 };
 
 
@@ -1126,8 +1188,18 @@ export type SubscriptionEditedMessageArgs = {
 };
 
 
+export type SubscriptionNewChatArgs = {
+  profile: Scalars['ObjectID'];
+};
+
+
 export type SubscriptionNewMessageArgs = {
   profile: Scalars['ObjectID'];
+};
+
+
+export type SubscriptionNewReportMessageArgs = {
+  id: Scalars['ObjectID'];
 };
 
 /** Пользователь. Создается при входе через дискорд */
@@ -1247,7 +1319,6 @@ export type ResolversTypes = {
   CreateNews: CreateNews;
   CreateNewsTag: CreateNewsTag;
   CreateProductInput: CreateProductInput;
-  CreateReportInput: CreateReportInput;
   CreateServerInput: CreateServerInput;
   CreateServiceInput: CreateServiceInput;
   Date: ResolverTypeWrapper<Scalars['Date']>;
@@ -1288,6 +1359,11 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Rating: ResolverTypeWrapper<Rating>;
   RemoveGlobalChatMessageInput: RemoveGlobalChatMessageInput;
+  ReportChat: ResolverTypeWrapper<ReportChat>;
+  ReportCreateInput: ReportCreateInput;
+  ReportMessage: ResolverTypeWrapper<ReportMessage>;
+  ReportMessageInput: ReportMessageInput;
+  ReportMessageType: ReportMessageType;
   ReportType: ReportType;
   Role: ResolverTypeWrapper<Role>;
   SendMessageInput: SendMessageInput;
@@ -1314,7 +1390,6 @@ export type ResolversParentTypes = {
   CreateNews: CreateNews;
   CreateNewsTag: CreateNewsTag;
   CreateProductInput: CreateProductInput;
-  CreateReportInput: CreateReportInput;
   CreateServerInput: CreateServerInput;
   CreateServiceInput: CreateServiceInput;
   Date: Scalars['Date'];
@@ -1352,6 +1427,10 @@ export type ResolversParentTypes = {
   Query: {};
   Rating: Rating;
   RemoveGlobalChatMessageInput: RemoveGlobalChatMessageInput;
+  ReportChat: ReportChat;
+  ReportCreateInput: ReportCreateInput;
+  ReportMessage: ReportMessage;
+  ReportMessageInput: ReportMessageInput;
   Role: Role;
   SendMessageInput: SendMessageInput;
   Server: Server;
@@ -1462,6 +1541,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createNews?: Resolver<ResolversTypes['News'], ParentType, ContextType, RequireFields<MutationCreateNewsArgs, 'input'>>;
   createNewsTag?: Resolver<ResolversTypes['NewsTag'], ParentType, ContextType, RequireFields<MutationCreateNewsTagArgs, 'input'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
+  createReport?: Resolver<ResolversTypes['ReportChat'], ParentType, ContextType, RequireFields<MutationCreateReportArgs, 'input'>>;
   createServer?: Resolver<ResolversTypes['Server'], ParentType, ContextType, RequireFields<MutationCreateServerArgs, 'input'>>;
   createService?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateServiceArgs, 'input'>>;
   editCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationEditCategoryArgs, 'id' | 'input'>>;
@@ -1484,10 +1564,11 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   removeGlobalChatMessage?: Resolver<ResolversTypes['GlobalChatRemove'], ParentType, ContextType, RequireFields<MutationRemoveGlobalChatMessageArgs, 'input'>>;
   removeMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationRemoveMessageArgs, 'id'>>;
   removeProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationRemoveProductArgs, 'id'>>;
+  removeReport?: Resolver<ResolversTypes['ReportChat'], ParentType, ContextType, RequireFields<MutationRemoveReportArgs, 'id'>>;
   removeService?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationRemoveServiceArgs, 'id'>>;
-  report?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationReportArgs, 'input'>>;
   selectProfile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationSelectProfileArgs, 'server'>>;
   sendMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationSendMessageArgs, 'input'>>;
+  sendReportMessage?: Resolver<ResolversTypes['ReportMessage'], ParentType, ContextType, RequireFields<MutationSendReportMessageArgs, 'id' | 'input'>>;
   setRating?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationSetRatingArgs, 'id' | 'input'>>;
   startSubscribe?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationStartSubscribeArgs, 'id'>>;
   updateLastOnline?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationUpdateLastOnlineArgs, 'id'>>;
@@ -1584,6 +1665,7 @@ export type ProfileStatusResolvers<ContextType = any, ParentType extends Resolve
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   categories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
   category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryCategoryArgs, 'id'>>;
+  chat?: Resolver<Maybe<ResolversTypes['Chat']>, ParentType, ContextType, RequireFields<QueryChatArgs, 'id'>>;
   chats?: Resolver<Array<ResolversTypes['Chat']>, ParentType, ContextType, RequireFields<QueryChatsArgs, 'server'>>;
   getChatProfiles?: Resolver<Array<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryGetChatProfilesArgs, 'chat'>>;
   getLastMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<QueryGetLastMessageArgs, 'chat'>>;
@@ -1593,12 +1675,16 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   icon?: Resolver<Maybe<ResolversTypes['Icon']>, ParentType, ContextType, RequireFields<QueryIconArgs, 'id'>>;
   icons?: Resolver<ResolversTypes['IconSearchResult'], ParentType, ContextType, RequireFields<QueryIconsArgs, never>>;
   messages?: Resolver<ResolversTypes['MessageSearchResult'], ParentType, ContextType, RequireFields<QueryMessagesArgs, 'chat'>>;
+  myReports?: Resolver<Array<ResolversTypes['ReportChat']>, ParentType, ContextType, RequireFields<QueryMyReportsArgs, 'profile'>>;
   news?: Resolver<ResolversTypes['NewsResult'], ParentType, ContextType, RequireFields<QueryNewsArgs, never>>;
   newsByID?: Resolver<ResolversTypes['News'], ParentType, ContextType, RequireFields<QueryNewsByIdArgs, 'id'>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   products?: Resolver<ResolversTypes['ProductSearchResult'], ParentType, ContextType, RequireFields<QueryProductsArgs, 'server'>>;
   profile?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryProfileArgs, 'id'>>;
   profiles?: Resolver<ResolversTypes['ProfileSearchResult'], ParentType, ContextType, RequireFields<QueryProfilesArgs, 'server'>>;
+  report?: Resolver<ResolversTypes['ReportChat'], ParentType, ContextType, RequireFields<QueryReportArgs, 'id'>>;
+  reportMessages?: Resolver<Array<ResolversTypes['ReportMessage']>, ParentType, ContextType, RequireFields<QueryReportMessagesArgs, 'id'>>;
+  reports?: Resolver<Array<ResolversTypes['ReportChat']>, ParentType, ContextType>;
   server?: Resolver<Maybe<ResolversTypes['Server']>, ParentType, ContextType, RequireFields<QueryServerArgs, 'id'>>;
   servers?: Resolver<Array<ResolversTypes['Server']>, ParentType, ContextType>;
   service?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryServiceArgs, 'id'>>;
@@ -1612,6 +1698,23 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type RatingResolvers<ContextType = any, ParentType extends ResolversParentTypes['Rating'] = ResolversParentTypes['Rating']> = {
   positive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ReportChatResolvers<ContextType = any, ParentType extends ResolversParentTypes['ReportChat'] = ResolversParentTypes['ReportChat']> = {
+  id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  server?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ReportType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ReportMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['ReportMessage'] = ResolversParentTypes['ReportMessage']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['ReportMessageType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1646,7 +1749,9 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
   editedMessage?: SubscriptionResolver<ResolversTypes['Message'], "editedMessage", ParentType, ContextType, RequireFields<SubscriptionEditedMessageArgs, 'profile'>>;
   globalChatMessageCreated?: SubscriptionResolver<ResolversTypes['GlobalChatMessage'], "globalChatMessageCreated", ParentType, ContextType>;
   globalChatMessageRemoved?: SubscriptionResolver<ResolversTypes['GlobalChatRemove'], "globalChatMessageRemoved", ParentType, ContextType>;
+  newChat?: SubscriptionResolver<ResolversTypes['Chat'], "newChat", ParentType, ContextType, RequireFields<SubscriptionNewChatArgs, 'profile'>>;
   newMessage?: SubscriptionResolver<ResolversTypes['Message'], "newMessage", ParentType, ContextType, RequireFields<SubscriptionNewMessageArgs, 'profile'>>;
+  newReportMessage?: SubscriptionResolver<ResolversTypes['ReportMessage'], "newReportMessage", ParentType, ContextType, RequireFields<SubscriptionNewReportMessageArgs, 'id'>>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -1698,6 +1803,8 @@ export type Resolvers<ContextType = any> = {
   ProfileStatus?: ProfileStatusResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Rating?: RatingResolvers<ContextType>;
+  ReportChat?: ReportChatResolvers<ContextType>;
+  ReportMessage?: ReportMessageResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
   Server?: ServerResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;

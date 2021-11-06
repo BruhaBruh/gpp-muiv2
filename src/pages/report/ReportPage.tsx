@@ -1,15 +1,40 @@
-import { LoadingButton } from "@mui/lab";
-import { Box, Paper, Stack, TextField, Typography } from "@mui/material";
+import { gql, useLazyQuery } from "@apollo/client";
+import { Box, LinearProgress, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
-import StyledTab from "../../components/ui/StyledTab";
-import StyledTabs from "../../components/ui/StyledTabs";
+import { useHistory, useParams } from "react-router";
+import ReportMessageForm from "../../components/report/ReportMessageForm";
+import ReportMessages from "../../components/report/ReportMessages";
+import { ReportChat, ReportType } from "../../graphql/graphql";
 
 const ReportPage = () => {
-  const [reportType, setReportType] = React.useState<
-    "BUG" | "REPORT" | "FEATURE"
-  >("BUG");
-  const [reportText, setReportText] = React.useState("");
-  const [disabled, setDisabled] = React.useState(false);
+  const { id } = useParams<{ id: string }>();
+  const [
+    getReport,
+    { data: reportData, loading: reportLoading, error: reportError },
+  ] = useLazyQuery<{
+    report: ReportChat;
+  }>(gql`
+    query report($id: ObjectID!) {
+      report(id: $id) {
+        id
+        owner {
+          id
+        }
+        type
+      }
+    }
+  `);
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (!id) return;
+    getReport({ variables: { id: id } });
+  }, [id, getReport]);
+
+  React.useEffect(() => {
+    if (!reportError) return;
+    history.push("/report");
+  }, [history, reportError]);
 
   return (
     <Stack
@@ -18,142 +43,48 @@ const ReportPage = () => {
         margin: "auto",
         width: "100%",
         maxWidth: (theme) => theme.breakpoints.values.lg,
+        maxHeight: "100%",
       }}
     >
-      <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
-        <Stack spacing={2}>
+      <Paper
+        sx={{
+          overflow: "hidden",
+          padding: (theme) => theme.spacing(2),
+          flex: 1,
+        }}
+      >
+        <Stack spacing={2} sx={{ height: "100%" }}>
           <Typography
             variant="body2"
             sx={{
-              color: (theme) => theme.palette.text.secondary,
+              color: (theme) =>
+                reportData?.report.type === ReportType.Bug
+                  ? theme.palette.warning.main
+                  : reportData?.report.type === ReportType.Report
+                  ? theme.palette.error.main
+                  : theme.palette.info.main,
               textTransform: "uppercase",
             }}
           >
-            Репорт
+            {reportData?.report.type === ReportType.Bug
+              ? "Баг "
+              : reportData?.report.type === ReportType.Report
+              ? "Жалоба "
+              : "Предложение "}
+            <Box
+              component="span"
+              sx={{ color: (theme) => theme.palette.text.primary }}
+            >
+              {id}
+            </Box>
           </Typography>
-          <Stack spacing={1}>
-            <Typography variant="body1">Тип репорта</Typography>
-            <StyledTabs
-              value={reportType}
-              onChange={(_, v) => setReportType(v)}
-              variant="fullWidth"
-            >
-              <StyledTab label="Баг" value="BUG" />
-              <StyledTab label="Жалоба" value="REPORT" />
-              <StyledTab label="Предложение" value="FEATURE" />
-            </StyledTabs>
-          </Stack>
-          <Stack spacing={1}>
-            <Typography variant="body1">Описание</Typography>
-            {reportType === "BUG" && (
-              <Typography variant="body1">
-                Опишите суть бага. Как вы его получили, по шагам, если это
-                возможно. Так же желательно прикрепить скриншоты или видео в
-                виде ссылок. Разбираются только баги
-                <Box
-                  component="span"
-                  sx={{
-                    fontWeight: "bold",
-                    color: (theme) => theme.palette.warning.main,
-                  }}
-                >
-                  {" "}
-                  САЙТА
-                </Box>
-              </Typography>
-            )}
-            {reportType === "REPORT" && (
-              <Typography variant="body1">
-                Обязательно укажите на кого вы подаете жалобу, желательно id
-                дискорд аккаунта, либо Mojang ник. Внятно объясните ситуацию.
-                Предоставте доказательства в виде скриншотов или видео. Imgur
-                или YouTube. Жалобы подаются на пользователей
-                <Box
-                  component="span"
-                  sx={{
-                    fontWeight: "bold",
-                    color: (theme) => theme.palette.warning.main,
-                  }}
-                >
-                  {" "}
-                  САЙТА
-                </Box>
-              </Typography>
-            )}
-            {reportType === "FEATURE" && (
-              <Typography variant="body1">
-                <>
-                  Расскажите в чем идея и как это можно реализовать. Идея должна
-                  быть для
-                  <Box
-                    component="span"
-                    sx={{
-                      fontWeight: "bold",
-                      color: (theme) => theme.palette.warning.main,
-                    }}
-                  >
-                    {" "}
-                    САЙТА
-                  </Box>
-                </>
-              </Typography>
-            )}
-            <Typography
-              variant="body2"
-              sx={{ color: (theme) => theme.palette.text.secondary }}
-            >
-              {reportType === "BUG" &&
-                `Вы получите вознаграждение при обнаружении бага.`}
-              {reportType === "REPORT" &&
-                `При неуважительном отношении к проверяющим, вас проигнорируют`}
-              {reportType === "FEATURE" &&
-                `При согласии с вашим предложением вы получите вознаграждение.`}
-            </Typography>
-          </Stack>
-          <Stack spacing={1}>
-            <Typography variant="body1">Сообщение</Typography>
-            <TextField
-              placeholder={
-                (reportType === "BUG" && "Я получил баг...") ||
-                (reportType === "REPORT" && "Я подаю жалобу на...") ||
-                (reportType === "FEATURE" && "Моя идея в...") ||
-                ""
-              }
-              fullWidth
-              error={reportText.length > 4096 || reportText.length < 10}
-              color={
-                reportText.length > 4096 || reportText.length < 10
-                  ? "error"
-                  : undefined
-              }
-              helperText={
-                reportText.length > 4096 || reportText.length < 10
-                  ? "Длина текста должна быть от 10 до 4096 символов"
-                  : undefined
-              }
-              multiline
-              variant="outlined"
-              name="reporttext"
-              size="small"
-              value={reportText}
-              onChange={(e) => setReportText(e.target.value)}
-            />
-          </Stack>
-
-          <LoadingButton
-            onClick={() => {
-              setDisabled(true);
-            }}
-            disabled={
-              disabled || reportText.length > 4096 || reportText.length < 10
-            }
-            color="primary"
-            size="medium"
-            variant="outlined"
-            fullWidth
-          >
-            Отправить
-          </LoadingButton>
+          {reportLoading && (
+            <Box sx={{ flex: 1 }}>
+              <LinearProgress />
+            </Box>
+          )}
+          {reportData && <ReportMessages report={reportData.report} />}
+          {reportData && <ReportMessageForm report={reportData.report} />}
         </Stack>
       </Paper>
     </Stack>

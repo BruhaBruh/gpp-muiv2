@@ -196,24 +196,26 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
           >
             Настройки
           </SidebarCell>
-          <SidebarCell
-            to="/report"
-            startIcon={
-              <IconWrapper
-                size={size}
-                sx={{ color: (theme) => theme.palette.info.main }}
-              >
-                <Icon28AdvertisingOutline />
-              </IconWrapper>
-            }
-            endIcon={
-              <IconWrapper size={size}>
-                <Icon28ChevronRightOutline />
-              </IconWrapper>
-            }
-          >
-            Репорт
-          </SidebarCell>
+          {!!profileId && (
+            <SidebarCell
+              to="/report"
+              startIcon={
+                <IconWrapper
+                  size={size}
+                  sx={{ color: (theme) => theme.palette.info.main }}
+                >
+                  <Icon28AdvertisingOutline />
+                </IconWrapper>
+              }
+              endIcon={
+                <IconWrapper size={size}>
+                  <Icon28ChevronRightOutline />
+                </IconWrapper>
+              }
+            >
+              Репорт
+            </SidebarCell>
+          )}
           <Cell
             href={"/auth/logout"}
             color="error"
