@@ -8,6 +8,7 @@ import ValidatePage from "../pages/discord/ValidatePage";
 import Page404 from "../pages/Page404";
 import ProfilePage from "../pages/profile/ProfilePage";
 import ProfilesPage from "../pages/profile/ProfilesPage";
+import ReportPage from "../pages/report/ReportPage";
 import ServicesPage from "../pages/services/ServicesPage";
 import BlacklistPage from "../pages/settings/BlacklistPage";
 import InterfacePage from "../pages/settings/InterfacePage";
@@ -135,7 +136,9 @@ function App() {
                 </Route>
                 <Route exact path="/report">
                   <Head name="Репорт" />
-                  <PageWrapper>Репорт</PageWrapper>
+                  <PageWrapper>
+                    <ReportPage />
+                  </PageWrapper>
                 </Route>
                 <Route exact path="/">
                   <Redirect to={redirect} />
