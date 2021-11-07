@@ -1,3 +1,4 @@
+import { gql, useMutation } from "@apollo/client";
 import { Container, Stack } from "@mui/material";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -32,6 +33,28 @@ function App() {
   const isValidated = useAppSelector((state) => state.userData.isValidated);
   const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
   const isLoading = useAppSelector((state) => state.userData.isLoading);
+  const profile = useAppSelector((state) => state.userData.profileId);
+  const [updateOnline] = useMutation(gql`
+    mutation updateOnline($id: ObjectID!) {
+      updateLastOnline(id: $id) {
+        lastOnline
+      }
+    }
+  `);
+
+  React.useEffect(() => {
+    if (!profile) return;
+    const i = setInterval(
+      () =>
+        updateOnline({
+          variables: {
+            id: profile,
+          },
+        }),
+      5000
+    );
+    return () => clearInterval(i);
+  }, [profile, updateOnline]);
 
   return (
     <Container
