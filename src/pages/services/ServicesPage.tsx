@@ -18,7 +18,7 @@ import { setModal } from "../../redux/ui/reducer";
 
 const ServicesPage = () => {
   const isGC = useAppSelector((state) => state.settings.hideGlobalChat);
-  const underMD = useMediaQuery("(max-width: 900px)");
+  const under = useMediaQuery("(max-width: 1200px)");
 
   const dispatch = useAppDispatch();
 
@@ -86,16 +86,15 @@ const ServicesPage = () => {
   return (
     <Stack
       spacing={2}
-      direction="row"
+      direction={under ? "column-reverse" : "row"}
       sx={{
         margin: "auto",
         width: "100%",
         maxWidth: (theme) => theme.breakpoints.values.lg,
       }}
     >
-      {!isGC && underMD && <GlobalChat />}
       <List />
-      {!isGC && !underMD && <GlobalChat />}
+      {!isGC && <GlobalChat />}
     </Stack>
   );
 };

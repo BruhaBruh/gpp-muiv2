@@ -472,7 +472,11 @@ const List = () => {
     <Stack spacing={2} sx={{ flex: 1 }}>
       <Stack spacing={2} direction="row">
         {categoriesData && (
-          <Stack direction={isMobileButtonsOn ? "column" : "row"} spacing={2}>
+          <Stack
+            direction={isMobileButtonsOn ? "column" : "row"}
+            spacing={2}
+            flex={1}
+          >
             <Button
               size="medium"
               endIcon={<Icon24Filter />}

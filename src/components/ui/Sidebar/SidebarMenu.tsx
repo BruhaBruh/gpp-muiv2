@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Badge, Stack } from "@mui/material";
 import {
   Icon24Back,
   Icon28AdvertisingOutline,
@@ -29,6 +29,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
   const size = 28;
   const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
   const profileId = useAppSelector((state) => state.userData.profileId);
+  const chats = useAppSelector((state) => state.chats.chats.map((c) => c.chat));
 
   return (
     <Stack
@@ -64,12 +65,27 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             <SidebarCell
               to="/shop"
               startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
+                <Badge
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  badgeContent={
+                    chats.filter(
+                      (chat) => !chat.lastMessage.readed.includes(profileId)
+                    ).length
+                  }
+                  max={99}
+                  color={"primary"}
+                  sx={{ "& .MuiBadge-badge": { transform: "scale(0.75)" } }}
                 >
-                  <Icon28ShoppingCartOutline />
-                </IconWrapper>
+                  <IconWrapper
+                    size={size}
+                    sx={{ color: (theme) => theme.palette.text.primary }}
+                  >
+                    <Icon28ShoppingCartOutline />
+                  </IconWrapper>
+                </Badge>
               }
               endIcon={
                 <IconWrapper size={size}>

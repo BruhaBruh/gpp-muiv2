@@ -81,6 +81,7 @@ const GlobalChatForm: React.FC<props> = ({ addText, setAddText }) => {
         value={form.values.message}
         onChange={form.handleChange}
         multiline
+        maxRows={2}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();

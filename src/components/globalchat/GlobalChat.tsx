@@ -1,5 +1,5 @@
 import { useQuery, useSubscription } from "@apollo/client";
-import { Box, Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography, useMediaQuery } from "@mui/material";
 import gql from "graphql-tag";
 import React from "react";
 import {
@@ -20,6 +20,7 @@ const GlobalChat = () => {
   const dispatch = useAppDispatch();
   const [addText, setAddText] = React.useState("");
   const messages = useAppSelector((state) => state.globalChat.messages);
+  const under = useMediaQuery("(max-width: 1200px)");
   const { data: messagesData } = useQuery<{
     globalChatMessages: GlobalChatMessageModel[];
   }>(gql`
@@ -113,10 +114,9 @@ const GlobalChat = () => {
       elevation={3}
       sx={{
         width: "100%",
-        maxWidth: "320px",
+        maxWidth: under ? undefined : "320px",
         height: "max-content",
-        minHeight: "320px",
-        maxHeight: "80vh",
+        maxHeight: "calc(100vh - 126px)",
         display: "flex",
         flexDirection: "column",
         gap: (theme) => theme.spacing(1),
@@ -138,7 +138,7 @@ const GlobalChat = () => {
             overflowY: "scroll",
             display: "flex",
             flexDirection: "column-reverse",
-            flex: 1,
+            maxHeight: "calc(100vh - 126px - 86px - 16px - 20px)",
           }}
           className="hide-scrollbar"
         >
