@@ -51,7 +51,7 @@ function App() {
             id: profile,
           },
         }),
-      5000
+      15000
     );
     return () => clearInterval(i);
   }, [profile, updateOnline]);
