@@ -27,21 +27,21 @@ export const donateItems: Item[] = [
     name: "Lite (Полгода)",
     desc: ``,
     images: ["https://i.postimg.cc/500NgtnS/lite.png"],
-    cost: 790,
+    cost: 349,
   },
   {
     type: ItemType.lite_month,
     name: "Lite (Месяц)",
     desc: ``,
     images: ["https://i.postimg.cc/500NgtnS/lite.png"],
-    cost: 150, // DEFAULT
+    cost: 69, // DEFAULT
   },
   {
     type: ItemType.lite_week,
     name: "Lite (Неделя)",
     desc: ``,
     images: ["https://i.postimg.cc/500NgtnS/lite.png"],
-    cost: 79,
+    cost: 35,
   },
   {
     type: ItemType.premium_permanent,
@@ -70,21 +70,21 @@ export const donateItems: Item[] = [
     name: "Premium (Полгода)",
     desc: ``,
     images: ["https://i.postimg.cc/SsvQvpPF/premium.png"],
-    cost: 1190,
+    cost: 499,
   },
   {
     type: ItemType.premium_month,
     name: "Premium (Месяц)",
     desc: ``,
     images: ["https://i.postimg.cc/SsvQvpPF/premium.png"],
-    cost: 229, // DEFAULT
+    cost: 99, // DEFAULT
   },
   {
     type: ItemType.premium_week,
     name: "Premium (Неделя)",
     desc: ``,
     images: ["https://i.postimg.cc/SsvQvpPF/premium.png"],
-    cost: 119,
+    cost: 49,
   },
   {
     type: ItemType.subscription_case,
@@ -120,7 +120,7 @@ export const donateItems: Item[] = [
       { type: ItemType.money, weight: 500 },
     ]),
   },
-  {
+  /*{
     type: ItemType.lite_day_gift,
     name: "Lite на день",
     desc: `
@@ -128,5 +128,5 @@ export const donateItems: Item[] = [
     `,
     cost: 0,
     images: ["https://i.postimg.cc/500NgtnS/lite.png"],
-  },
+  },*/
 ];

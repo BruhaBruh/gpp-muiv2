@@ -19,7 +19,6 @@ import { setModal } from "../../redux/ui/reducer";
 import { checkPermissions } from "../../redux/userData/types";
 import Cell from "../ui/Cell";
 import DonateForm from "./DonateForm";
-import DonateFormTrefs from "./DonateFormTrefs";
 
 const DonateHeader = () => {
   const userID = useAppSelector((state) => state.userData.userId);
@@ -36,6 +35,7 @@ const DonateHeader = () => {
     `,
     { variables: { user: userID }, pollInterval: 5000 }
   );
+  /*
   const { data: trefData } = useQuery<{ getTref: number }>(
     gql`
       query getTrefs {
@@ -44,18 +44,19 @@ const DonateHeader = () => {
     `,
     { pollInterval: 5000 }
   );
+  const openTrefDonate = () => dispatch(setModal(<DonateFormTrefs />));
+  */
+
   const dispatch = useAppDispatch();
 
   const openDonate = () => dispatch(setModal(<DonateForm />));
-
-  const openTrefDonate = () => dispatch(setModal(<DonateFormTrefs />));
 
   return (
     <Paper
       sx={{
         padding: (theme) => theme.spacing(2),
         display: "grid",
-        gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr",
+        gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
         gap: (theme) => theme.spacing(2),
       }}
     >
@@ -77,7 +78,7 @@ const DonateHeader = () => {
           </Cell>
         </Box>
       </Tooltip>
-      <Tooltip
+      {/*<Tooltip
         placement="bottom"
         title="Нажмите, чтобы конвертировать монеты в трефы"
       >
@@ -86,7 +87,7 @@ const DonateHeader = () => {
             Баланс треф: {trefData?.getTref}
           </Cell>
         </Box>
-      </Tooltip>
+      </Tooltip>*/}
       <Cell
         size="large"
         startIcon={

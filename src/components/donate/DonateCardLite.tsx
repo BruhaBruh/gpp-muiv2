@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogContent,
@@ -13,12 +14,14 @@ import {
   Icon24InfoCircleOutline,
   Icon24RoubleBadgeOutline,
   Icon24ShoppingCartOutline,
+  Icon28DiscountOutline,
 } from "@vkontakte/icons";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { donateItems } from "../../donate/items";
 import { useAppDispatch } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
+import IconWrapper from "../ui/IconWrapper";
 import DonateFormLite from "./DonateFormLite";
 
 const DonateCardLite = () => {
@@ -114,6 +117,23 @@ const DonateCardLite = () => {
             }}
           >
             {donateItems[4].cost} - {donateItems[2].cost}
+            <Box
+              component="span"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                color: (theme) => theme.palette.primary.main,
+                marginLeft: "12px",
+              }}
+            >
+              -50
+              <IconWrapper
+                size={20}
+                sx={{ display: "inline-flex", marginLeft: "4px" }}
+              >
+                <Icon28DiscountOutline />
+              </IconWrapper>
+            </Box>
           </Typography>
         </Button>
       </Stack>
