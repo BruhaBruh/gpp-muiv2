@@ -125,7 +125,7 @@ export const donateItems: Item[] = [
     name: "Lite на день",
     desc: `
 Бесплатная подписка Lite на день
-    `,
+    `, // 
     cost: 0,
     images: ["https://i.postimg.cc/500NgtnS/lite.png"],
   },*/
