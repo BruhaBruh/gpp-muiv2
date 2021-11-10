@@ -56,7 +56,7 @@ const DonateHeader = () => {
       sx={{
         padding: (theme) => theme.spacing(2),
         display: "grid",
-        gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+        gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr",
         gap: (theme) => theme.spacing(2),
       }}
     >
