@@ -54,7 +54,7 @@ const List = () => {
       }
     `,
     {
-      variables: { limit: 1000, category: "6181a75f18f565b432b86a9a" },
+      variables: { limit: 1000, category: 9 },
     }
   );
   const serverId = useAppSelector((state) => state.userData.serverId);

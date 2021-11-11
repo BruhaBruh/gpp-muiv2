@@ -65,25 +65,12 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             <SidebarCell
               to="/shop"
               startIcon={
-                <Badge
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  badgeContent={
-                    chats.filter((chat) => !chat.lastMessage.readed).length
-                  }
-                  max={99}
-                  color={"primary"}
-                  sx={{ "& .MuiBadge-badge": { transform: "scale(0.75)" } }}
+                <IconWrapper
+                  size={size}
+                  sx={{ color: (theme) => theme.palette.text.primary }}
                 >
-                  <IconWrapper
-                    size={size}
-                    sx={{ color: (theme) => theme.palette.text.primary }}
-                  >
-                    <Icon28ShoppingCartOutline />
-                  </IconWrapper>
-                </Badge>
+                  <Icon28ShoppingCartOutline />
+                </IconWrapper>
               }
               endIcon={
                 <IconWrapper size={size}>
@@ -118,12 +105,25 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             <SidebarCell
               to="/chats"
               startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
+                <Badge
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  badgeContent={
+                    chats.filter((chat) => !chat.lastMessage.readed).length
+                  }
+                  max={99}
+                  color={"primary"}
+                  sx={{ "& .MuiBadge-badge": { transform: "scale(0.75)" } }}
                 >
-                  <Icon28MessagesOutline />
-                </IconWrapper>
+                  <IconWrapper
+                    size={size}
+                    sx={{ color: (theme) => theme.palette.text.primary }}
+                  >
+                    <Icon28MessagesOutline />
+                  </IconWrapper>
+                </Badge>
               }
               endIcon={
                 <IconWrapper size={size}>
