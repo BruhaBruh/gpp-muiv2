@@ -15,7 +15,8 @@ import { setSidebarHeader } from "../../redux/ui/reducer";
 const ChatPage = () => {
   const { id } = useParams<{ id: string }>();
   const chat: Chat | undefined = useAppSelector(
-    (state) => state.chats.chats.filter((c) => c.chat.id === id)[0]?.chat
+    (state) =>
+      state.chats.chats.filter((c) => c.chat.id === Number(id))[0]?.chat
   );
   const header = useAppSelector((state) => state.ui.header);
   const profileId = useAppSelector((state) => state.userData.profileId);

@@ -48,11 +48,7 @@ const ChatList = () => {
                   width: 40,
                   height: 40,
                 }}
-                children={chat.name
-                  .split(" ")
-                  .map((r) => r.split("")[0].toUpperCase())
-                  .slice(0, 2)
-                  .join("")}
+                children={chat.name.split("").slice(0, 2).join("")}
               />
             ) : (
               <Badge

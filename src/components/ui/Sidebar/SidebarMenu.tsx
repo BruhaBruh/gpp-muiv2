@@ -1,4 +1,4 @@
-import { Badge, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import {
   Icon24Back,
   Icon28AdvertisingOutline,
@@ -6,7 +6,6 @@ import {
   Icon28DiamondOutline,
   Icon28DoorArrowLeftOutline,
   Icon28DoorArrowRightOutline,
-  Icon28MessagesOutline,
   Icon28Newsfeed,
   Icon28ServicesOutline,
   Icon28SettingsOutline,
@@ -101,7 +100,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
               Услуги
             </SidebarCell>
           )}
-          {!!profileId && (
+          {/*!!profileId && (
             <SidebarCell
               to="/chats"
               startIcon={
@@ -133,7 +132,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             >
               Чаты
             </SidebarCell>
-          )}
+            )*/}
           {!!profileId && (
             <SidebarCell
               to="/profiles"

@@ -29,16 +29,20 @@ interface props {
 const ChatMessages: React.FC<props> = ({ setMessageToEdit }) => {
   const { id } = useParams<{ id: string }>();
   const messages: Message[] | undefined = useAppSelector(
-    (state) => state.chats.chats.filter((c) => c.chat.id === id)[0]?.messages
+    (state) =>
+      state.chats.chats.filter((c) => c.chat.id === Number(id))[0]?.messages
   );
   const page: number | undefined = useAppSelector(
     (state) =>
-      state.chats.chats.filter((c) => c.chat.id === id).map((c) => c.page)[0]
+      state.chats.chats
+        .filter((c) => c.chat.id === Number(id))
+        .map((c) => c.page)[0]
   );
   const chatType: ChatType | undefined = useAppSelector(
     (state) =>
-      state.chats.chats.filter((c) => c.chat.id === id).map((c) => c.chat)[0]
-        ?.type
+      state.chats.chats
+        .filter((c) => c.chat.id === Number(id))
+        .map((c) => c.chat)[0]?.type
   );
   const [getMessages, { data, loading }] = useLazyQuery<{
     messages: MessageSearchResult;
@@ -75,7 +79,7 @@ const ChatMessages: React.FC<props> = ({ setMessageToEdit }) => {
       }
     `,
     {
-      variables: { page: 1, chat: id, limit: 25, search: "" },
+      variables: { page: 1, chat: Number(id), limit: 25, search: "" },
       fetchPolicy: "no-cache",
     }
   );

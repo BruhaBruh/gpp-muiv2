@@ -34,7 +34,8 @@ import ChatInfo from "./ChatInfo";
 const ChatHeader = () => {
   const { id } = useParams<{ id: string }>();
   const chat: Chat | undefined = useAppSelector(
-    (state) => state.chats.chats.filter((c) => c.chat.id === id)[0]?.chat
+    (state) =>
+      state.chats.chats.filter((c) => c.chat.id === Number(id))[0]?.chat
   );
   const profileId = useAppSelector((state) => state.userData.profileId);
   const history = useHistory();

@@ -21,7 +21,6 @@ import {
   Icon28DeleteOutlineAndroid,
   Icon28EditOutline,
   Icon28InfoOutline,
-  Icon28MessageOutline,
 } from "@vkontakte/icons";
 import dayjs from "dayjs";
 import gql from "graphql-tag";
@@ -266,7 +265,7 @@ const ProductCard: React.FC<props> = ({
               <Icon28InfoOutline />
             </IconButton>
           </Tooltip>
-          {profileId !== product.owner.id && !isChat && (
+          {/*profileId !== product.owner.id && !isChat && (
             <Tooltip title="Написать" placement="left">
               <IconButton
                 sx={{
@@ -279,7 +278,7 @@ const ProductCard: React.FC<props> = ({
                 <Icon28MessageOutline />
               </IconButton>
             </Tooltip>
-          )}
+              )*/}
           {profileId !== product.owner.id &&
             checkPermissions(
               Permissions.All,

@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import {
   Icon20BlockOutline,
-  Icon20MessageOutline,
   Icon20UserAddOutline,
   Icon20UserSlashOutline,
 } from "@vkontakte/icons";
@@ -190,7 +189,7 @@ const ProfileHeaderButtons: React.FC<props> = ({ updateProfile }) => {
       className="hide-scrollbar"
     >
       <div style={{ display: "flex", width: "max-content" }}>
-        {currentProfile &&
+        {/*currentProfile &&
           profileId !== currentProfile.id &&
           status !== undefined &&
           !status.heInBlacklist &&
@@ -214,7 +213,7 @@ const ProfileHeaderButtons: React.FC<props> = ({ updateProfile }) => {
             >
               Написать
             </LoadingButton>
-          )}
+            )*/}
         {currentProfile &&
           profileId !== currentProfile.id &&
           status !== undefined &&

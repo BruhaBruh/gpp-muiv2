@@ -59,6 +59,7 @@ const ChatMessage: React.FC<props> = ({
     if (observer.current) observer.current.disconnect();
     const cb: IntersectionObserverCallback = (entries) => {
       if (entries[0].isIntersecting) {
+        console.log("read");
         readMessage();
         dispatch(readMessageR({ message: message }));
       }

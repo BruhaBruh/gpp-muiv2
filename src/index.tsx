@@ -18,7 +18,6 @@ import { useAppSelector } from "./hooks/redux";
 import "./index.css";
 import { client } from "./libs/apolloService";
 import AuthLoader from "./loaders/AuthLoader";
-import ChatsLoader from "./loaders/ChatsLoader";
 import { store } from "./redux/store";
 import { darkThemeOptions } from "./utils/theme";
 
@@ -96,7 +95,7 @@ const IndexWithProviders = () => {
           }}
         >
           {modal}
-          <ChatsLoader />
+          {/*<ChatsLoader />*/}
           <AuthLoader />
           <App />
         </SnackbarProvider>
