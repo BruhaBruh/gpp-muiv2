@@ -12,6 +12,8 @@ import {
   Slider,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
@@ -20,9 +22,10 @@ import { useSnackbar } from "notistack";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import * as Yup from "yup";
-import { Category, IconSearchResult } from "../../graphql/graphql";
+import { Category, IconSearchResult, Permissions } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
+import { checkPermissions } from "../../redux/userData/types";
 
 interface props {
   categories: Category[];
@@ -36,6 +39,7 @@ const ProductSchema = Yup.object().shape({
     .required("Обязательно"),
   description: Yup.string().max(200, "Максимальная длина 200"),
   icon: Yup.string(),
+  isHighlighted: Yup.bool(),
   amount: Yup.number()
     .typeError("Количество должно быть целочисленным числом")
     .min(1, "Минимальное количество 1")
@@ -47,6 +51,7 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const server = useAppSelector((state) => state.userData.serverId);
+  const permissions = useAppSelector((state) => state.userData.permissions);
   const [getIcons, { data: iconsData, loading: iconsLoading }] = useLazyQuery<{
     icons: IconSearchResult;
   }>(
@@ -70,6 +75,7 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
       cost: 0,
       description: "",
       icon: "",
+      isHighlighted: false,
       amount: 1,
     },
     validationSchema: ProductSchema,
@@ -82,6 +88,7 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
           cost: parseFloat(values.cost.toString()),
           description: values.description,
           amount: values.amount,
+          isHighlighted: values.isHighlighted,
         },
       });
     },
@@ -96,6 +103,7 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
       $cost: Int!
       $amount: Int!
       $description: String!
+      $isHighlighted: Boolean!
     ) {
       createProduct(
         input: {
@@ -104,6 +112,7 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
           cost: $cost
           description: $description
           amount: $amount
+          isHighlighted: $isHighlighted
         }
       ) {
         id
@@ -245,6 +254,50 @@ const ProductCreate: React.FC<props> = ({ categories }) => {
                   onChange={form.handleChange}
                   size="small"
                 />
+              </div>
+            )}
+            {form.values.icon && (
+              <div style={{ width: "100%" }}>
+                <InputLabel id="avatar">Подсвечен?</InputLabel>
+                <ToggleButtonGroup
+                  color="secondary"
+                  value={form.values.isHighlighted}
+                  exclusive
+                  disabled={
+                    !(
+                      checkPermissions(
+                        Permissions.LiteSubscription,
+                        permissions
+                      ) ||
+                      checkPermissions(
+                        Permissions.PremiumSubscription,
+                        permissions
+                      )
+                    )
+                  }
+                  onChange={(_, v) =>
+                    form.setFieldValue(
+                      "isHighlighted",
+                      v !== null ? v : form.values.isHighlighted
+                    )
+                  }
+                  sx={{ width: "100%" }}
+                >
+                  <ToggleButton
+                    size="small"
+                    value={true}
+                    sx={{ width: "100%" }}
+                  >
+                    Да
+                  </ToggleButton>
+                  <ToggleButton
+                    size="small"
+                    value={false}
+                    sx={{ width: "100%" }}
+                  >
+                    Нет
+                  </ToggleButton>
+                </ToggleButtonGroup>
               </div>
             )}
             {selected && form.values.icon && (

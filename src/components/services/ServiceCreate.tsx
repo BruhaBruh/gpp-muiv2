@@ -9,6 +9,8 @@ import {
   InputLabel,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
@@ -17,9 +19,10 @@ import { useSnackbar } from "notistack";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import * as Yup from "yup";
-import { Icon } from "../../graphql/graphql";
+import { Icon, Permissions } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
+import { checkPermissions } from "../../redux/userData/types";
 
 interface props {
   icons: Icon[];
@@ -32,6 +35,7 @@ const ServiceSchema = Yup.object().shape({
     .max(100000000, "Максимальная цена 100.000.000")
     .required("Обязательно"),
   description: Yup.string().max(200, "Максимальная длина 200"),
+  isHighlighted: Yup.bool(),
   icon: Yup.string(),
 });
 
@@ -42,6 +46,7 @@ const ServiceCreate: React.FC<props> = ({ icons }) => {
     initialValues: {
       cost: 0,
       description: "",
+      isHighlighted: false,
       icon: "",
     },
     validationSchema: ServiceSchema,
@@ -53,10 +58,12 @@ const ServiceCreate: React.FC<props> = ({ icons }) => {
           server: server,
           cost: parseFloat(values.cost.toString()),
           description: values.description,
+          isHighlighted: values.isHighlighted,
         },
       });
     },
   });
+  const permissions = useAppSelector((state) => state.userData.permissions);
   const [
     createService,
     { data: createSuccess, loading: createLoading, error: createError },
@@ -66,6 +73,7 @@ const ServiceCreate: React.FC<props> = ({ icons }) => {
       $server: ObjectID!
       $cost: Int!
       $description: String!
+      $isHighlighted: Boolean!
     ) {
       createService(
         input: {
@@ -73,6 +81,7 @@ const ServiceCreate: React.FC<props> = ({ icons }) => {
           server: $server
           cost: $cost
           description: $description
+          isHighlighted: $isHighlighted
         }
       ) {
         id
@@ -171,6 +180,50 @@ const ServiceCreate: React.FC<props> = ({ icons }) => {
                   onChange={form.handleChange}
                   size="small"
                 />
+              </div>
+            )}
+            {form.values.icon && (
+              <div style={{ width: "100%" }}>
+                <InputLabel id="avatar">Подсвечен?</InputLabel>
+                <ToggleButtonGroup
+                  color="secondary"
+                  value={form.values.isHighlighted}
+                  exclusive
+                  disabled={
+                    !(
+                      checkPermissions(
+                        Permissions.LiteSubscription,
+                        permissions
+                      ) ||
+                      checkPermissions(
+                        Permissions.PremiumSubscription,
+                        permissions
+                      )
+                    )
+                  }
+                  onChange={(_, v) =>
+                    form.setFieldValue(
+                      "isHighlighted",
+                      v !== null ? v : form.values.isHighlighted
+                    )
+                  }
+                  sx={{ width: "100%" }}
+                >
+                  <ToggleButton
+                    size="small"
+                    value={true}
+                    sx={{ width: "100%" }}
+                  >
+                    Да
+                  </ToggleButton>
+                  <ToggleButton
+                    size="small"
+                    value={false}
+                    sx={{ width: "100%" }}
+                  >
+                    Нет
+                  </ToggleButton>
+                </ToggleButtonGroup>
               </div>
             )}
             {form.values.icon && (
