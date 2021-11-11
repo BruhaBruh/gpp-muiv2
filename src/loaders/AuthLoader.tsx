@@ -106,6 +106,10 @@ const AuthLoader = () => {
       dispatch(setIsLoggedIn(true));
       const selected_profile = getCookie("selected_profile");
       if (!!selected_profile) {
+        if (!/^\d*$/.test(selected_profile)) {
+          window.location.pathname = "/auth/logout";
+          return;
+        }
         dispatch(setProfileId(Number(selected_profile)));
         getProfile({
           variables: {
