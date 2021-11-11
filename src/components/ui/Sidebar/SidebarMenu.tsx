@@ -71,9 +71,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
                     horizontal: "right",
                   }}
                   badgeContent={
-                    chats.filter(
-                      (chat) => !chat.lastMessage.readed.includes(profileId)
-                    ).length
+                    chats.filter((chat) => !chat.lastMessage.readed).length
                   }
                   max={99}
                   color={"primary"}

@@ -7,11 +7,11 @@ export const initialState: UserDataState = {
   isValidated: false,
   onServer: false,
   nickname: "",
-  profileId: "",
+  profileId: 0,
   permissions: [],
   roles: [],
-  serverId: "",
-  userId: "",
+  serverId: 0,
+  userId: 0,
   isLoading: true,
   blacklist: [],
 };
@@ -32,10 +32,10 @@ export const userDataSlice = createSlice({
     setNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload;
     },
-    setProfileId: (state, action: PayloadAction<string>) => {
+    setProfileId: (state, action: PayloadAction<number>) => {
       state.profileId = action.payload;
     },
-    setServerId: (state, action: PayloadAction<string>) => {
+    setServerId: (state, action: PayloadAction<number>) => {
       state.serverId = action.payload;
     },
     setPermissions: (state, action: PayloadAction<Permissions[]>) => {
@@ -44,13 +44,13 @@ export const userDataSlice = createSlice({
     setRoles: (state, action: PayloadAction<Role[]>) => {
       state.roles = action.payload;
     },
-    setUserId: (state, action: PayloadAction<string>) => {
+    setUserId: (state, action: PayloadAction<number>) => {
       state.userId = action.payload;
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
-    setBlacklist: (state, action: PayloadAction<string[]>) => {
+    setBlacklist: (state, action: PayloadAction<number[]>) => {
       state.blacklist = action.payload;
     },
   },

@@ -20,7 +20,7 @@ import hunter from "../../assets/images/roles/hunter.png";
 import lumberjack from "../../assets/images/roles/lumberjack.png";
 import miner from "../../assets/images/roles/miner.png";
 import { useAppSelector } from "../../hooks/redux";
-import { countRating, getSex } from "../../redux/userData/types";
+import { getSex } from "../../redux/userData/types";
 import Cell from "../ui/Cell";
 import IconWrapper from "../ui/IconWrapper";
 import ProfileCell from "./ProfileCell";
@@ -31,7 +31,6 @@ interface props {
 
 const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
   const profileId = useAppSelector((state) => state.userData.profileId);
-  const userId = useAppSelector((state) => state.userData.userId);
   const currentProfile = useAppSelector(
     (state) => state.currentProfile.profile
   );
@@ -59,16 +58,6 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
     if (!ratingError) return;
     enqueueSnackbar(ratingError?.message, { variant: "error" });
   }, [ratingError, enqueueSnackbar]);
-
-  const userRating = (): boolean | null => {
-    const d = currentProfile?.ratings.filter((el) => el.user === userId);
-    if (!d) return null;
-    if (d.length === 0) {
-      return null;
-    } else {
-      return d[0].positive;
-    }
-  };
 
   const getImageByRole = () => {
     switch (currentProfile?.role) {
@@ -192,7 +181,7 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
           endIcon={
             profileId !== currentProfile?.id && (
               <Select
-                value={userRating() === null ? "0" : userRating() ? "1" : "-1"}
+                defaultValue="0"
                 onChange={(e) => {
                   switch (e.target.value) {
                     case "0": {
@@ -226,7 +215,7 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
           }
           sx={{ textTransform: "none" }}
         >
-          {currentProfile && countRating(currentProfile.ratings)}
+          {currentProfile && currentProfile.ratings}
         </Cell>
       </Stack>
       {currentProfile && currentProfile.roles.length !== 0 && (

@@ -35,7 +35,7 @@ const ProfilePage = () => {
     `,
     {
       fetchPolicy: "no-cache",
-      variables: { id: id },
+      variables: { id: Number(id) },
     }
   );
   const dispatch = useAppDispatch();
@@ -52,10 +52,7 @@ const ProfilePage = () => {
           avatar
           banner
           nickname
-          ratings {
-            user
-            positive
-          }
+          ratings
           status
           description
           views
@@ -126,7 +123,7 @@ const ProfilePage = () => {
         addView(profile: $profile)
       }
     `,
-    { variables: { profile: id } }
+    { variables: { profile: Number(id) } }
   );
   const currentProfile = useAppSelector(
     (state) => state.currentProfile.profile
@@ -137,7 +134,7 @@ const ProfilePage = () => {
       dispatch(clearCurrentProfile());
     getProfile({
       variables: {
-        id: id,
+        id: Number(id),
         v: true,
       },
     });
@@ -175,7 +172,7 @@ const ProfilePage = () => {
   const updateProfile = () => {
     getProfile({
       variables: {
-        id: id,
+        id: Number(id),
       },
     });
     getStatus();

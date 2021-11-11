@@ -34,7 +34,7 @@ const ChatList = () => {
           to={"/chat/" + chat.id}
           color={
             chat.type === ChatType.Product
-              ? !chat.lastMessage.readed.includes(profileId)
+              ? !chat.lastMessage.readed
                 ? "primary"
                 : "inherit"
               : "inherit"
@@ -96,9 +96,7 @@ const ChatList = () => {
           }
           sx={{
             background: (theme) =>
-              !chat.lastMessage.readed.includes(profileId)
-                ? theme.palette.action.hover
-                : undefined,
+              !chat.lastMessage.readed ? theme.palette.action.hover : undefined,
           }}
         >
           <ListItemText
@@ -110,8 +108,7 @@ const ChatList = () => {
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
                   color:
-                    chat.type === ChatType.Product &&
-                    !chat.lastMessage.readed.includes(profileId)
+                    chat.type === ChatType.Product && !chat.lastMessage.readed
                       ? (theme) => theme.palette.primary.main
                       : undefined,
                 }}

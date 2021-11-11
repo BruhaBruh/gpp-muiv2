@@ -88,7 +88,7 @@ const AuthLoader = () => {
         }
       }
     `,
-    { variables: { server: "6170660041ba47e42ead8375" } }
+    { variables: { server: 1 } }
   );
 
   React.useEffect(() => {
@@ -106,7 +106,7 @@ const AuthLoader = () => {
       dispatch(setIsLoggedIn(true));
       const selected_profile = getCookie("selected_profile");
       if (!!selected_profile) {
-        dispatch(setProfileId(selected_profile));
+        dispatch(setProfileId(Number(selected_profile)));
         getProfile({
           variables: {
             id: selected_profile,

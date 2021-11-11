@@ -120,15 +120,12 @@ export const chatsSlice = createSlice({
             new Date(a.chat.lastMessage.createdAt).getTime()
         );
     },
-    readMessage: (
-      state,
-      action: PayloadAction<{ message: Message; profile: string }>
-    ) => {
+    readMessage: (state, action: PayloadAction<{ message: Message }>) => {
       state.chats = state.chats.map((c) => {
         if (action.payload.message.chat === c.chat.id) {
           c.messages = c.messages.map((m) => {
             if (m.id === action.payload.message.id) {
-              m.readed = [...m.readed, action.payload.profile];
+              m.readed = true;
             }
             return m;
           });

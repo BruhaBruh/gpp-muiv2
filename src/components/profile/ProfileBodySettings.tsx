@@ -13,10 +13,7 @@ import {
 import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
 import React from "react";
-import {
-  LazyLoadComponent,
-  LazyLoadImage,
-} from "react-lazy-load-image-component";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
 import * as Yup from "yup";
 import { Permissions, Sex } from "../../graphql/graphql";
 import { useAppSelector } from "../../hooks/redux";
@@ -40,7 +37,7 @@ const formValidatiionSchema = Yup.object().shape({
     .matches(new RegExp("(UNDEFINED|MALE|FEMALE)"), "Неверный формат")
     .required("Обязательно"),
   status: Yup.string().max(64, "Максимум 64 символа"),
-  description: Yup.string().max(10000, "Максимум 10000 символов"),
+  description: Yup.string().max(6000, "Максимум 6000 символов"),
   avatar: Yup.string()
     .matches(
       /https:\/\/i\.(postimg\.cc|imgur.com)\/.*(\.jpg|\.png|\.jpeg)/i,
@@ -184,14 +181,24 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
               overflow: "hidden",
             }}
           >
-            <LazyLoadImage
-              src={form.values.banner}
+            <LazyLoadComponent
               style={{
                 width: "100%",
                 height: "min-content",
                 aspectRatio: "722 / 185",
               }}
-            />
+            >
+              <Avatar
+                variant="rounded"
+                src={form.values.banner}
+                children={"Баннер"}
+                sx={{
+                  width: "100%",
+                  height: "min-content",
+                  aspectRatio: "722 / 185",
+                }}
+              />
+            </LazyLoadComponent>
           </Box>
         </Stack>
       )}

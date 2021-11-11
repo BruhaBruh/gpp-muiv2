@@ -123,6 +123,7 @@ const ReportList = () => {
                           ? theme.palette.error.main
                           : theme.palette.info.main,
                       alignSelf: "center",
+                      marginRight: "4px",
                     }}
                   >
                     {r.type === ReportType.Bug

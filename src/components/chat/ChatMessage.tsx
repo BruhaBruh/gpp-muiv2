@@ -55,13 +55,12 @@ const ChatMessage: React.FC<props> = ({
 
   React.useEffect(() => {
     if (!message.readed) return;
-    if (elementRef.current === null || message.readed.includes(profileId))
-      return;
+    if (elementRef.current === null || message.readed) return;
     if (observer.current) observer.current.disconnect();
     const cb: IntersectionObserverCallback = (entries) => {
       if (entries[0].isIntersecting) {
         readMessage();
-        dispatch(readMessageR({ message: message, profile: profileId }));
+        dispatch(readMessageR({ message: message }));
       }
     };
     observer.current = new IntersectionObserver(cb);

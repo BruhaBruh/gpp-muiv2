@@ -193,7 +193,7 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
               sx={{ width: "100%", maxWidth: "none" }}
             />
           )}
-          {profileId === id && (
+          {profileId === Number(id) && (
             <StyledTab
               label="Настройки"
               value={tabs.settings}

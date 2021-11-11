@@ -101,17 +101,6 @@ export type CreateIconInput = {
   name: Scalars['String'];
 };
 
-export type CreateNews = {
-  tags: Array<Scalars['ObjectID']>;
-  text: Scalars['String'];
-  title: Scalars['String'];
-};
-
-export type CreateNewsTag = {
-  color: Scalars['HEXColor'];
-  label: Scalars['String'];
-};
-
 /** Поля ввода создания товара */
 export type CreateProductInput = {
   /** Количество */
@@ -122,28 +111,10 @@ export type CreateProductInput = {
   description: Scalars['String'];
   /** Иконка */
   icon: Scalars['ObjectID'];
+  /** Подсвечен? */
+  isHighlighted: Scalars['Boolean'];
   /** Сервер */
   server: Scalars['ObjectID'];
-};
-
-/** Поля для создания сервера */
-export type CreateServerInput = {
-  /** id discord ролей для скрытия отображние в профиле */
-  blacklistRoles: Array<Scalars['ID']>;
-  /** id discord роли "подтвержденный" */
-  confirmedRole: Scalars['ID'];
-  /** id discord сервера */
-  discord: Scalars['ID'];
-  /** Ссылка приглашение на discord сервер */
-  inviteLink: Scalars['String'];
-  /** IP сервера */
-  ip: Scalars['String'];
-  /** id discord роли LITE */
-  liteRole: Scalars['ID'];
-  /** Название сервера */
-  name: Scalars['String'];
-  /** id discord роли PREMIUM */
-  premiumRole: Scalars['ID'];
 };
 
 /** Поля ввода создания товара */
@@ -154,6 +125,8 @@ export type CreateServiceInput = {
   description: Scalars['String'];
   /** Иконка */
   icon: Scalars['ObjectID'];
+  /** Подсвечен? */
+  isHighlighted: Scalars['Boolean'];
   /** Сервер */
   server: Scalars['ObjectID'];
 };
@@ -194,11 +167,6 @@ export type EditMessageInput = {
   message: Scalars['String'];
 };
 
-export type EditNewsTag = {
-  color?: Maybe<Scalars['HEXColor']>;
-  label?: Maybe<Scalars['String']>;
-};
-
 /** Поля ввода редактироваения товара */
 export type EditProductInput = {
   /** Количество */
@@ -223,28 +191,6 @@ export type EditProfileInput = {
   sex?: Maybe<Sex>;
   /** Статус */
   status?: Maybe<Scalars['String']>;
-};
-
-/** Поля для редактирования сервера */
-export type EditServerInput = {
-  /** id ролей для добавления в список скрытых ролей */
-  blacklistRolesToAdd?: Maybe<Array<Scalars['ID']>>;
-  /** id ролей для удаления из списка скрытых */
-  blacklistRolesToRemove?: Maybe<Array<Scalars['ID']>>;
-  /** discord id подтвержденной роли */
-  confirmedRole?: Maybe<Scalars['ID']>;
-  /** discord id сервера */
-  discord?: Maybe<Scalars['ID']>;
-  /** Ссылка приглашение на discord сервер */
-  inviteLink?: Maybe<Scalars['String']>;
-  /** ip */
-  ip?: Maybe<Scalars['String']>;
-  /** lite роль */
-  liteRole?: Maybe<Scalars['ID']>;
-  /** Название */
-  name?: Maybe<Scalars['String']>;
-  /** premium роль */
-  premiumRole?: Maybe<Scalars['ID']>;
 };
 
 /** Поля ввода редактироваения товара */
@@ -331,7 +277,7 @@ export type Message = {
   /** ID создателя */
   owner?: Maybe<Profile>;
   /** ID пользователей прочитавших сообщение */
-  readed: Array<Scalars['ObjectID']>;
+  readed: Scalars['Boolean'];
   /** ID пересланного сообщения */
   reply?: Maybe<Scalars['ObjectID']>;
   /** Тип сообщения */
@@ -373,13 +319,9 @@ export type Mutation = {
   createGlobalChatMessage: GlobalChatMessage;
   /** Создание иконки, право доступа ICON_MODIFY */
   createIcon: Icon;
-  createNews: News;
-  createNewsTag: NewsTag;
   /** Создание товара */
   createProduct: Product;
   createReport: ReportChat;
-  /** Создание сервера */
-  createServer: Server;
   /** Создание Сервиса */
   createService: Product;
   /** Редактировать категорию */
@@ -390,19 +332,18 @@ export type Mutation = {
   editIcon: Icon;
   /** Редактирование сообщения */
   editMessage: Message;
-  editNewsTag: NewsTag;
   /** Редактирование товаров */
   editProduct: Product;
   /** Редактировать профиль по id */
   editProfile: Profile;
-  /** Редактирование сервера */
-  editServer?: Maybe<Server>;
   /** Редактирование Сервисов */
   editService: Product;
   /** Редактирование профиля */
   editUser?: Maybe<User>;
   /** Перестать быть подписчиком профиля под id */
   endSubscribe: Profile;
+  /** Скрыть чат */
+  hideChat: Chat;
   /** Выход из чата */
   leaveChat: Scalars['Boolean'];
   /** Открыть кейс */
@@ -479,16 +420,6 @@ export type MutationCreateIconArgs = {
 };
 
 
-export type MutationCreateNewsArgs = {
-  input: CreateNews;
-};
-
-
-export type MutationCreateNewsTagArgs = {
-  input: CreateNewsTag;
-};
-
-
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
 };
@@ -496,11 +427,6 @@ export type MutationCreateProductArgs = {
 
 export type MutationCreateReportArgs = {
   input: ReportCreateInput;
-};
-
-
-export type MutationCreateServerArgs = {
-  input: CreateServerInput;
 };
 
 
@@ -533,12 +459,6 @@ export type MutationEditMessageArgs = {
 };
 
 
-export type MutationEditNewsTagArgs = {
-  id: Scalars['ObjectID'];
-  input: EditNewsTag;
-};
-
-
 export type MutationEditProductArgs = {
   id: Scalars['ObjectID'];
   input: EditProductInput;
@@ -548,12 +468,6 @@ export type MutationEditProductArgs = {
 export type MutationEditProfileArgs = {
   id: Scalars['ObjectID'];
   input: EditProfileInput;
-};
-
-
-export type MutationEditServerArgs = {
-  id: Scalars['ObjectID'];
-  input: EditServerInput;
 };
 
 
@@ -571,6 +485,12 @@ export type MutationEditUserArgs = {
 
 export type MutationEndSubscribeArgs = {
   id: Scalars['ObjectID'];
+};
+
+
+export type MutationHideChatArgs = {
+  id: Scalars['ObjectID'];
+  isHide: Scalars['Boolean'];
 };
 
 
@@ -738,8 +658,6 @@ export type Product = {
   owner: Profile;
   /** Сервер */
   server: Scalars['ObjectID'];
-  /** Дата редактирования */
-  updatedAt: Scalars['Date'];
 };
 
 /** Результат поиска товаров */
@@ -791,7 +709,7 @@ export type Profile = {
   /** Ник на дискорд сервере */
   nickname: Scalars['String'];
   /** Рейтинги */
-  ratings: Array<Rating>;
+  ratings: Scalars['Int'];
   /** Роль */
   role?: Maybe<Scalars['String']>;
   /** Роли в дискорде */
@@ -855,6 +773,8 @@ export type Query = {
   /** Узнать количество треф */
   getTref: Scalars['Int'];
   globalChatMessages: Array<GlobalChatMessage>;
+  /** Все скрытые чаты */
+  hidedChats: Array<Chat>;
   /** Иконка по id */
   icon?: Maybe<Icon>;
   /** Поиск иконок */
@@ -885,7 +805,6 @@ export type Query = {
   services: ProductSearchResult;
   /** Статус пользователя по отношению к дискорд серверу */
   status: UserStatus;
-  tags: Array<NewsTag>;
   /** Пользователь по id */
   user?: Maybe<User>;
   /** Все пользователи */
@@ -920,6 +839,11 @@ export type QueryGetLastMessageArgs = {
 
 export type QueryGetMyStatusArgs = {
   id: Scalars['ObjectID'];
+};
+
+
+export type QueryHidedChatsArgs = {
+  server: Scalars['ObjectID'];
 };
 
 
@@ -1053,6 +977,7 @@ export type RemoveGlobalChatMessageInput = {
 
 export type ReportChat = {
   __typename?: 'ReportChat';
+  createdAt: Scalars['Date'];
   id: Scalars['ObjectID'];
   owner: Profile;
   server: Scalars['ObjectID'];
@@ -1071,6 +996,7 @@ export type ReportMessage = {
   id: Scalars['ObjectID'];
   message: Scalars['String'];
   owner: Profile;
+  report: Scalars['ObjectID'];
   type: ReportMessageType;
 };
 
@@ -1129,10 +1055,6 @@ export type Server = {
   icon: Scalars['String'];
   /** ObjectID */
   id: Scalars['ObjectID'];
-  /** Ссылка приглашения на сервер */
-  inviteLink: Scalars['String'];
-  /** Minecraft IP сервера */
-  ip: Scalars['String'];
   /** Lite Подписка */
   liteRole: Scalars['ID'];
   /** Название */
@@ -1316,20 +1238,15 @@ export type ResolversTypes = {
   CreateChatInput: CreateChatInput;
   CreateGlobalChatMessageInput: CreateGlobalChatMessageInput;
   CreateIconInput: CreateIconInput;
-  CreateNews: CreateNews;
-  CreateNewsTag: CreateNewsTag;
   CreateProductInput: CreateProductInput;
-  CreateServerInput: CreateServerInput;
   CreateServiceInput: CreateServiceInput;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   EditCategoryInput: EditCategoryInput;
   EditChatInput: EditChatInput;
   EditIconInput: EditIconInput;
   EditMessageInput: EditMessageInput;
-  EditNewsTag: EditNewsTag;
   EditProductInput: EditProductInput;
   EditProfileInput: EditProfileInput;
-  EditServerInput: EditServerInput;
   EditServiceInput: EditServiceInput;
   EditUserInput: EditUserInput;
   Float: ResolverTypeWrapper<Scalars['Float']>;
@@ -1387,20 +1304,15 @@ export type ResolversParentTypes = {
   CreateChatInput: CreateChatInput;
   CreateGlobalChatMessageInput: CreateGlobalChatMessageInput;
   CreateIconInput: CreateIconInput;
-  CreateNews: CreateNews;
-  CreateNewsTag: CreateNewsTag;
   CreateProductInput: CreateProductInput;
-  CreateServerInput: CreateServerInput;
   CreateServiceInput: CreateServiceInput;
   Date: Scalars['Date'];
   EditCategoryInput: EditCategoryInput;
   EditChatInput: EditChatInput;
   EditIconInput: EditIconInput;
   EditMessageInput: EditMessageInput;
-  EditNewsTag: EditNewsTag;
   EditProductInput: EditProductInput;
   EditProfileInput: EditProfileInput;
-  EditServerInput: EditServerInput;
   EditServiceInput: EditServiceInput;
   EditUserInput: EditUserInput;
   Float: Scalars['Float'];
@@ -1516,7 +1428,7 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
   id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   owner?: Resolver<Maybe<ResolversTypes['Profile']>, ParentType, ContextType>;
-  readed?: Resolver<Array<ResolversTypes['ObjectID']>, ParentType, ContextType>;
+  readed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   reply?: Resolver<Maybe<ResolversTypes['ObjectID']>, ParentType, ContextType>;
   type?: Resolver<ResolversTypes['MessageType'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -1538,23 +1450,19 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createChat?: Resolver<ResolversTypes['Chat'], ParentType, ContextType, RequireFields<MutationCreateChatArgs, 'input'>>;
   createGlobalChatMessage?: Resolver<ResolversTypes['GlobalChatMessage'], ParentType, ContextType, RequireFields<MutationCreateGlobalChatMessageArgs, 'input'>>;
   createIcon?: Resolver<ResolversTypes['Icon'], ParentType, ContextType, RequireFields<MutationCreateIconArgs, 'input'>>;
-  createNews?: Resolver<ResolversTypes['News'], ParentType, ContextType, RequireFields<MutationCreateNewsArgs, 'input'>>;
-  createNewsTag?: Resolver<ResolversTypes['NewsTag'], ParentType, ContextType, RequireFields<MutationCreateNewsTagArgs, 'input'>>;
   createProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   createReport?: Resolver<ResolversTypes['ReportChat'], ParentType, ContextType, RequireFields<MutationCreateReportArgs, 'input'>>;
-  createServer?: Resolver<ResolversTypes['Server'], ParentType, ContextType, RequireFields<MutationCreateServerArgs, 'input'>>;
   createService?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationCreateServiceArgs, 'input'>>;
   editCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationEditCategoryArgs, 'id' | 'input'>>;
   editChat?: Resolver<ResolversTypes['Chat'], ParentType, ContextType, RequireFields<MutationEditChatArgs, 'id' | 'input'>>;
   editIcon?: Resolver<ResolversTypes['Icon'], ParentType, ContextType, RequireFields<MutationEditIconArgs, 'id' | 'input'>>;
   editMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationEditMessageArgs, 'id' | 'input'>>;
-  editNewsTag?: Resolver<ResolversTypes['NewsTag'], ParentType, ContextType, RequireFields<MutationEditNewsTagArgs, 'id' | 'input'>>;
   editProduct?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationEditProductArgs, 'id' | 'input'>>;
   editProfile?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationEditProfileArgs, 'id' | 'input'>>;
-  editServer?: Resolver<Maybe<ResolversTypes['Server']>, ParentType, ContextType, RequireFields<MutationEditServerArgs, 'id' | 'input'>>;
   editService?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<MutationEditServiceArgs, 'id' | 'input'>>;
   editUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationEditUserArgs, 'id' | 'input'>>;
   endSubscribe?: Resolver<ResolversTypes['Profile'], ParentType, ContextType, RequireFields<MutationEndSubscribeArgs, 'id'>>;
+  hideChat?: Resolver<ResolversTypes['Chat'], ParentType, ContextType, RequireFields<MutationHideChatArgs, 'id' | 'isHide'>>;
   leaveChat?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationLeaveChatArgs, 'chat'>>;
   openCase?: Resolver<ResolversTypes['CaseItem'], ParentType, ContextType, RequireFields<MutationOpenCaseArgs, 'caseType' | 'server'>>;
   readMessage?: Resolver<ResolversTypes['Message'], ParentType, ContextType, RequireFields<MutationReadMessageArgs, 'id'>>;
@@ -1610,7 +1518,6 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   isHighlighted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   server?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1632,7 +1539,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   lastOnline?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ratings?: Resolver<Array<ResolversTypes['Rating']>, ParentType, ContextType>;
+  ratings?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;
   server?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
@@ -1672,6 +1579,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMyStatus?: Resolver<ResolversTypes['ProfileStatus'], ParentType, ContextType, RequireFields<QueryGetMyStatusArgs, 'id'>>;
   getTref?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   globalChatMessages?: Resolver<Array<ResolversTypes['GlobalChatMessage']>, ParentType, ContextType>;
+  hidedChats?: Resolver<Array<ResolversTypes['Chat']>, ParentType, ContextType, RequireFields<QueryHidedChatsArgs, 'server'>>;
   icon?: Resolver<Maybe<ResolversTypes['Icon']>, ParentType, ContextType, RequireFields<QueryIconArgs, 'id'>>;
   icons?: Resolver<ResolversTypes['IconSearchResult'], ParentType, ContextType, RequireFields<QueryIconsArgs, never>>;
   messages?: Resolver<ResolversTypes['MessageSearchResult'], ParentType, ContextType, RequireFields<QueryMessagesArgs, 'chat'>>;
@@ -1690,7 +1598,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   service?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryServiceArgs, 'id'>>;
   services?: Resolver<ResolversTypes['ProductSearchResult'], ParentType, ContextType, RequireFields<QueryServicesArgs, 'server'>>;
   status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType, RequireFields<QueryStatusArgs, 'server'>>;
-  tags?: Resolver<Array<ResolversTypes['NewsTag']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<ResolversTypes['UserSearchResult'], ParentType, ContextType, RequireFields<QueryUsersArgs, never>>;
 };
@@ -1702,6 +1609,7 @@ export type RatingResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type ReportChatResolvers<ContextType = any, ParentType extends ResolversParentTypes['ReportChat'] = ResolversParentTypes['ReportChat']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
   server?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
@@ -1714,6 +1622,7 @@ export type ReportMessageResolvers<ContextType = any, ParentType extends Resolve
   id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['Profile'], ParentType, ContextType>;
+  report?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ReportMessageType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1734,8 +1643,6 @@ export type ServerResolvers<ContextType = any, ParentType extends ResolversParen
   discord?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   icon?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
-  inviteLink?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ip?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   liteRole?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   premiumRole?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;

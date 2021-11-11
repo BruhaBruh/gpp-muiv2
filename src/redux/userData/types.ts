@@ -133,11 +133,11 @@ export interface UserDataState {
   isValidated: boolean;
   onServer: boolean;
   nickname: string;
-  profileId: string;
+  profileId: number;
   permissions: Permissions[];
   roles: Role[];
-  serverId: string;
-  userId: string;
+  serverId: number;
+  userId: number;
   isLoading: boolean;
-  blacklist: string[];
+  blacklist: number[];
 }

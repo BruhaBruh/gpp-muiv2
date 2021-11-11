@@ -48,7 +48,7 @@ const BlacklistPage = () => {
   );
 
   const { enqueueSnackbar } = useSnackbar();
-  const [removed, setRemoved] = React.useState<string[]>([]);
+  const [removed, setRemoved] = React.useState<number[]>([]);
 
   const [
     removeFromBlacklist,

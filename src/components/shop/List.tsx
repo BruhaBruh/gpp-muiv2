@@ -40,6 +40,7 @@ import {
 } from "../../redux/products/reducer";
 import { setModal } from "../../redux/ui/reducer";
 import { checkPermissions } from "../../redux/userData/types";
+import AdminActions from "../admin/product/AdminActions";
 import ProductCreate from "../product/ProductCreate";
 import ProductsList from "../product/ProductsList";
 
@@ -462,9 +463,9 @@ const List = () => {
   const openAdminActions = () =>
     dispatch(
       setModal(
-        categoriesData
-          ? null // TODO
-          : null
+        categoriesData ? (
+          <AdminActions categories={categoriesData.categories} /> // TODO
+        ) : null
       )
     );
 
