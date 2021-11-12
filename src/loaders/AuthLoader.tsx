@@ -94,7 +94,10 @@ const AuthLoader = () => {
   React.useEffect(() => {
     if (!statusError && !profileError && !selectError) return;
     enqueueSnackbar(
-      statusError?.message || profileError?.message || selectError?.message,
+      statusError?.message ||
+        profileError?.message === "Unexpected token < in JSON at position 0"
+        ? "Ошибка авторизации дискорда. Попробуйте позже"
+        : profileError?.message || selectError?.message,
       {
         variant: "error",
       }
