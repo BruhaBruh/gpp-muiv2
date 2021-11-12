@@ -158,7 +158,7 @@ const ProductEdit: React.FC<props> = ({ product }) => {
             <div style={{ width: "100%" }}>
               <InputLabel id="avatar">Подсвечен?</InputLabel>
               <ToggleButtonGroup
-                color="secondary"
+                color="primary"
                 value={form.values.isHighlighted}
                 exclusive
                 disabled={

@@ -133,7 +133,7 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
       <Stack spacing={1}>
         <Typography variant="body1">Показывать номер телефона?</Typography>
         <ToggleButtonGroup
-          color="secondary"
+          color="primary"
           value={form.values.showPhone}
           exclusive
           onChange={(_, v) =>

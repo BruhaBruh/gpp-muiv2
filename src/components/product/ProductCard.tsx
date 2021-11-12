@@ -313,7 +313,7 @@ const ProductCard: React.FC<props> = ({
                     marginBottom: (theme) => theme.spacing(1),
                     aspectRatio: "1 / 1",
                   }}
-                  color="secondary"
+                  color="primary"
                 >
                   <IconWrapper size={28}>
                     <Icon24DoneOutline />

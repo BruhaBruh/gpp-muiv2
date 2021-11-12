@@ -186,7 +186,7 @@ const ServiceCreate: React.FC<props> = ({ icons }) => {
               <div style={{ width: "100%" }}>
                 <InputLabel id="avatar">Подсвечен?</InputLabel>
                 <ToggleButtonGroup
-                  color="secondary"
+                  color="primary"
                   value={form.values.isHighlighted}
                   exclusive
                   disabled={
