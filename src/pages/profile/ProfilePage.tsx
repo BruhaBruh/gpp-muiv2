@@ -65,6 +65,8 @@ const ProfilePage = () => {
           phone
           discriminator
           showPhone
+          soldProducts
+          boughtProducts
           roles {
             id
             color

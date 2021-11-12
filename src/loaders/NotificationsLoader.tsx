@@ -10,8 +10,8 @@ const NotificationsLoader = () => {
   const [getNotifications, { data }] = useLazyQuery<{
     notifications: Notification[];
   }>(gql`
-    query notifications {
-      notifications(server: 1) {
+    query notifications($server: ObjectID!) {
+      notifications(server: $server) {
         __typename
         ... on SystemNotification {
           id
@@ -26,6 +26,25 @@ const NotificationsLoader = () => {
             avatar
             nickname
             lastOnline
+          }
+        }
+        ... on OrderNotification {
+          id
+          createdAt
+          cost
+          amount
+          product {
+            icon {
+              name
+              image
+              category {
+                color
+              }
+            }
+            owner {
+              id
+              nickname
+            }
           }
         }
       }
@@ -51,6 +70,24 @@ const NotificationsLoader = () => {
               avatar
               nickname
               lastOnline
+            }
+          }
+          ... on OrderNotification {
+            id
+            createdAt
+            cost
+            amount
+            product {
+              icon {
+                name
+                image
+              }
+              owner {
+                id
+                avatar
+                nickname
+                lastOnline
+              }
             }
           }
         }

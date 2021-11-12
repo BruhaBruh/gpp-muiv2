@@ -98,26 +98,22 @@ const SubscriberNotification: React.FC<{ notification: N }> = ({
                 read();
                 dispatch(readNotification(notification));
               }}
+              color="primary"
             >
-              <IconWrapper
-                size={size - 8}
-                sx={{ color: (theme) => theme.palette.primary.main }}
-              >
+              <IconWrapper size={size - 8}>
                 <Icon20UserAddOutline />
               </IconWrapper>
             </IconButton>
           </Tooltip>
           <Tooltip placement="top" title="Игнорировать">
             <IconButton
+              color="error"
               onClick={() => {
                 read();
                 dispatch(readNotification(notification));
               }}
             >
-              <IconWrapper
-                size={size - 8}
-                sx={{ color: (theme) => theme.palette.error.main }}
-              >
+              <IconWrapper size={size - 8}>
                 <Icon20Cancel />
               </IconWrapper>
             </IconButton>
@@ -126,7 +122,7 @@ const SubscriberNotification: React.FC<{ notification: N }> = ({
       }
       sx={{ textTransform: "none", textAlign: "left" }}
     >
-      {notification.subscriber.nickname} подписался на вас
+      {notification.subscriber.nickname} подписался(ась) на вас
     </Cell>
   );
 };

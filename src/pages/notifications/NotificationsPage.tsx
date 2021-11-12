@@ -1,5 +1,6 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import React from "react";
+import OrderNotification from "../../components/notifications/OrderNotification";
 import SubscriberNotification from "../../components/notifications/SubscriberNotification";
 import SystemNotification from "../../components/notifications/SystemNotification";
 import { useAppSelector } from "../../hooks/redux";
@@ -27,7 +28,11 @@ const NotificationsPage = () => {
       >
         <Stack spacing={2}>
           {notifications.length === 0 && (
-            <Typography variant="body1" textAlign="center">
+            <Typography
+              variant="body1"
+              textAlign="center"
+              sx={{ color: (theme) => theme.palette.text.secondary }}
+            >
               Нет оповещений
             </Typography>
           )}
@@ -36,6 +41,8 @@ const NotificationsPage = () => {
               return <SystemNotification notification={n} />;
             } else if (n.__typename === "SubscriberNotification") {
               return <SubscriberNotification notification={n} />;
+            } else if (n.__typename === "OrderNotification") {
+              return <OrderNotification notification={n} />;
             } else {
               return <></>;
             }

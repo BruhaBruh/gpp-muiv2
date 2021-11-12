@@ -4,6 +4,9 @@ import {
   Icon20AccessibilityOutline,
   Icon20PhoneOutline,
   Icon24FavoriteOutline,
+  Icon24MarketOutline,
+  Icon24ShoppingCartOutline,
+  Icon24StatisticsOutline,
   Icon24UserOutline,
   Icon24ViewOutline,
 } from "@vkontakte/icons";
@@ -205,6 +208,40 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
         </Cell>
       </Stack>
       <Stack spacing={1}>
+        <Typography variant="body1">Проданных товаров/услуг</Typography>
+        <Cell
+          disableRipple
+          startIcon={
+            <IconWrapper
+              size={24}
+              sx={{ color: (theme) => theme.palette.primary.main }}
+            >
+              <Icon24ShoppingCartOutline />
+            </IconWrapper>
+          }
+          sx={{ textTransform: "none" }}
+        >
+          {currentProfile?.soldProducts}
+        </Cell>
+      </Stack>
+      <Stack spacing={1}>
+        <Typography variant="body1">Купленных товаров/услуг</Typography>
+        <Cell
+          disableRipple
+          startIcon={
+            <IconWrapper
+              size={24}
+              sx={{ color: (theme) => theme.palette.primary.main }}
+            >
+              <Icon24MarketOutline />
+            </IconWrapper>
+          }
+          sx={{ textTransform: "none" }}
+        >
+          {currentProfile?.boughtProducts}
+        </Cell>
+      </Stack>
+      <Stack spacing={1}>
         <Typography variant="body1">Пол</Typography>
         <Cell
           disableRipple
@@ -247,7 +284,7 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
               size={24}
               sx={{ color: (theme) => theme.palette.primary.main }}
             >
-              <Icon24ViewOutline />
+              <Icon24StatisticsOutline />
             </IconWrapper>
           }
           endIcon={
