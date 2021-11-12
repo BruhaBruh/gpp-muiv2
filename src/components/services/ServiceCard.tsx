@@ -152,7 +152,7 @@ const ServiceCard: React.FC<props> = ({
           sx={{ overflowY: "scroll", width: "1px", flex: 1 }}
           className="hide-scrollbar"
         >
-          <Tooltip placement="bottom" title="ID">
+          <Stack spacing={0.25}>
             <Typography
               sx={{
                 overflow: "hidden",
@@ -162,10 +162,8 @@ const ServiceCard: React.FC<props> = ({
               }}
               variant="body2"
             >
-              {product.id}
+              ID: {product.id}
             </Typography>
-          </Tooltip>
-          <Stack spacing={1}>
             <Typography
               sx={{
                 overflow: "hidden",
@@ -176,6 +174,29 @@ const ServiceCard: React.FC<props> = ({
               variant="body2"
             >
               Создан:{" " + dayjs(product.createdAt).format("HH:mm DD.MM.YYYY")}
+            </Typography>
+            <Typography
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: (theme) => theme.palette.text.secondary,
+              }}
+              variant="body2"
+            >
+              Номер телефона:{" "}
+              {product.owner.phone ? product.owner.phone : "Нет"}
+            </Typography>
+            <Typography
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: (theme) => theme.palette.text.secondary,
+              }}
+              variant="body2"
+            >
+              {product.owner.discriminator}
             </Typography>
             <Typography variant="body1">{product.description}</Typography>
           </Stack>

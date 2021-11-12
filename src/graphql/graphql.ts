@@ -698,6 +698,8 @@ export type Profile = {
   description: Scalars['String'];
   /** Discord ID */
   discord: Scalars['ID'];
+  /** discriminator */
+  discriminator: Scalars['String'];
   /** Друзья */
   friends: Array<Profile>;
   /** ObjectID профиля */
@@ -708,6 +710,8 @@ export type Profile = {
   level: Scalars['Int'];
   /** Ник на дискорд сервере */
   nickname: Scalars['String'];
+  /** Телефон */
+  phone?: Maybe<Scalars['Int']>;
   /** Рейтинги */
   ratings: Scalars['Int'];
   /** Роль */
@@ -1534,11 +1538,13 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   discord?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  discriminator?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   friends?: Resolver<Array<ResolversTypes['Profile']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   lastOnline?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   level?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phone?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   ratings?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;

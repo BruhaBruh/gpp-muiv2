@@ -119,6 +119,8 @@ const List = () => {
                 avatar
                 nickname
                 lastOnline
+                phone
+                discriminator
                 user {
                   permissions
                 }

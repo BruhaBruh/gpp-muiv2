@@ -62,6 +62,8 @@ const ProfilePage = () => {
           role
           work
           level
+          phone
+          discriminator
           roles {
             id
             color

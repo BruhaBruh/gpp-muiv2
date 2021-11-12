@@ -76,6 +76,8 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
               avatar
               nickname
               lastOnline
+              phone
+              discriminator
               user {
                 permissions
               }
@@ -134,6 +136,8 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
               avatar
               nickname
               lastOnline
+              phone
+              discriminator
               user {
                 permissions
               }
