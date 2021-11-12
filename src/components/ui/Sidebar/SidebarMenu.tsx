@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Badge, Stack } from "@mui/material";
 import {
   Icon24Back,
   Icon28AdvertisingOutline,
@@ -7,6 +7,7 @@ import {
   Icon28DoorArrowLeftOutline,
   Icon28DoorArrowRightOutline,
   Icon28Newsfeed,
+  Icon28Notifications,
   Icon28ServicesOutline,
   Icon28SettingsOutline,
   Icon28ShoppingCartOutline,
@@ -29,6 +30,9 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
   const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
   const profileId = useAppSelector((state) => state.userData.profileId);
   const chats = useAppSelector((state) => state.chats.chats.map((c) => c.chat));
+  const notifications = useAppSelector(
+    (state) => state.notifications.notifications
+  );
 
   return (
     <Stack
@@ -190,6 +194,35 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             }
           >
             Информация
+          </SidebarCell>
+          <SidebarCell
+            to="/notifications"
+            startIcon={
+              <Badge
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                badgeContent={notifications.length}
+                max={99}
+                color={"primary"}
+                sx={{ "& .MuiBadge-badge": { transform: "scale(0.75)" } }}
+              >
+                <IconWrapper
+                  size={size}
+                  sx={{ color: (theme) => theme.palette.text.primary }}
+                >
+                  <Icon28Notifications />
+                </IconWrapper>
+              </Badge>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Оповещения
           </SidebarCell>
           <SidebarCell
             to="/settings"

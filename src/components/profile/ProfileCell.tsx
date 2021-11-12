@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Paper, Theme, Typography } from "@mui/material";
+import { Avatar, Badge, Box, Paper, Typography } from "@mui/material";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import alchemist from "../../assets/images/roles/alchemist.png";
@@ -85,10 +85,9 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
           overlap="circular"
           color={"success"}
           sx={{
-            marginRight: (theme: Theme) => theme.spacing(2),
+            marginRight: (theme) => theme.spacing(2),
             ".MuiBadge-dot": {
-              border: (theme: Theme) =>
-                `2px solid ${theme.palette.background.paper}`,
+              border: (theme) => `2px solid ${theme.palette.background.paper}`,
               minWidth: "auto",
               width: "7px",
               height: "7px",
@@ -109,7 +108,7 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
           sx={{
             flex: 1,
             width: minWidth ? "min-content" : "1px",
-            marginRight: (theme: Theme) => theme.spacing(2),
+            marginRight: (theme) => theme.spacing(2),
           }}
         >
           <Typography
@@ -120,7 +119,7 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
               whiteSpace: "nowrap",
               textTransform: "none",
               display: "flex",
-              color: (theme: Theme) =>
+              color: (theme) =>
                 profile.id === "6171b40cc87c467779872271"
                   ? theme.palette.success.light
                   : "#FFFFFF",

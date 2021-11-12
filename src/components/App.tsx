@@ -9,6 +9,7 @@ import ValidatePage from "../pages/discord/ValidatePage";
 import DonatePage from "../pages/donate/DonatePage";
 import InfoPage from "../pages/info/InfoPage";
 import NewsPage from "../pages/news/NewsPage";
+import NotificationsPage from "../pages/notifications/NotificationsPage";
 import Page404 from "../pages/Page404";
 import ProfilePage from "../pages/profile/ProfilePage";
 import ProfilesPage from "../pages/profile/ProfilesPage";
@@ -146,6 +147,12 @@ function App() {
                 <Route exact path="/news/:id">
                   <PageWrapper>
                     <NewsPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/notifications">
+                  <Head name="Оповещения" />
+                  <PageWrapper>
+                    <NotificationsPage />
                   </PageWrapper>
                 </Route>
                 <Route exact path="/settings">

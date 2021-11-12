@@ -1,6 +1,7 @@
 import ChatsReducer from "./chats/reducer";
 import CurrentProfileReducer from "./currentProfile/reducer";
 import GlobalChatReducer from "./globalchat/reducer";
+import NotificationsReducer from "./notifications/reducer";
 import ProductsReducer from "./products/reducer";
 import ServicesReducer from "./services/reducer";
 import SettingsReducer from "./settings/reducer";
@@ -16,4 +17,5 @@ export const reducers = {
   products: ProductsReducer,
   services: ServicesReducer,
   chats: ChatsReducer,
+  notifications: NotificationsReducer,
 };
