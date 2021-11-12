@@ -189,6 +189,7 @@ export type EditProfileInput = {
   description?: Maybe<Scalars['String']>;
   /** Пол */
   sex?: Maybe<Sex>;
+  showPhone?: Maybe<Scalars['Boolean']>;
   /** Статус */
   status?: Maybe<Scalars['String']>;
 };
@@ -722,6 +723,8 @@ export type Profile = {
   server: Scalars['ObjectID'];
   /** Пол */
   sex: Sex;
+  /** показывать номер телефона? */
+  showPhone: Scalars['Boolean'];
   /** Продано товаров */
   soldProducts: Scalars['Int'];
   /** Статус */
@@ -1550,6 +1553,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;
   server?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
   sex?: Resolver<ResolversTypes['Sex'], ParentType, ContextType>;
+  showPhone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   soldProducts?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subscribers?: Resolver<Array<ResolversTypes['Profile']>, ParentType, ContextType>;

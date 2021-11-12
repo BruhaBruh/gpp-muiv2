@@ -8,6 +8,8 @@ import {
   Select,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
@@ -30,6 +32,7 @@ interface values {
   description?: string;
   avatar?: string;
   banner?: string;
+  showPhone?: boolean;
 }
 
 const formValidatiionSchema = Yup.object().shape({
@@ -50,6 +53,7 @@ const formValidatiionSchema = Yup.object().shape({
       "Ссылка должна быть прямой с ресурса imgur или postimg"
     )
     .max(100, "Максимальная длина 100 символов"),
+  showPhone: Yup.bool(),
 });
 
 const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
@@ -66,6 +70,7 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
         ? ""
         : currentProfile?.avatar,
       banner: currentProfile?.banner,
+      showPhone: currentProfile?.showPhone,
     },
     validationSchema: formValidatiionSchema,
     onSubmit: (values: values) =>
@@ -78,6 +83,7 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
           avatar: values.avatar,
           banner:
             values.banner && values.banner.length !== 0 ? values.banner : null,
+          showPhone: values.showPhone,
         },
       }),
   });
@@ -93,6 +99,7 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
       $description: String
       $avatar: MediaLink
       $banner: MediaLink
+      $showPhone: Boolean
     ) {
       editProfile(
         id: $id
@@ -102,6 +109,7 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
           status: $status
           avatar: $avatar
           banner: $banner
+          showPhone: $showPhone
         }
       ) {
         id
@@ -122,6 +130,28 @@ const ProfileBodySettings: React.FC<props> = ({ updateProfile }) => {
 
   return (
     <Stack spacing={2}>
+      <Stack spacing={1}>
+        <Typography variant="body1">Показывать номер телефона?</Typography>
+        <ToggleButtonGroup
+          color="secondary"
+          value={form.values.showPhone}
+          exclusive
+          onChange={(_, v) =>
+            form.setFieldValue(
+              "showPhone",
+              v !== null ? v : form.values.showPhone
+            )
+          }
+          sx={{ width: "100%" }}
+        >
+          <ToggleButton size="small" value={true} sx={{ width: "100%" }}>
+            Да
+          </ToggleButton>
+          <ToggleButton size="small" value={false} sx={{ width: "100%" }}>
+            Нет
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Stack>
       <Stack spacing={1}>
         <Typography variant="body1">Аватар</Typography>
         <Cell

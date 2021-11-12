@@ -78,6 +78,7 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
               lastOnline
               phone
               discriminator
+              showPhone
               user {
                 permissions
               }
@@ -138,6 +139,7 @@ const ProfileBody: React.FC<props> = ({ updateProfile }) => {
               lastOnline
               phone
               discriminator
+              showPhone
               user {
                 permissions
               }

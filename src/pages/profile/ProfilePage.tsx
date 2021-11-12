@@ -64,6 +64,7 @@ const ProfilePage = () => {
           level
           phone
           discriminator
+          showPhone
           roles {
             id
             color

@@ -87,30 +87,34 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
 
   return (
     <Stack spacing={2}>
-      <Stack spacing={1}>
-        <Typography variant="body1">Номер телефона</Typography>
-        <Cell
-          disableRipple
-          startIcon={
-            <IconWrapper
-              size={24}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon20PhoneOutline />
-            </IconWrapper>
-          }
-          sx={{
-            textTransform: "none",
-          }}
-          onClick={() =>
-            currentProfile?.phone
-              ? navigator.clipboard.writeText(currentProfile?.phone.toString())
-              : {}
-          }
-        >
-          {currentProfile?.phone ? currentProfile?.phone : "Нет"}
-        </Cell>
-      </Stack>
+      {currentProfile && currentProfile.showPhone && (
+        <Stack spacing={1}>
+          <Typography variant="body1">Номер телефона</Typography>
+          <Cell
+            disableRipple
+            startIcon={
+              <IconWrapper
+                size={24}
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              >
+                <Icon20PhoneOutline />
+              </IconWrapper>
+            }
+            sx={{
+              textTransform: "none",
+            }}
+            onClick={() =>
+              currentProfile?.phone
+                ? navigator.clipboard.writeText(
+                    currentProfile?.phone.toString()
+                  )
+                : {}
+            }
+          >
+            {currentProfile?.phone ? currentProfile?.phone : "Нет"}
+          </Cell>
+        </Stack>
+      )}
       <Stack spacing={1}>
         <Typography variant="body1">Мессенджер</Typography>
         <Cell

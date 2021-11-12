@@ -101,6 +101,7 @@ const List = () => {
                 lastOnline
                 phone
                 discriminator
+                showPhone
                 user {
                   permissions
                 }

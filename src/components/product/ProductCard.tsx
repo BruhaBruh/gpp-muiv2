@@ -174,18 +174,20 @@ const ProductCard: React.FC<props> = ({
             >
               Создан:{" " + dayjs(product.createdAt).format("HH:mm DD.MM.YYYY")}
             </Typography>
-            <Typography
-              sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                color: (theme) => theme.palette.text.secondary,
-              }}
-              variant="body2"
-            >
-              Номер телефона:{" "}
-              {product.owner.phone ? product.owner.phone : "Нет"}
-            </Typography>
+            {product.owner.showPhone && (
+              <Typography
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  color: (theme) => theme.palette.text.secondary,
+                }}
+                variant="body2"
+              >
+                Номер телефона:{" "}
+                {product.owner.phone ? product.owner.phone : "Нет"}
+              </Typography>
+            )}
             <Typography
               sx={{
                 overflow: "hidden",
