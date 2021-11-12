@@ -7,12 +7,14 @@ import {
   DialogTitle,
   Stack,
   Theme,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { Icon24WarningTriangleOutline } from "@vkontakte/icons";
 import React from "react";
 import GlobalChat from "../../components/globalchat/GlobalChat";
 import List from "../../components/shop/List";
+import LinkR from "../../components/ui/LinkR";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
 
@@ -23,7 +25,8 @@ const ProductsPage = () => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    if (!localStorage.getItem("hideModalOnShopPage")) {
+    localStorage.removeItem("hideModalOnShopPage");
+    if (!localStorage.getItem("hideModalOnShopPage2")) {
       dispatch(
         setModal(
           <Dialog
@@ -45,10 +48,21 @@ const ProductsPage = () => {
               Предупреждение
             </DialogTitle>
             <DialogContent>
-              Договор купли-продажи - это соглашение обоих сторон, по который
-              продавец или покупатель обязуются выполнить условия данного
-              договора. В большинстве процесс договора обязан осуществлять на
-              прямую по РП на самом сервере ГП.
+              <Stack spacing={1}>
+                <Typography variant="body1">
+                  Договор купли-продажи - это соглашение обоих сторон, по
+                  который продавец или покупатель обязуются выполнить условия
+                  данного договора. Процесс договора обязан осуществлять на
+                  прямую по РП на самом сервере ГП.
+                </Typography>
+                <Typography variant="body1">
+                  Запрещено использовать НРП каналы дискорда, для купли-продажи
+                  игровых ресурсов.
+                </Typography>
+                <Typography variant="body2">
+                  Правила - <LinkR to="/info">https://gpplanet.ru/info</LinkR>
+                </Typography>
+              </Stack>
             </DialogContent>
             <DialogActions sx={{ paddingLeft: "24px", paddingRight: "24px" }}>
               <Stack direction="row" spacing={2} sx={{ width: "100%" }}>
@@ -61,14 +75,14 @@ const ProductsPage = () => {
                 >
                   Закрыть
                 </Button>
-                {!localStorage.getItem("hideModalOnShopPage") && (
+                {!localStorage.getItem("hideModalOnShopPage2") && (
                   <Button
                     color="inherit"
                     size="medium"
                     variant="text"
                     fullWidth
                     onClick={() => {
-                      localStorage.setItem("hideModalOnShopPage", "true");
+                      localStorage.setItem("hideModalOnShopPage2", "true");
                       dispatch(setModal(null));
                     }}
                   >
