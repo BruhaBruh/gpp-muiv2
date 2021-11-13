@@ -32,8 +32,10 @@ const ProfileHeaderMainInfo: React.FC<props> = ({ updateProfile }) => {
           alignItems: "baseline",
           fontWeight: "bold",
           color: (theme: Theme) =>
-            currentProfile?.id === "6171b40cc87c467779872271"
+            currentProfile?.id.toString() === "4"
               ? theme.palette.success.light
+              : currentProfile?.id.toString() === "18"
+              ? theme.palette.error.main
               : undefined,
         }}
       >

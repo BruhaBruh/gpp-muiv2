@@ -199,8 +199,10 @@ const ProfileCell: React.FC<props> = ({
               textTransform: "none",
               display: "flex",
               color: (theme) =>
-                profile.id === "6171b40cc87c467779872271"
+                profile.id.toString() === "4"
                   ? theme.palette.success.light
+                  : profile.id.toString() === "18"
+                  ? theme.palette.error.main
                   : "#FFFFFF",
             }}
           >
