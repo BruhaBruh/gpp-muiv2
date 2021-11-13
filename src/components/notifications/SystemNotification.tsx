@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { IconButton, Tooltip } from "@mui/material";
+import { Avatar, IconButton, Tooltip } from "@mui/material";
 import { Icon20Check, Icon24RobotOutline } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
@@ -34,13 +34,66 @@ const SystemNotification: React.FC<{ notification: N }> = ({
     enqueueSnackbar(error.message, { variant: "error" });
   }, [error, enqueueSnackbar]);
 
-  return (
-    <Cell
-      startIcon={
+  const getStart = () => {
+    if (/^\[\d*\] (Жалоба|Баг|Предложение):/i.test(notification.message)) {
+      return (
+        <Avatar
+          variant={"circular"}
+          sx={{
+            width: size,
+            height: size,
+            color: (theme) =>
+              notification.message.split(" ")[1].substr(0, 1) === "Б"
+                ? theme.palette.warning.main
+                : notification.message.split(" ")[1].substr(0, 1) === "Ж"
+                ? theme.palette.error.main
+                : theme.palette.info.main,
+          }}
+          children={notification.message
+            .split(" ")[0]
+            .replaceAll("[", "")
+            .replaceAll("]", "")}
+        />
+      );
+    } else if (
+      /^Репорт типа "(Жалоба|Баг|Предложение)" с ID/i.test(notification.message)
+    ) {
+      return (
+        <Avatar
+          variant={"circular"}
+          sx={{
+            width: size,
+            height: size,
+            color: (theme) =>
+              notification.message.split('"')[1].substr(0, 1) === "Б"
+                ? theme.palette.warning.main
+                : notification.message.split('"')[1].substr(0, 1) === "Ж"
+                ? theme.palette.error.main
+                : theme.palette.info.main,
+          }}
+          children={notification.message.split('"')[1].substr(0, 1)}
+        />
+      );
+    } else {
+      return (
         <IconWrapper size={size}>
           <Icon24RobotOutline />
         </IconWrapper>
-      }
+      );
+    }
+  };
+
+  const getMessage = () => {
+    if (/^\[\d*\] (Жалоба|Баг|Предложение):/i.test(notification.message)) {
+      return notification.message.split(": ").slice(1);
+    } else {
+      return notification.message;
+    }
+  };
+
+  return (
+    <Cell
+      startIcon={getStart()}
       endIcon={
         <Tooltip placement="top" title="Прочесть">
           <IconButton
@@ -60,7 +113,7 @@ const SystemNotification: React.FC<{ notification: N }> = ({
       }
       sx={{ textTransform: "none", textAlign: "left" }}
     >
-      {notification.message}
+      {getMessage()}
     </Cell>
   );
 };

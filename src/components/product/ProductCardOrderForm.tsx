@@ -276,7 +276,7 @@ const ProductCardOrderForm: React.FC<{ product: Product }> = ({ product }) => {
                 />
               </Stack>
               <Stack spacing={1}>
-                <Typography variant="body1">Итоговая стоймость</Typography>
+                <Typography variant="body1">Итоговая стоимость</Typography>
                 <TextField
                   margin="none"
                   fullWidth
