@@ -21,6 +21,7 @@ import {
   Icon28DeleteOutlineAndroid,
   Icon28EditOutline,
   Icon28InfoOutline,
+  Icon28WriteSquareOutline,
 } from "@vkontakte/icons";
 import dayjs from "dayjs";
 import gql from "graphql-tag";
@@ -32,6 +33,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
 import { checkPermissions, getLastOnline } from "../../redux/userData/types";
 import ProductCardMessageForm from "../product/ProductCardMessageForm";
+import ProductCardOrderForm from "../product/ProductCardOrderForm";
 import IconWrapper from "../ui/IconWrapper";
 import LinkR from "../ui/LinkR";
 import ServiceEdit from "./ServiceEdit";
@@ -132,6 +134,9 @@ const ServiceCard: React.FC<props> = ({
 
   const openEditForm = () =>
     dispatch(setModal(<ServiceEdit product={product} />));
+
+  const openOrderForm = () =>
+    dispatch(setModal(<ProductCardOrderForm product={product} />));
 
   return (
     <Paper
@@ -288,6 +293,20 @@ const ServiceCard: React.FC<props> = ({
               <Icon28InfoOutline />
             </IconButton>
           </Tooltip>
+          {profileId === product.owner.id && (
+            <Tooltip title="Оформить договор" placement="left">
+              <IconButton
+                onClick={openOrderForm}
+                sx={{
+                  marginBottom: (theme) => theme.spacing(1),
+                  aspectRatio: "1 / 1",
+                }}
+                color="success"
+              >
+                <Icon28WriteSquareOutline />
+              </IconButton>
+            </Tooltip>
+          )}
           {/*profileId !== product.owner.id && !isChat && (
             <Tooltip title="Написать" placement="left">
               <IconButton
@@ -408,26 +427,33 @@ const ServiceCard: React.FC<props> = ({
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip title={"Профиль " + product.owner.nickname} placement="left">
-            <LinkR to={"/profile/" + product.owner.id}>
-              <Badge
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                variant="dot"
-                badgeContent={
-                  getLastOnline(product.owner.lastOnline) === "Онлайн" ? " " : 0
-                }
-                overlap="circular"
-                color={"success"}
-              >
-                <Avatar src={product.owner.avatar}>
-                  {product.owner.nickname.substring(0, 2)}
-                </Avatar>
-              </Badge>
-            </LinkR>
-          </Tooltip>
+          {profileId !== product.owner.id && (
+            <Tooltip
+              title={"Профиль " + product.owner.nickname}
+              placement="left"
+            >
+              <LinkR to={"/profile/" + product.owner.id}>
+                <Badge
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  variant="dot"
+                  badgeContent={
+                    getLastOnline(product.owner.lastOnline) === "Онлайн"
+                      ? " "
+                      : 0
+                  }
+                  overlap="circular"
+                  color={"success"}
+                >
+                  <Avatar src={product.owner.avatar}>
+                    {product.owner.nickname.substring(0, 2)}
+                  </Avatar>
+                </Badge>
+              </LinkR>
+            </Tooltip>
+          )}
         </div>
       </Box>
     </Paper>

@@ -158,7 +158,7 @@ const ProductCardOrderForm: React.FC<{ product: Product }> = ({ product }) => {
             <Stack spacing={2}>
               <Stack spacing={1}>
                 <Typography variant="body1">
-                  Профиль, кому вы продали товар
+                  Профиль, кому вы продали товар/услугу
                 </Typography>
                 <Autocomplete
                   id="profile"
