@@ -5,6 +5,7 @@ import NotificationsReducer from "./notifications/reducer";
 import ProductsReducer from "./products/reducer";
 import ServicesReducer from "./services/reducer";
 import SettingsReducer from "./settings/reducer";
+import TopsReducer from "./tops/reducer";
 import UIReducer from "./ui/reducer";
 import UserDataReducer from "./userData/reducer";
 
@@ -18,4 +19,5 @@ export const reducers = {
   services: ServicesReducer,
   chats: ChatsReducer,
   notifications: NotificationsReducer,
+  tops: TopsReducer,
 };

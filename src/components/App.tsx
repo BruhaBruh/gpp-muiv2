@@ -22,6 +22,7 @@ import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
 import ProductsPage from "../pages/shop/ProductsPage";
+import TopsPage from "../pages/tops/TopsPage";
 import Head from "./ui/Head";
 import PageWrapper from "./ui/PageWrapper";
 import Sidebar from "./ui/Sidebar/Sidebar";
@@ -130,6 +131,12 @@ function App() {
                   <Head name="Все профили" />
                   <PageWrapper>
                     <ProfilesPage />
+                  </PageWrapper>
+                </Route>
+                <Route exact path="/tops">
+                  <Head name="Топ профилей" />
+                  <PageWrapper>
+                    <TopsPage />
                   </PageWrapper>
                 </Route>
                 <Route exact path="/donate">

@@ -859,6 +859,7 @@ export type Query = {
   services: ProductSearchResult;
   /** Статус пользователя по отношению к дискорд серверу */
   status: UserStatus;
+  top: Array<Profile>;
   /** Пользователь по id */
   user?: Maybe<User>;
   /** Все пользователи */
@@ -1004,6 +1005,12 @@ export type QueryServicesArgs = {
 
 export type QueryStatusArgs = {
   server: Scalars['ObjectID'];
+};
+
+
+export type QueryTopArgs = {
+  server: Scalars['ObjectID'];
+  top: TopBy;
 };
 
 
@@ -1205,6 +1212,12 @@ export type SystemNotification = {
   to: Scalars['ObjectID'];
 };
 
+export enum TopBy {
+  Boughtproducts = 'BOUGHTPRODUCTS',
+  Rating = 'RATING',
+  Soldproducts = 'SOLDPRODUCTS'
+}
+
 /** Пользователь. Создается при входе через дискорд */
 export type User = {
   __typename?: 'User';
@@ -1376,6 +1389,7 @@ export type ResolversTypes = {
   SubscriberNotification: ResolverTypeWrapper<SubscriberNotification>;
   Subscription: ResolverTypeWrapper<{}>;
   SystemNotification: ResolverTypeWrapper<SystemNotification>;
+  TopBy: TopBy;
   User: ResolverTypeWrapper<User>;
   UserSearchResult: ResolverTypeWrapper<UserSearchResult>;
   UserStatus: ResolverTypeWrapper<UserStatus>;
@@ -1712,6 +1726,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   service?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryServiceArgs, 'id'>>;
   services?: Resolver<ResolversTypes['ProductSearchResult'], ParentType, ContextType, RequireFields<QueryServicesArgs, 'server'>>;
   status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType, RequireFields<QueryStatusArgs, 'server'>>;
+  top?: Resolver<Array<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryTopArgs, 'server' | 'top'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<ResolversTypes['UserSearchResult'], ParentType, ContextType, RequireFields<QueryUsersArgs, never>>;
 };

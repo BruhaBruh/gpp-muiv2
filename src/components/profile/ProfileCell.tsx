@@ -19,9 +19,19 @@ interface props {
   profile: Profile;
   minWidth?: boolean;
   hasMargin?: boolean;
+  showRatings?: boolean;
+  showSold?: boolean;
+  showBought?: boolean;
 }
 
-const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
+const ProfileCell: React.FC<props> = ({
+  profile,
+  hasMargin,
+  minWidth,
+  showRatings,
+  showBought,
+  showSold,
+}) => {
   const getImageByRole = () => {
     switch (profile.role) {
       case "Ремесленник":
@@ -44,6 +54,75 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
         return farmer;
       default:
         return null;
+    }
+  };
+
+  const getSubComponent = () => {
+    if (showRatings) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Рейтинг: {profile.ratings}
+        </Typography>
+      );
+    } else if (showSold) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Продано: {profile.soldProducts}
+        </Typography>
+      );
+    } else if (showBought) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Куплено: {profile.boughtProducts}
+        </Typography>
+      );
+    } else {
+      return (
+        profile.roles.length !== 0 && (
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: JSON.parse(JSON.stringify(profile.roles))
+                .sort((a: Role, b: Role) => b.position - a.position)
+                .shift().color,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+            }}
+          >
+            {
+              JSON.parse(JSON.stringify(profile.roles))
+                .sort((a: Role, b: Role) => b.position - a.position)
+                .shift().name
+            }
+          </Typography>
+        )
+      );
     }
   };
 
@@ -142,26 +221,7 @@ const ProfileCell: React.FC<props> = ({ profile, hasMargin, minWidth }) => {
             )}{" "}
             {profile.nickname}
           </Typography>
-          {profile.roles.length !== 0 && (
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: JSON.parse(JSON.stringify(profile.roles))
-                  .sort((a: Role, b: Role) => b.position - a.position)
-                  .shift().color,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                textTransform: "none",
-              }}
-            >
-              {
-                JSON.parse(JSON.stringify(profile.roles))
-                  .sort((a: Role, b: Role) => b.position - a.position)
-                  .shift().name
-              }
-            </Typography>
-          )}
+          {getSubComponent()}
         </Box>
         <ProfileIcons permissions={profile.user.permissions} height={48} />
       </CellR>

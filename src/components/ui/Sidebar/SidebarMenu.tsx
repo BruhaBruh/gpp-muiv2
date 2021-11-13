@@ -11,6 +11,7 @@ import {
   Icon28ServicesOutline,
   Icon28SettingsOutline,
   Icon28ShoppingCartOutline,
+  Icon28StatisticsOutline,
   Icon28UserCircleOutline,
   Icon28UsersOutline,
 } from "@vkontakte/icons";
@@ -155,6 +156,26 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
               }
             >
               Все профили
+            </SidebarCell>
+          )}
+          {!!profileId && (
+            <SidebarCell
+              to="/tops"
+              startIcon={
+                <IconWrapper
+                  size={size}
+                  sx={{ color: (theme) => theme.palette.text.primary }}
+                >
+                  <Icon28StatisticsOutline />
+                </IconWrapper>
+              }
+              endIcon={
+                <IconWrapper size={size}>
+                  <Icon28ChevronRightOutline />
+                </IconWrapper>
+              }
+            >
+              Топ профилей
             </SidebarCell>
           )}
           {!!profileId && (
