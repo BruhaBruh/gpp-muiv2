@@ -5,12 +5,12 @@ import gql from "graphql-tag";
 import React from "react";
 import { TopBy, TopResult } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setBoughtTop } from "../../redux/tops/reducer";
+import { setSubscribers } from "../../redux/tops/reducer";
 import ProfileCell from "../profile/ProfileCell";
 
-const BoughtTop = () => {
+const SubscribersTop = () => {
   const server = useAppSelector((state) => state.userData.serverId);
-  const boughtTop = useAppSelector((state) => state.tops.bought);
+  const subscribersTop = useAppSelector((state) => state.tops.subscribers);
   const [getTop, { data, loading }] = useLazyQuery<{ top: TopResult }>(gql`
     query tops($server: ObjectID!, $top: TopBy!) {
       top(server: $server, top: $top) {
@@ -21,7 +21,7 @@ const BoughtTop = () => {
           nickname
           lastOnline
           role
-          boughtProducts
+          level
           user {
             permissions
           }
@@ -32,13 +32,13 @@ const BoughtTop = () => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    if (!server || boughtTop.length !== 0) return;
-    getTop({ variables: { server: server, top: TopBy.Boughtproducts } });
-  }, [server, getTop, boughtTop]);
+    if (!server || subscribersTop.length !== 0) return;
+    getTop({ variables: { server: server, top: TopBy.Subscribers } });
+  }, [server, getTop, subscribersTop]);
 
   React.useEffect(() => {
     if (!data) return;
-    dispatch(setBoughtTop(data.top.profiles));
+    dispatch(setSubscribers(data.top.profiles));
   }, [dispatch, data]);
 
   return (
@@ -51,7 +51,7 @@ const BoughtTop = () => {
           gap: (theme) => theme.spacing(1),
         }}
       >
-        {boughtTop.map((p, i) => (
+        {subscribersTop.map((p, i) => (
           <React.Fragment key={p.id}>
             <Box
               sx={{
@@ -64,7 +64,7 @@ const BoughtTop = () => {
                 {i + 1}
               </Typography>
             </Box>
-            <ProfileCell showBought profile={p} />
+            <ProfileCell showSubscribers profile={p} />
           </React.Fragment>
         ))}
       </Box>
@@ -72,4 +72,4 @@ const BoughtTop = () => {
   );
 };
 
-export default BoughtTop;
+export default SubscribersTop;

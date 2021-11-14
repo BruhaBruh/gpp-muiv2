@@ -859,7 +859,7 @@ export type Query = {
   services: ProductSearchResult;
   /** Статус пользователя по отношению к дискорд серверу */
   status: UserStatus;
-  top: Array<Profile>;
+  top: TopResult;
   /** Пользователь по id */
   user?: Maybe<User>;
   /** Все пользователи */
@@ -1213,10 +1213,20 @@ export type SystemNotification = {
 };
 
 export enum TopBy {
+  Badrating = 'BADRATING',
   Boughtproducts = 'BOUGHTPRODUCTS',
+  Friends = 'FRIENDS',
   Rating = 'RATING',
-  Soldproducts = 'SOLDPRODUCTS'
+  Soldproducts = 'SOLDPRODUCTS',
+  Subscribers = 'SUBSCRIBERS',
+  Views = 'VIEWS'
 }
+
+export type TopResult = {
+  __typename?: 'TopResult';
+  profiles: Array<Profile>;
+  totalProfiles?: Maybe<Scalars['Int']>;
+};
 
 /** Пользователь. Создается при входе через дискорд */
 export type User = {
@@ -1390,6 +1400,7 @@ export type ResolversTypes = {
   Subscription: ResolverTypeWrapper<{}>;
   SystemNotification: ResolverTypeWrapper<SystemNotification>;
   TopBy: TopBy;
+  TopResult: ResolverTypeWrapper<TopResult>;
   User: ResolverTypeWrapper<User>;
   UserSearchResult: ResolverTypeWrapper<UserSearchResult>;
   UserStatus: ResolverTypeWrapper<UserStatus>;
@@ -1455,6 +1466,7 @@ export type ResolversParentTypes = {
   SubscriberNotification: SubscriberNotification;
   Subscription: {};
   SystemNotification: SystemNotification;
+  TopResult: TopResult;
   User: User;
   UserSearchResult: UserSearchResult;
   UserStatus: UserStatus;
@@ -1726,7 +1738,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   service?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryServiceArgs, 'id'>>;
   services?: Resolver<ResolversTypes['ProductSearchResult'], ParentType, ContextType, RequireFields<QueryServicesArgs, 'server'>>;
   status?: Resolver<ResolversTypes['UserStatus'], ParentType, ContextType, RequireFields<QueryStatusArgs, 'server'>>;
-  top?: Resolver<Array<ResolversTypes['Profile']>, ParentType, ContextType, RequireFields<QueryTopArgs, 'server' | 'top'>>;
+  top?: Resolver<ResolversTypes['TopResult'], ParentType, ContextType, RequireFields<QueryTopArgs, 'server' | 'top'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   users?: Resolver<ResolversTypes['UserSearchResult'], ParentType, ContextType, RequireFields<QueryUsersArgs, never>>;
 };
@@ -1807,6 +1819,12 @@ export type SystemNotificationResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TopResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['TopResult'] = ResolversParentTypes['TopResult']> = {
+  profiles?: Resolver<Array<ResolversTypes['Profile']>, ParentType, ContextType>;
+  totalProfiles?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   banned?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
@@ -1865,6 +1883,7 @@ export type Resolvers<ContextType = any> = {
   SubscriberNotification?: SubscriberNotificationResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   SystemNotification?: SystemNotificationResolvers<ContextType>;
+  TopResult?: TopResultResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserSearchResult?: UserSearchResultResolvers<ContextType>;
   UserStatus?: UserStatusResolvers<ContextType>;

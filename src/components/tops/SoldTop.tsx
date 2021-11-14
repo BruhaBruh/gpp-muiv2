@@ -3,7 +3,7 @@ import { LinearProgress, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import gql from "graphql-tag";
 import React from "react";
-import { Profile, TopBy } from "../../graphql/graphql";
+import { TopBy, TopResult } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setSoldTop } from "../../redux/tops/reducer";
 import ProfileCell from "../profile/ProfileCell";
@@ -11,18 +11,20 @@ import ProfileCell from "../profile/ProfileCell";
 const SoldTop = () => {
   const server = useAppSelector((state) => state.userData.serverId);
   const soldTop = useAppSelector((state) => state.tops.sold);
-  const [getTop, { data, loading }] = useLazyQuery<{ top: Profile[] }>(gql`
+  const [getTop, { data, loading }] = useLazyQuery<{ top: TopResult }>(gql`
     query tops($server: ObjectID!, $top: TopBy!) {
       top(server: $server, top: $top) {
-        id
-        avatar
-        banner
-        nickname
-        lastOnline
-        role
-        soldProducts
-        user {
-          permissions
+        profiles {
+          id
+          avatar
+          banner
+          nickname
+          lastOnline
+          role
+          soldProducts
+          user {
+            permissions
+          }
         }
       }
     }
@@ -36,7 +38,7 @@ const SoldTop = () => {
 
   React.useEffect(() => {
     if (!data) return;
-    dispatch(setSoldTop(data.top));
+    dispatch(setSoldTop(data.top.profiles));
   }, [dispatch, data]);
 
   return (

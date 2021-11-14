@@ -1,27 +1,48 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import React from "react";
-import { Profile, TopBy } from "../../graphql/graphql";
+import { TopBy, TopResult } from "../../graphql/graphql";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setRatingTop } from "../../redux/tops/reducer";
+import { setBadRatingTop, setRatingTop } from "../../redux/tops/reducer";
 import ProfileCell from "../profile/ProfileCell";
 
 const RatingTop = () => {
   const server = useAppSelector((state) => state.userData.serverId);
   const ratingTop = useAppSelector((state) => state.tops.rating);
-  const [getTop, { data, loading }] = useLazyQuery<{ top: Profile[] }>(gql`
-    query tops($server: ObjectID!, $top: TopBy!) {
+  const badTop = useAppSelector((state) => state.tops.badrating);
+  const [getTop, { data, loading }] = useLazyQuery<{
+    top: TopResult;
+    badtop: TopResult;
+  }>(gql`
+    query tops($server: ObjectID!, $top: TopBy!, $badtop: TopBy!) {
       top(server: $server, top: $top) {
-        id
-        avatar
-        banner
-        nickname
-        lastOnline
-        role
-        ratings
-        user {
-          permissions
+        profiles {
+          id
+          avatar
+          banner
+          nickname
+          lastOnline
+          role
+          ratings
+          user {
+            permissions
+          }
         }
+      }
+      badtop: top(server: $server, top: $badtop) {
+        profiles {
+          id
+          avatar
+          banner
+          nickname
+          lastOnline
+          role
+          ratings
+          user {
+            permissions
+          }
+        }
+        totalProfiles
       }
     }
   `);
@@ -29,41 +50,79 @@ const RatingTop = () => {
 
   React.useEffect(() => {
     if (!server || ratingTop.length !== 0) return;
-    getTop({ variables: { server: server, top: TopBy.Rating } });
+    getTop({
+      variables: { server: server, top: TopBy.Rating, badtop: TopBy.Badrating },
+    });
   }, [server, getTop, ratingTop]);
 
   React.useEffect(() => {
     if (!data) return;
-    dispatch(setRatingTop(data.top));
+    dispatch(setRatingTop(data.top.profiles));
+    dispatch(
+      setBadRatingTop({
+        profiles: data.badtop.profiles,
+        total: data.badtop.totalProfiles as number,
+      })
+    );
   }, [dispatch, data]);
 
   return (
     <Stack spacing={1}>
       {loading && <LinearProgress />}
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "min-content 1fr",
-          gap: (theme) => theme.spacing(1),
-        }}
-      >
-        {ratingTop.map((p, i) => (
-          <React.Fragment key={p.id}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography variant="h5" fontWeight="bold">
-                {i + 1}
-              </Typography>
-            </Box>
-            <ProfileCell showRatings profile={p} />
-          </React.Fragment>
-        ))}
-      </Box>
+      {!loading && (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "min-content 1fr",
+            gap: (theme) => theme.spacing(1),
+          }}
+        >
+          {ratingTop.map((p, i) => (
+            <React.Fragment key={p.id}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="h5" fontWeight="bold">
+                  {i + 1}
+                </Typography>
+              </Box>
+              <ProfileCell showRatings profile={p} />
+            </React.Fragment>
+          ))}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gridColumn: "1 / -1",
+            }}
+          >
+            <Typography variant="h5" textAlign="center" fontWeight="bold">
+              Заминусовые
+            </Typography>
+          </Box>
+          {badTop.profiles.map((p, i) => (
+            <React.Fragment key={p.id}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography variant="h5" fontWeight="bold">
+                  {i + 1}
+                </Typography>
+              </Box>
+              <ProfileCell showRatings profile={p} />
+            </React.Fragment>
+          ))}
+        </Box>
+      )}
     </Stack>
   );
 };

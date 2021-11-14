@@ -22,6 +22,9 @@ interface props {
   showRatings?: boolean;
   showSold?: boolean;
   showBought?: boolean;
+  showViews?: boolean;
+  showFriends?: boolean;
+  showSubscribers?: boolean;
 }
 
 const ProfileCell: React.FC<props> = ({
@@ -31,6 +34,9 @@ const ProfileCell: React.FC<props> = ({
   showRatings,
   showBought,
   showSold,
+  showViews,
+  showFriends,
+  showSubscribers,
 }) => {
   const getImageByRole = () => {
     switch (profile.role) {
@@ -98,6 +104,48 @@ const ProfileCell: React.FC<props> = ({
           }}
         >
           Куплено: {profile.boughtProducts}
+        </Typography>
+      );
+    } else if (showViews) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Просмотров: {profile.views}
+        </Typography>
+      );
+    } else if (showFriends) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Друзей: {profile.level}
+        </Typography>
+      );
+    } else if (showSubscribers) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Подписчиков: {profile.level}
         </Typography>
       );
     } else {
