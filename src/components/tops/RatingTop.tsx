@@ -102,7 +102,7 @@ const RatingTop = () => {
             }}
           >
             <Typography variant="h5" textAlign="center" fontWeight="bold">
-              Заминусовые
+              По отрицательной
             </Typography>
           </Box>
           {badTop.profiles.map((p, i) => (
