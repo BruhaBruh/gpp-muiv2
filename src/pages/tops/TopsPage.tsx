@@ -2,6 +2,7 @@ import { Stack } from "@mui/material";
 import React from "react";
 import BoughtTop from "../../components/tops/BoughtTop";
 import FriendsTop from "../../components/tops/FriendsTop";
+import LevelTop from "../../components/tops/LevelTop";
 import RatingTop from "../../components/tops/RatingTop";
 import SoldTop from "../../components/tops/SoldTop";
 import SubscribersTop from "../../components/tops/SubscribersTop";
@@ -32,6 +33,7 @@ const TopsPage = () => {
         <StyledTab label="Друзьям" value={TopBy.Friends} />
         <StyledTab label="Подписчикам" value={TopBy.Subscribers} />
         <StyledTab label="Рейтингу" value={TopBy.Rating} />
+        <StyledTab label="Лет в городе" value={TopBy.Level} />
         <StyledTab
           label="Проданным товарам/услугам"
           value={TopBy.Soldproducts}
@@ -47,6 +49,7 @@ const TopsPage = () => {
       {currentTab === TopBy.Views && <ViewsTop />}
       {currentTab === TopBy.Friends && <FriendsTop />}
       {currentTab === TopBy.Subscribers && <SubscribersTop />}
+      {currentTab === TopBy.Level && <LevelTop />}
     </Stack>
   );
 };

@@ -10,6 +10,7 @@ export const initialState: TopsState = {
   views: [],
   friends: [],
   subscribers: [],
+  level: [],
 };
 
 export const topsSlice = createSlice({
@@ -40,6 +41,9 @@ export const topsSlice = createSlice({
     setSubscribers: (state, action: PayloadAction<Profile[]>) => {
       state.subscribers = action.payload;
     },
+    setLevel: (state, action: PayloadAction<Profile[]>) => {
+      state.level = action.payload;
+    },
   },
 });
 
@@ -51,6 +55,7 @@ export const {
   setViews,
   setFriends,
   setSubscribers,
+  setLevel,
 } = topsSlice.actions;
 
 export default topsSlice.reducer;

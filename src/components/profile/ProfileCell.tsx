@@ -14,6 +14,7 @@ import { Profile, Role } from "../../graphql/graphql";
 import { getLastOnline } from "../../redux/userData/types";
 import CellR from "../ui/CellR";
 import ProfileIcons from "./ProfileIcons";
+import RatingBar from "./RatingBar";
 
 interface props {
   profile: Profile;
@@ -25,6 +26,7 @@ interface props {
   showViews?: boolean;
   showFriends?: boolean;
   showSubscribers?: boolean;
+  showLevel?: boolean;
 }
 
 const ProfileCell: React.FC<props> = ({
@@ -37,6 +39,7 @@ const ProfileCell: React.FC<props> = ({
   showViews,
   showFriends,
   showSubscribers,
+  showLevel,
 }) => {
   const getImageByRole = () => {
     switch (profile.role) {
@@ -66,17 +69,20 @@ const ProfileCell: React.FC<props> = ({
   const getSubComponent = () => {
     if (showRatings) {
       return (
-        <Typography
-          variant="subtitle2"
-          sx={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            textTransform: "none",
-          }}
-        >
-          Рейтинг: {profile.ratings}
-        </Typography>
+        <>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+            }}
+          >
+            Рейтинг: {profile.ratings.total}
+          </Typography>
+          <RatingBar rating={profile.ratings} />
+        </>
       );
     } else if (showSold) {
       return (
@@ -146,6 +152,20 @@ const ProfileCell: React.FC<props> = ({
           }}
         >
           Подписчиков: {profile.level}
+        </Typography>
+      );
+    } else if (showLevel) {
+      return (
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            textTransform: "none",
+          }}
+        >
+          Лет в городе: {profile.level}
         </Typography>
       );
     } else {

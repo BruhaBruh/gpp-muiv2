@@ -52,7 +52,12 @@ const ProfilePage = () => {
           avatar
           banner
           nickname
-          ratings
+          ratings {
+            total
+            positive
+            negative
+            your
+          }
           status
           description
           views

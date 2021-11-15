@@ -760,7 +760,7 @@ export type Profile = {
   /** Телефон */
   phone?: Maybe<Scalars['Int']>;
   /** Рейтинги */
-  ratings: Scalars['Int'];
+  ratings: ProfileRating;
   /** Роль */
   role?: Maybe<Scalars['String']>;
   /** Роли в дискорде */
@@ -785,6 +785,14 @@ export type Profile = {
   views: Scalars['Int'];
   /** Профессия */
   work?: Maybe<Scalars['String']>;
+};
+
+export type ProfileRating = {
+  __typename?: 'ProfileRating';
+  negative: Scalars['Int'];
+  positive: Scalars['Int'];
+  total: Scalars['Int'];
+  your: Scalars['Int'];
 };
 
 export type ProfileSearchResult = {
@@ -1216,6 +1224,7 @@ export enum TopBy {
   Badrating = 'BADRATING',
   Boughtproducts = 'BOUGHTPRODUCTS',
   Friends = 'FRIENDS',
+  Level = 'LEVEL',
   Rating = 'RATING',
   Soldproducts = 'SOLDPRODUCTS',
   Subscribers = 'SUBSCRIBERS',
@@ -1379,6 +1388,7 @@ export type ResolversTypes = {
   ProductSearchResult: ResolverTypeWrapper<ProductSearchResult>;
   ProductSort: ProductSort;
   Profile: ResolverTypeWrapper<Profile>;
+  ProfileRating: ResolverTypeWrapper<ProfileRating>;
   ProfileSearchResult: ResolverTypeWrapper<ProfileSearchResult>;
   ProfileStatus: ResolverTypeWrapper<ProfileStatus>;
   Query: ResolverTypeWrapper<{}>;
@@ -1449,6 +1459,7 @@ export type ResolversParentTypes = {
   Product: Product;
   ProductSearchResult: ProductSearchResult;
   Profile: Profile;
+  ProfileRating: ProfileRating;
   ProfileSearchResult: ProfileSearchResult;
   ProfileStatus: ProfileStatus;
   Query: {};
@@ -1677,7 +1688,7 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   level?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   nickname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phone?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  ratings?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  ratings?: Resolver<ResolversTypes['ProfileRating'], ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   roles?: Resolver<Array<ResolversTypes['Role']>, ParentType, ContextType>;
   server?: Resolver<ResolversTypes['ObjectID'], ParentType, ContextType>;
@@ -1690,6 +1701,14 @@ export type ProfileResolvers<ContextType = any, ParentType extends ResolversPare
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   views?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   work?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ProfileRatingResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProfileRating'] = ResolversParentTypes['ProfileRating']> = {
+  negative?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  positive?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  your?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1872,6 +1891,7 @@ export type Resolvers<ContextType = any> = {
   Product?: ProductResolvers<ContextType>;
   ProductSearchResult?: ProductSearchResultResolvers<ContextType>;
   Profile?: ProfileResolvers<ContextType>;
+  ProfileRating?: ProfileRatingResolvers<ContextType>;
   ProfileSearchResult?: ProfileSearchResultResolvers<ContextType>;
   ProfileStatus?: ProfileStatusResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

@@ -28,6 +28,7 @@ import { getSex } from "../../redux/userData/types";
 import Cell from "../ui/Cell";
 import IconWrapper from "../ui/IconWrapper";
 import ProfileCell from "./ProfileCell";
+import RatingBar from "./RatingBar";
 
 interface props {
   updateProfile: () => void;
@@ -290,7 +291,7 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
           endIcon={
             profileId !== currentProfile?.id && (
               <Select
-                defaultValue="0"
+                defaultValue={currentProfile?.ratings.your.toString()}
                 onChange={(e) => {
                   switch (e.target.value) {
                     case "0": {
@@ -324,7 +325,13 @@ const ProfileBodyInfo: React.FC<props> = ({ updateProfile }) => {
           }
           sx={{ textTransform: "none" }}
         >
-          {currentProfile && currentProfile.ratings}
+          {currentProfile && currentProfile.ratings.total}
+          {currentProfile && (
+            <RatingBar
+              rating={currentProfile.ratings}
+              sx={{ marginLeft: "8px" }}
+            />
+          )}
         </Cell>
       </Stack>
       {currentProfile && currentProfile.roles.length !== 0 && (

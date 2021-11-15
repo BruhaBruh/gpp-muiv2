@@ -8,4 +8,5 @@ export interface TopsState {
   views: Profile[];
   friends: Profile[];
   subscribers: Profile[];
+  level: Profile[];
 }

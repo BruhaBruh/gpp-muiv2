@@ -23,7 +23,11 @@ const RatingTop = () => {
           nickname
           lastOnline
           role
-          ratings
+          ratings {
+            total
+            negative
+            positive
+          }
           user {
             permissions
           }
@@ -37,7 +41,11 @@ const RatingTop = () => {
           nickname
           lastOnline
           role
-          ratings
+          ratings {
+            total
+            negative
+            positive
+          }
           user {
             permissions
           }
