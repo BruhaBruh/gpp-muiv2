@@ -84,7 +84,7 @@ const DonateHeader = () => {
       >
         <Box>
           <Cell fullWidth size="large" onClick={openTrefDonate}>
-            Баланс треф: {trefData?.getTref}
+            Баланс треф: {trefData?.getTref}♣
           </Cell>
         </Box>
       </Tooltip>
