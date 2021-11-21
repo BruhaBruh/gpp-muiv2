@@ -1,18 +1,10 @@
-import { Badge, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import {
   Icon24Back,
-  Icon28AdvertisingOutline,
   Icon28ChevronRightOutline,
-  Icon28DiamondOutline,
   Icon28DoorArrowLeftOutline,
   Icon28DoorArrowRightOutline,
-  Icon28Newsfeed,
-  Icon28Notifications,
-  Icon28ServicesOutline,
   Icon28SettingsOutline,
-  Icon28ShoppingCartOutline,
-  Icon28StatisticsOutline,
-  Icon28UserCircleOutline,
   Icon28UsersOutline,
 } from "@vkontakte/icons";
 import React from "react";
@@ -20,7 +12,6 @@ import { useAppSelector } from "../../../hooks/redux";
 import Cell from "../Cell";
 import IconWrapper from "../IconWrapper";
 import SidebarCell from "./SidebarCell";
-
 interface props {
   showBack?: boolean;
   setShow?: (value: React.SetStateAction<boolean>) => void;
@@ -28,11 +19,8 @@ interface props {
 
 const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
   const size = 28;
-  const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
-  const profileId = useAppSelector((state) => state.userData.profileId);
-  const chats = useAppSelector((state) => state.chats.chats.map((c) => c.chat));
-  const notifications = useAppSelector(
-    (state) => state.notifications.notifications
+  const isAuthenticated = useAppSelector(
+    (state) => state.userData.isAuthenticated
   );
 
   return (
@@ -43,169 +31,16 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
         paddingBottom: (theme) => theme.spacing(2),
       }}
     >
-      {isLoggedIn ? (
+      {isAuthenticated ? (
         <>
-          {!!profileId && (
-            <SidebarCell
-              to={"/profile/" + profileId}
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
-                >
-                  <Icon28UserCircleOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Мой профиль
-            </SidebarCell>
-          )}
-          {!!profileId && (
-            <SidebarCell
-              to="/shop"
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
-                >
-                  <Icon28ShoppingCartOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Товары
-            </SidebarCell>
-          )}
-          {!!profileId && (
-            <SidebarCell
-              to="/services"
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
-                >
-                  <Icon28ServicesOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Услуги
-            </SidebarCell>
-          )}
-          {/*!!profileId && (
-            <SidebarCell
-              to="/chats"
-              startIcon={
-                <Badge
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  badgeContent={
-                    chats.filter((chat) => !chat.lastMessage.readed).length
-                  }
-                  max={99}
-                  color={"primary"}
-                  sx={{ "& .MuiBadge-badge": { transform: "scale(0.75)" } }}
-                >
-                  <IconWrapper
-                    size={size}
-                    sx={{ color: (theme) => theme.palette.text.primary }}
-                  >
-                    <Icon28MessagesOutline />
-                  </IconWrapper>
-                </Badge>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Чаты
-            </SidebarCell>
-            )*/}
-          {!!profileId && (
-            <SidebarCell
-              to="/profiles"
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
-                >
-                  <Icon28UsersOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Все профили
-            </SidebarCell>
-          )}
-          {!!profileId && (
-            <SidebarCell
-              to="/tops"
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
-                >
-                  <Icon28StatisticsOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Топ профилей
-            </SidebarCell>
-          )}
-          {!!profileId && (
-            <SidebarCell
-              to="/donate"
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: process.env.REACT_APP_PREMIUM_COLOR }}
-                >
-                  <Icon28DiamondOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Донат
-            </SidebarCell>
-          )}
           <SidebarCell
-            to="/info"
+            to="/u"
             startIcon={
               <IconWrapper
                 size={size}
                 sx={{ color: (theme) => theme.palette.text.primary }}
               >
-                <Icon28Newsfeed />
+                <Icon28UsersOutline />
               </IconWrapper>
             }
             endIcon={
@@ -214,36 +49,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
               </IconWrapper>
             }
           >
-            Информация
-          </SidebarCell>
-          <SidebarCell
-            to="/notifications"
-            startIcon={
-              <Badge
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                badgeContent={notifications.length}
-                max={99}
-                color={"primary"}
-                sx={{ "& .MuiBadge-badge": { transform: "scale(0.75)" } }}
-              >
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.text.primary }}
-                >
-                  <Icon28Notifications />
-                </IconWrapper>
-              </Badge>
-            }
-            endIcon={
-              <IconWrapper size={size}>
-                <Icon28ChevronRightOutline />
-              </IconWrapper>
-            }
-          >
-            Оповещения
+            Профили
           </SidebarCell>
           <SidebarCell
             to="/settings"
@@ -263,28 +69,8 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
           >
             Настройки
           </SidebarCell>
-          {!!profileId && (
-            <SidebarCell
-              to="/report"
-              startIcon={
-                <IconWrapper
-                  size={size}
-                  sx={{ color: (theme) => theme.palette.info.main }}
-                >
-                  <Icon28AdvertisingOutline />
-                </IconWrapper>
-              }
-              endIcon={
-                <IconWrapper size={size}>
-                  <Icon28ChevronRightOutline />
-                </IconWrapper>
-              }
-            >
-              Репорт
-            </SidebarCell>
-          )}
           <Cell
-            href={"/auth/logout"}
+            href={"api/auth/logout"}
             color="error"
             size="medium"
             sx={{
@@ -313,44 +99,20 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
               </IconWrapper>
             }
           >
-            Выход
+            Выйти
           </Cell>
         </>
       ) : (
         <>
-          <SidebarCell
-            to="/settings"
-            startIcon={
-              <IconWrapper
-                size={size}
-                sx={{ color: (theme) => theme.palette.text.primary }}
-              >
-                <Icon28SettingsOutline />
-              </IconWrapper>
-            }
-            endIcon={
-              <IconWrapper size={size}>
-                <Icon28ChevronRightOutline />
-              </IconWrapper>
-            }
-          >
-            Настройки
-          </SidebarCell>
           <Cell
-            href={"/auth/login"}
+            href={"/api/auth/login"}
             color="primary"
             size="medium"
             sx={{
               justifyContent: "start",
             }}
             startIcon={
-              <IconWrapper
-                component="span"
-                size={size}
-                sx={{
-                  color: (theme) => theme.palette.primary.main,
-                }}
-              >
+              <IconWrapper component="span" size={size}>
                 <Icon28DoorArrowLeftOutline />
               </IconWrapper>
             }

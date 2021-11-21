@@ -1,11 +1,4 @@
-import {
-  Button,
-  ListItemText,
-  Paper,
-  Stack,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 import { Icon24Back } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
@@ -15,8 +8,6 @@ import StyledTab from "../../components/ui/StyledTab";
 import StyledTabs from "../../components/ui/StyledTabs";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
-  setHideBlacklistedProfiles,
-  setHideGlobalChat,
   setHorizontalSnackbarPosition,
   setVerticalSnackbarPosition,
 } from "../../redux/settings/reducer";
@@ -25,12 +16,6 @@ import { setSidebarHeader } from "../../redux/ui/reducer";
 const InterfacePage = () => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const isHideGlobalChat = useAppSelector(
-    (state) => state.settings.hideGlobalChat
-  );
-  const isHideBlacklisted = useAppSelector(
-    (state) => state.settings.hideBlacklistedProfiles
-  );
   const horizontalPosition = useAppSelector(
     (state) => state.settings.horizontalSnackbarPosition
   );
@@ -70,84 +55,6 @@ const InterfacePage = () => {
         maxWidth: (theme) => theme.breakpoints.values.lg,
       }}
     >
-      <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
-        <Stack spacing={2}>
-          <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
-          >
-            Основные
-          </Typography>
-          <Button
-            size="large"
-            color="inherit"
-            onClick={() => dispatch(setHideGlobalChat(!isHideGlobalChat))}
-          >
-            <ListItemText
-              primary={
-                <Typography
-                  variant="body1"
-                  textAlign="left"
-                  sx={{ textTransform: "none" }}
-                >
-                  Скрыть глобальный чат
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  textAlign="left"
-                  sx={{
-                    textTransform: "none",
-                    color: (theme) => theme.palette.text.secondary,
-                  }}
-                >
-                  На страницах услуг и товаров будет скрыт глобальный чат
-                </Typography>
-              }
-              sx={{ flex: 1 }}
-            />
-            <Switch checked={isHideGlobalChat} />
-          </Button>
-          <Button
-            size="large"
-            color="inherit"
-            onClick={() =>
-              dispatch(setHideBlacklistedProfiles(!isHideBlacklisted))
-            }
-          >
-            <ListItemText
-              primary={
-                <Typography
-                  variant="body1"
-                  textAlign="left"
-                  sx={{ textTransform: "none" }}
-                >
-                  Скрыть заблокированные профили
-                </Typography>
-              }
-              secondary={
-                <Typography
-                  variant="body2"
-                  textAlign="left"
-                  sx={{
-                    textTransform: "none",
-                    color: (theme) => theme.palette.text.secondary,
-                  }}
-                >
-                  Карточки и товары заблокированных профилей не будут
-                  отображаться
-                </Typography>
-              }
-              sx={{ flex: 1 }}
-            />
-            <Switch checked={isHideBlacklisted} />
-          </Button>
-        </Stack>
-      </Paper>
       <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
         <Stack spacing={2}>
           <Typography

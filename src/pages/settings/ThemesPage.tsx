@@ -7,7 +7,7 @@ import {
   Radio,
   Stack,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import { Icon24Add, Icon24Back, Icon28DeleteOutline } from "@vkontakte/icons";
 import React from "react";
@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   removeCustomTheme,
   setSidebarHeader,
-  setTheme,
+  setTheme
 } from "../../redux/ui/reducer";
 import { darkThemeOptions } from "../../utils/theme";
 
@@ -449,6 +449,8 @@ const ThemesPage = () => {
                         overflow: "hidden",
                         border: (theme) => `1px solid ${theme.palette.divider}`,
                         padding: 0,
+                        width: "max-content",
+                        margin: "0 auto",
                       }}
                       onClick={() => dispatch(setTheme(i))}
                     >

@@ -16,7 +16,10 @@ const SidebarCell: React.FC<props> = ({
   to,
   ...props
 }) => {
-  const match = useRouteMatch(to);
+  const match = useRouteMatch({
+    path: to,
+    exact: true,
+  });
 
   return (
     <ButtonR

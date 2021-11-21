@@ -1,6 +1,5 @@
 import { Paper, Stack } from "@mui/material";
 import {
-  Icon24HideOutline,
   Icon28ChevronRightOutline,
   Icon28GridLayoutOutline,
   Icon28PaletteOutline,
@@ -8,11 +7,9 @@ import {
 import React from "react";
 import CellR from "../../components/ui/CellR";
 import IconWrapper from "../../components/ui/IconWrapper";
-import { useAppSelector } from "../../hooks/redux";
 
 const SettingsPage = () => {
   const size = 28;
-  const profileId = useAppSelector((state) => state.userData.profileId);
 
   return (
     <Paper
@@ -47,32 +44,6 @@ const SettingsPage = () => {
           }
         >
           Внешний вид
-        </CellR>
-        <CellR
-          to="/settings/blacklist"
-          disabled={!profileId}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={size}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24HideOutline />
-            </IconWrapper>
-          }
-          endIcon={
-            <IconWrapper
-              component="span"
-              size={size}
-              sx={{
-                color: (theme) => theme.palette.info.main,
-              }}
-            >
-              <Icon28ChevronRightOutline />
-            </IconWrapper>
-          }
-        >
-          Чёрный список
         </CellR>
         <CellR
           to="/settings/interface"

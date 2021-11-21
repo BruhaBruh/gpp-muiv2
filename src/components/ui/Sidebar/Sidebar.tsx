@@ -9,7 +9,7 @@ import {
 import { Icon28Menu } from "@vkontakte/icons";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.svg";
 import { useAppSelector } from "../../../hooks/redux";
 import ButtonR from "../ButtonR";
 import Drawer from "../Drawer";
@@ -63,7 +63,7 @@ const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
         ...sx,
         display: "grid",
         gridTemplateColumns: "1fr",
-        gridTemplateRows: "48px 1fr",
+        gridTemplateRows: "64px 1fr",
         minHeight: "100vh",
         borderRadius: 0,
         paddingLeft: (theme) => theme.spacing(2),
@@ -83,7 +83,7 @@ const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
           sidebarHeader
         ) : (
           <ButtonR color="inherit" to="/" fullWidth sx={{ height: "100%" }}>
-            <LazyLoadImage src={logo} height="100%" />
+            <LazyLoadImage src={logo} height="32px" />
             <Typography
               variant="subtitle1"
               fontWeight="bold"

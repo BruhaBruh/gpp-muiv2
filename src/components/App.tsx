@@ -1,60 +1,25 @@
-import { gql, useMutation } from "@apollo/client";
-import { Container, Stack } from "@mui/material";
+import { Container, LinearProgress, Stack } from "@mui/material";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
-import ServerPage from "../pages/discord/ServerPage";
-import ValidatePage from "../pages/discord/ValidatePage";
-import DonatePage from "../pages/donate/DonatePage";
-import InfoPage from "../pages/info/InfoPage";
-import NewsPage from "../pages/news/NewsPage";
-import NotificationsPage from "../pages/notifications/NotificationsPage";
 import Page404 from "../pages/Page404";
-import ProfilePage from "../pages/profile/ProfilePage";
-import ProfilesPage from "../pages/profile/ProfilesPage";
-import ReportPage from "../pages/report/ReportPage";
-import ReportsPage from "../pages/report/ReportsPage";
-import ServicesPage from "../pages/services/ServicesPage";
-import BlacklistPage from "../pages/settings/BlacklistPage";
 import InterfacePage from "../pages/settings/InterfacePage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
-import ProductsPage from "../pages/shop/ProductsPage";
-import TopsPage from "../pages/tops/TopsPage";
+import UsersPage from "../pages/user/UsersPage";
 import Head from "./ui/Head";
 import PageWrapper from "./ui/PageWrapper";
 import Sidebar from "./ui/Sidebar/Sidebar";
 
 function App() {
-  const redirect = useAppSelector((state) => state.settings.redirect);
-  const onServer = useAppSelector((state) => state.userData.onServer);
-  const isValidated = useAppSelector((state) => state.userData.isValidated);
   const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
   const isLoading = useAppSelector((state) => state.userData.isLoading);
-  const profile = useAppSelector((state) => state.userData.profileId);
-  const [updateOnline] = useMutation(gql`
-    mutation updateOnline($id: ObjectID!) {
-      updateLastOnline(id: $id) {
-        lastOnline
-      }
-    }
-  `);
-
-  React.useEffect(() => {
-    if (!profile) return;
-    const i = setInterval(
-      () =>
-        updateOnline({
-          variables: {
-            id: profile,
-          },
-        }),
-      15000
-    );
-    return () => clearInterval(i);
-  }, [profile, updateOnline]);
+  const isAuthenticated = useAppSelector(
+    (state) => state.userData.isAuthenticated
+  );
+  const redirect = useAppSelector((state) => state.settings.redirect);
 
   return (
     <Container
@@ -71,8 +36,55 @@ function App() {
     >
       <Stack spacing={0} direction={"row"} sx={{ position: "relative" }}>
         <Sidebar />
-
-        {!isLoading && (
+        <PageWrapper>
+          {isLoading ? (
+            <LinearProgress />
+          ) : isAuthenticated ? (
+            isLoggedIn ? (
+              <Switch>
+                <Route exact path="/u/:id">
+                  <Head name="Профиль" />
+                  user
+                </Route>
+                <Route exact path="/u">
+                  <Head name="Профили" />
+                  <UsersPage />
+                </Route>
+                <Route exact path="/settings">
+                  <Head name="Настройки" />
+                  <SettingsPage />
+                </Route>
+                <Route exact path="/settings/themes">
+                  <Head name="Внешний вид" />
+                  <ThemesPage />
+                </Route>
+                <Route exact path="/settings/themes/create">
+                  <Head name="Создание темы" />
+                  <ThemeCreatePage />
+                </Route>
+                <Route exact path="/settings/interface">
+                  <Head name="Настройка интерфейса" />
+                  <InterfacePage />
+                </Route>
+                <Route exact path="/">
+                  <Redirect to={redirect} />
+                </Route>
+                <Route exact path="*">
+                  <Head name="Ошибка 404" />
+                  <Page404 />
+                </Route>
+              </Switch>
+            ) : (
+              <>Вы не зарегистрированы на сервере Minecraft {/* TODO page */}</>
+            )
+          ) : (
+            <>
+              <Head name="Авторизация" />
+              <AuthPage />
+            </>
+          )}
+        </PageWrapper>
+        {/*!isLoading && (
           <>
             {!isLoggedIn && (
               <PageWrapper>
@@ -115,18 +127,6 @@ function App() {
                     <ServicesPage />
                   </PageWrapper>
                 </Route>
-                {/*<Route exact path="/chats">
-                      <Head name="Чаты" />
-                      <PageWrapper>
-                        <ChatsPage />
-                      </PageWrapper>
-                    </Route>
-                    <Route exact path="/chat/:id">
-                      <Head name="Чат" />
-                      <PageWrapper>
-                        <ChatPage />
-                      </PageWrapper>
-                </Route>*/}
                 <Route exact path="/profiles">
                   <Head name="Все профили" />
                   <PageWrapper>
@@ -216,7 +216,7 @@ function App() {
               </Switch>
             )}
           </>
-        )}
+        )*/}
       </Stack>
     </Container>
   );

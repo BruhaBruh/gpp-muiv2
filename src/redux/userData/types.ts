@@ -1,30 +1,31 @@
-import { Permissions, Rating, Role, Sex } from "../../graphql/graphql";
+import { UserRoleEnum } from "../../graphql/types";
 
-export const checkPermissions = (
-  allow: Permissions,
-  userPermissions: Permissions[] | undefined
-): boolean => {
-  if (!userPermissions) return false;
-  return (
-    userPermissions.includes(allow) || userPermissions.includes(Permissions.All)
-  );
-};
+export interface UserDataState {
+  isLoggedIn: boolean;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  nickname: string;
+  userRole: UserRoleEnum;
+  userId: number;
+  permissions: number;
+  avatar: string;
+}
 
-export const getSex = (sex: Sex) => {
-  switch (sex) {
-    case "MALE":
-      return "Мужчина";
-    case "FEMALE":
-      return "Женщина";
+export const getUserRoleString = (userRole: UserRoleEnum): string => {
+  switch (userRole) {
+    case UserRoleEnum.None:
+      return "Игрок";
+    case UserRoleEnum.JrModerator:
+      return "Мл. Модератор";
+    case UserRoleEnum.Moderator:
+      return "Модератор";
+    case UserRoleEnum.Admin:
+      return "Администратор";
+    case UserRoleEnum.SiteDeveloper:
+      return "Разработчик сайта";
     default:
-      return "Не указан";
+      return "";
   }
-};
-
-export const countRating = (ratings: Rating[]) => {
-  const positiveRatings = ratings.filter((rating) => rating.positive).length;
-  const negativeRatings = ratings.filter((rating) => !rating.positive).length;
-  return positiveRatings - negativeRatings;
 };
 
 export const ageToStr = (age: number): string => {
@@ -58,6 +59,25 @@ export const minuteToNum = (n: number): string => {
     return "минута";
   }
   return "минут";
+};
+
+export const getSex = (sex: number) => {
+  switch (sex) {
+    case 1:
+      return "Мужчина";
+    case 2:
+      return "Женщина";
+    default:
+      return "Не указан";
+  }
+};
+
+export const checkPermissions = (
+  allow: number,
+  userPermissions: number | undefined
+): boolean => {
+  if (!userPermissions) return false;
+  return (userPermissions & (allow % 2 === 0 ? allow + 1 : allow)) !== 0;
 };
 
 export const getLastOnline = (lo: string): string => {
@@ -127,17 +147,3 @@ export const getLastOnline = (lo: string): string => {
     return differense.inMinutes + " " + minuteToNum(differense.inMinutes);
   }
 };
-
-export interface UserDataState {
-  isLoggedIn: boolean;
-  isValidated: boolean;
-  onServer: boolean;
-  nickname: string;
-  profileId: number;
-  permissions: Permissions[];
-  roles: Role[];
-  serverId: number;
-  userId: number;
-  isLoading: boolean;
-  blacklist: number[];
-}
