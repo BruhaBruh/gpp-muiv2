@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import {
+  Icon24AdvertisingOutline,
   Icon24Back,
   Icon28ChevronRightOutline,
   Icon28DoorArrowLeftOutline,
@@ -50,6 +51,24 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             }
           >
             Профили
+          </SidebarCell>
+          <SidebarCell
+            to="/r"
+            startIcon={
+              <IconWrapper
+                size={size}
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              >
+                <Icon24AdvertisingOutline />
+              </IconWrapper>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Репорты
           </SidebarCell>
           <SidebarCell
             to="/settings"

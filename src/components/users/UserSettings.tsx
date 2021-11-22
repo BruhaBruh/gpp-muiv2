@@ -298,6 +298,7 @@ const UserSettings: React.FC<{
               name="description"
               value={form.values.description}
               multiline
+              maxRows={5}
               onChange={form.handleChange}
             />
             <IconWrapper

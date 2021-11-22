@@ -1,9 +1,15 @@
 import { Container, LinearProgress, Stack } from "@mui/material";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { ReportSubType, ReportType } from "../graphql/types";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
 import Page404 from "../pages/Page404";
+import BugPage from "../pages/reports/BugPage";
+import ComplaintPage from "../pages/reports/ComplaintPage";
+import CreateReportPage from "../pages/reports/CreateReportPage";
+import FeaturePage from "../pages/reports/FeaturePage";
+import ReportsPage from "../pages/reports/ReportsPage";
 import InterfacePage from "../pages/settings/InterfacePage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
@@ -50,6 +56,64 @@ function App() {
                 <Route exact path="/u">
                   <Head name="Профили" />
                   <UsersPage />
+                </Route>
+                <Route exact path="/r">
+                  <Head name="Репорты" />
+                  <ReportsPage />
+                </Route>
+                <Route exact path="/r/c">
+                  <Head name="Жалоба" /> {/* › */}
+                  <ComplaintPage />
+                </Route>
+                <Route exact path="/r/c/admin">
+                  <Head name="Жалоба на Администратора" /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Report}
+                    subtype={ReportSubType.Admin}
+                  />
+                </Route>
+                <Route exact path="/r/c/user">
+                  <Head name="Жалоба на Игрока" /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Report}
+                    subtype={ReportSubType.User}
+                  />
+                </Route>
+                <Route exact path="/r/b">
+                  <Head name="Баг" /> {/* › */}
+                  <BugPage />
+                </Route>
+                <Route exact path="/r/b/server">
+                  <Head name="Баг сервера" /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Bug}
+                    subtype={ReportSubType.Server}
+                  />
+                </Route>
+                <Route exact path="/r/b/site">
+                  <Head name="Баг сайта" /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Bug}
+                    subtype={ReportSubType.Site}
+                  />
+                </Route>
+                <Route exact path="/r/f">
+                  <Head name="Предложение" /> {/* › */}
+                  <FeaturePage />
+                </Route>
+                <Route exact path="/r/f/server">
+                  <Head name="Предложение для сервера" /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Feature}
+                    subtype={ReportSubType.Server}
+                  />
+                </Route>
+                <Route exact path="/r/f/site">
+                  <Head name="Предложение для сайта" /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Feature}
+                    subtype={ReportSubType.Site}
+                  />
                 </Route>
                 <Route exact path="/settings">
                   <Head name="Настройки" />

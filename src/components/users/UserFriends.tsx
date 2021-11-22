@@ -17,7 +17,7 @@ const UserFriends = () => {
       }}
     >
       {user.friendUsers.map((fu) => (
-        <UserCell user={fu.friendNavigation} />
+        <UserCell key={fu.friendId} user={fu.friendNavigation} />
       ))}
       {user.friendUsers.length === 0 && (
         <Typography variant="subtitle1">Нет друзей</Typography>

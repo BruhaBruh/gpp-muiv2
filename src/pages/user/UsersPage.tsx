@@ -190,7 +190,7 @@ const UsersPage = () => {
         }}
       >
         {users.map((u) => (
-          <UserCell user={u} />
+          <UserCell key={u.userId} user={u} />
         ))}
       </Box>
       {usersLoading && <LinearProgress />}

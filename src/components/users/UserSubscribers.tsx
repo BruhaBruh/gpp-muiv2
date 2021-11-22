@@ -17,7 +17,7 @@ const UserSubscribers = () => {
       }}
     >
       {user.subscriberUsers.map((su) => (
-        <UserCell user={su.subscriberNavigation} />
+        <UserCell key={su.subscriberId} user={su.subscriberNavigation} />
       ))}
       {user.subscriberUsers.length === 0 && (
         <Typography variant="subtitle1">Нет подписчиков</Typography>

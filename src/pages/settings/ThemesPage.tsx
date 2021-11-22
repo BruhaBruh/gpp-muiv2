@@ -7,7 +7,7 @@ import {
   Radio,
   Stack,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
 import { Icon24Add, Icon24Back, Icon28DeleteOutline } from "@vkontakte/icons";
 import React from "react";
@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   removeCustomTheme,
   setSidebarHeader,
-  setTheme
+  setTheme,
 } from "../../redux/ui/reducer";
 import { darkThemeOptions } from "../../utils/theme";
 
@@ -67,13 +67,10 @@ const ThemesPage = () => {
       }}
     >
       <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Палитра
           </Typography>
@@ -424,13 +421,10 @@ const ThemesPage = () => {
           alignSelf: "stretch",
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Темы
           </Typography>

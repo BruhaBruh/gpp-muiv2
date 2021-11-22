@@ -14,7 +14,6 @@ import {
 import { setSidebarHeader } from "../../redux/ui/reducer";
 
 const InterfacePage = () => {
-  const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const horizontalPosition = useAppSelector(
     (state) => state.settings.horizontalSnackbarPosition
@@ -22,6 +21,7 @@ const InterfacePage = () => {
   const verticalPosition = useAppSelector(
     (state) => state.settings.verticalSnackbarPosition
   );
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     dispatch(
@@ -56,13 +56,10 @@ const InterfacePage = () => {
       }}
     >
       <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Оповещения
           </Typography>

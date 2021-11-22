@@ -277,6 +277,7 @@ const UserInfo = () => {
               <Stack spacing={1} direction="row">
                 {user.discordRoles.map((r) => (
                   <Cell
+                    key={r.id}
                     startIcon={
                       <Box
                         sx={{

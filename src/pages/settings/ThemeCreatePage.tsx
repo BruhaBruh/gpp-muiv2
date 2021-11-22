@@ -250,13 +250,10 @@ const ThemeCreatePage = () => {
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Предпросмотр
           </Typography>
@@ -319,13 +316,10 @@ const ThemeCreatePage = () => {
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Палитра
           </Typography>

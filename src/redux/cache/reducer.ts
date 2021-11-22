@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../graphql/types";
+import { Report, User } from "../../graphql/types";
 import { CacheState } from "./types";
 
 export const initialState: CacheState = {
   userUpdate: false,
+  reports: [],
+  reportsUpdate: true,
 };
 
 export const cacheSlice = createSlice({
@@ -16,9 +18,33 @@ export const cacheSlice = createSlice({
     setUserUpdate: (state, action: PayloadAction<boolean>) => {
       state.userUpdate = action.payload;
     },
+    addReports: (state, action: PayloadAction<Report[]>) => {
+      state.reports = [
+        ...state.reports.filter(
+          (u) => !action.payload.map((r) => r.reportId).includes(u.reportId)
+        ),
+        ...action.payload,
+      ].sort(
+        (a, b) =>
+          new Date(b.lastMessage?.createdAt).getTime() -
+          new Date(a.lastMessage?.createdAt).getTime()
+      );
+    },
+    setReportsUpdate: (state, action: PayloadAction<boolean>) => {
+      state.reportsUpdate = action.payload;
+    },
+    clearReports: (state) => {
+      state.reports = [];
+    },
   },
 });
 
-export const { setUser, setUserUpdate } = cacheSlice.actions;
+export const {
+  setUser,
+  setUserUpdate,
+  addReports,
+  setReportsUpdate,
+  clearReports,
+} = cacheSlice.actions;
 
 export default cacheSlice.reducer;
