@@ -47,7 +47,7 @@ const PageWrapper: React.FC<BoxProps> = ({ sx, children, ...props }) => {
         <Typography variant="h6" fontWeight="medium">
           {header}
         </Typography>
-        {!lowersm && (
+        {!lowersm && userData.isLoggedIn && (
           <LinkR
             to={`/u/${userData.userId}`}
             underline="none"

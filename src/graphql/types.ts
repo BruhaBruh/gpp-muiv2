@@ -32,6 +32,7 @@ export type Query = {
   __typename?: "Query";
   users?: Maybe<UsersConnection>;
   discordRoles: Array<UserDiscordRole>;
+  status: UserStatus;
   me: User;
   reports?: Maybe<ReportsConnection>;
   reportMessages?: Maybe<ReportMessagesConnection>;
@@ -48,6 +49,10 @@ export type QueryUsersArgs = {
   before?: Maybe<Scalars["String"]>;
   where?: Maybe<UserFilterInput>;
   order?: Maybe<Array<UserSortInput>>;
+};
+
+export type QueryStatusArgs = {
+  id: Scalars["Int"];
 };
 
 export type QueryReportsArgs = {
@@ -76,6 +81,7 @@ export type Mutation = {
   editUser: User;
   startSubscribe: User;
   endSubscribe: User;
+  removeFriend: User;
   setRating: User;
   createReport: Report;
   sendReportMessage: Reportmessage;
@@ -92,6 +98,10 @@ export type MutationStartSubscribeArgs = {
 };
 
 export type MutationEndSubscribeArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationRemoveFriendArgs = {
   id: Scalars["Int"];
 };
 
@@ -440,7 +450,7 @@ export type UserRatingFilterInput = {
   total?: Maybe<ComparableInt32OperationFilterInput>;
   result?: Maybe<ComparableInt32OperationFilterInput>;
   positive?: Maybe<ComparableInt32OperationFilterInput>;
-  nagative?: Maybe<ComparableInt32OperationFilterInput>;
+  negative?: Maybe<ComparableInt32OperationFilterInput>;
   your?: Maybe<ComparableInt32OperationFilterInput>;
 };
 
@@ -460,7 +470,7 @@ export type UserRatingSortInput = {
   total?: Maybe<SortEnumType>;
   result?: Maybe<SortEnumType>;
   positive?: Maybe<SortEnumType>;
-  nagative?: Maybe<SortEnumType>;
+  negative?: Maybe<SortEnumType>;
   your?: Maybe<SortEnumType>;
 };
 
@@ -703,11 +713,12 @@ export type ComparableNullableOfDateTimeOperationFilterInput = {
   nlte?: Maybe<Scalars["DateTime"]>;
 };
 
-export type Notification =
-  | Billnotification
-  | Friendnotification
-  | Subscribernotification
-  | Systemnotification;
+export type UserStatus = {
+  __typename?: "UserStatus";
+  isFriends: Scalars["Boolean"];
+  heIsSubscriber: Scalars["Boolean"];
+  youIsSubscriber: Scalars["Boolean"];
+};
 
 export type UserDiscordRole = {
   __typename?: "UserDiscordRole";
@@ -717,6 +728,12 @@ export type UserDiscordRole = {
   color: Scalars["String"];
   hoist: Scalars["Boolean"];
 };
+
+export type Notification =
+  | Billnotification
+  | Friendnotification
+  | Subscribernotification
+  | Systemnotification;
 
 export type UserEditInput = {
   isBanned?: Maybe<Scalars["Boolean"]>;
@@ -769,7 +786,7 @@ export type UserRating = {
   total: Scalars["Int"];
   result: Scalars["Int"];
   positive: Scalars["Int"];
-  nagative: Scalars["Int"];
+  negative: Scalars["Int"];
   your: Scalars["Int"];
 };
 

@@ -74,7 +74,7 @@ const UsersPage = () => {
         });
       case 2:
         return setWhere({
-          subscriberUsers: { some: { userId: { eq: userId } } },
+          subscriberSubscriberNavigations: { some: { userId: { eq: userId } } },
         });
     }
   }, [afsFilter, userId]);
@@ -117,7 +117,7 @@ const UsersPage = () => {
 
   return (
     <Stack
-      spacing={1}
+      spacing={2}
       sx={{
         margin: "auto",
         maxWidth: (theme) => theme.breakpoints.values.lg,
@@ -185,8 +185,8 @@ const UsersPage = () => {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(288px, 1fr))",
-          gap: (theme) => theme.spacing(2),
+          gridTemplateColumns: "repeat(auto-fill, minmax(256px, 1fr))",
+          gap: (theme) => theme.spacing(1),
         }}
       >
         {users.map((u) => (

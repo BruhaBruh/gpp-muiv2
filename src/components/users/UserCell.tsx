@@ -1,17 +1,8 @@
 import { Avatar, Badge, ListItemText, Paper, Typography } from "@mui/material";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import alchemist from "../../assets/images/roles/alchemist.png";
-import blacksmith from "../../assets/images/roles/blacksmith.png";
-import builder from "../../assets/images/roles/builder.png";
-import crafter from "../../assets/images/roles/crafter.png";
-import farmer from "../../assets/images/roles/farmer.png";
-import fisherman from "../../assets/images/roles/fisherman.png";
-import hunter from "../../assets/images/roles/hunter.png";
-import lumberjack from "../../assets/images/roles/lumberjack.png";
-import miner from "../../assets/images/roles/miner.png";
 import { User } from "../../graphql/types";
-import { getLastOnline } from "../../redux/userData/types";
+import { getImageByRole, getLastOnline } from "../../redux/userData/types";
 import CellR from "../ui/CellR";
 
 interface props {
@@ -19,31 +10,6 @@ interface props {
 }
 
 const UserCell: React.FC<props> = ({ user }) => {
-  const getImageByRole = () => {
-    switch (user.role) {
-      case "Ремесленник":
-        return crafter;
-      case "Шахтёр":
-        return miner;
-      case "Охотник":
-        return hunter;
-      case "Строитель":
-        return builder;
-      case "Кузнец":
-        return blacksmith;
-      case "Плотник":
-        return lumberjack;
-      case "Повар":
-        return alchemist;
-      case "Рыбак":
-        return fisherman;
-      case "Фермер":
-        return farmer;
-      default:
-        return null;
-    }
-  };
-
   return (
     <Paper
       sx={{
@@ -71,7 +37,7 @@ const UserCell: React.FC<props> = ({ user }) => {
           overlap="circular"
           color={"success"}
           sx={{
-            marginRight: (theme) => theme.spacing(2),
+            marginRight: (theme) => theme.spacing(1),
             height: "min-content",
             alignSelf: "center",
             ".MuiBadge-dot": {
@@ -94,11 +60,25 @@ const UserCell: React.FC<props> = ({ user }) => {
           />
         </Badge>
         <ListItemText
-          sx={{ margin: 0, alignSelf: "center" }}
+          sx={{
+            margin: 0,
+            alignSelf: "center",
+            textShadow: (theme) =>
+              `-1px -1px 1px ${theme.palette.getContrastText(
+                theme.palette.text.secondary
+              )}, 1px -1px 1px ${theme.palette.getContrastText(
+                theme.palette.text.secondary
+              )}, -1px 1px 1px ${theme.palette.getContrastText(
+                theme.palette.text.secondary
+              )}, 1px 1px 1px ${theme.palette.getContrastText(
+                theme.palette.text.secondary
+              )}`,
+          }}
           primary={
             <Typography
               variant="body2"
               sx={{
+                padding: "0 2px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
@@ -108,9 +88,9 @@ const UserCell: React.FC<props> = ({ user }) => {
               }}
             >
               {user.nickname}
-              {getImageByRole() !== null && (
+              {getImageByRole(user.role) !== null && (
                 <LazyLoadImage
-                  src={getImageByRole() as any}
+                  src={getImageByRole(user.role) as any}
                   alt={user.role ? user.role : undefined}
                   style={{
                     imageRendering: "pixelated",
@@ -120,7 +100,7 @@ const UserCell: React.FC<props> = ({ user }) => {
                     marginLeft: "auto",
                   }}
                   draggable={false}
-                  height="100%"
+                  height="20px"
                 />
               )}
             </Typography>
@@ -130,6 +110,7 @@ const UserCell: React.FC<props> = ({ user }) => {
               <Typography
                 variant="body2"
                 sx={{
+                  padding: "0 2px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",

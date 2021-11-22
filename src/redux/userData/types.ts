@@ -1,3 +1,12 @@
+import alchemist from "../../assets/images/roles/alchemist.png";
+import blacksmith from "../../assets/images/roles/blacksmith.png";
+import builder from "../../assets/images/roles/builder.png";
+import crafter from "../../assets/images/roles/crafter.png";
+import farmer from "../../assets/images/roles/farmer.png";
+import fisherman from "../../assets/images/roles/fisherman.png";
+import hunter from "../../assets/images/roles/hunter.png";
+import lumberjack from "../../assets/images/roles/lumberjack.png";
+import miner from "../../assets/images/roles/miner.png";
 import { UserRoleEnum } from "../../graphql/types";
 
 export interface UserDataState {
@@ -147,3 +156,38 @@ export const getLastOnline = (lo: string): string => {
     return differense.inMinutes + " " + minuteToNum(differense.inMinutes);
   }
 };
+
+export const getImageByRole = (role: any) => {
+  switch (role) {
+    case "Ремесленник":
+      return crafter;
+    case "Шахтёр":
+      return miner;
+    case "Охотник":
+      return hunter;
+    case "Строитель":
+      return builder;
+    case "Кузнец":
+      return blacksmith;
+    case "Плотник":
+      return lumberjack;
+    case "Повар":
+      return alchemist;
+    case "Рыбак":
+      return fisherman;
+    case "Фермер":
+      return farmer;
+    default:
+      return null;
+  }
+};
+
+export enum Permissions {
+  All = 1,
+  GlobalChatRemove = 2,
+  ModifyPermissions = 4,
+  SetBan = 8,
+  RemoveBan = 16,
+  ShowReports = 32,
+  ModifyRoles = 64,
+}

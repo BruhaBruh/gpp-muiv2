@@ -8,6 +8,7 @@ import InterfacePage from "../pages/settings/InterfacePage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
+import UserPage from "../pages/user/UserPage";
 import UsersPage from "../pages/user/UsersPage";
 import Head from "./ui/Head";
 import PageWrapper from "./ui/PageWrapper";
@@ -44,7 +45,7 @@ function App() {
               <Switch>
                 <Route exact path="/u/:id">
                   <Head name="Профиль" />
-                  user
+                  <UserPage />
                 </Route>
                 <Route exact path="/u">
                   <Head name="Профили" />
