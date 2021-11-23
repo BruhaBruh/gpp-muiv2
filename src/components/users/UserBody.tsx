@@ -56,32 +56,36 @@ const UserBody = () => {
                 Описание
               </Box>
             )}
-            <Box
-              onClick={() => setCurrentTab(UserTabs.Friends)}
-              sx={{
-                color: (theme) =>
-                  currentTab === UserTabs.Friends
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-              alignSelf="center"
-            >
-              Друзья
-            </Box>
-            <Box
-              onClick={() => setCurrentTab(UserTabs.Subscribers)}
-              sx={{
-                color: (theme) =>
-                  currentTab === UserTabs.Subscribers
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-              alignSelf="center"
-            >
-              Подписчики
-            </Box>
+            {!!user.friendUsers.length && (
+              <Box
+                onClick={() => setCurrentTab(UserTabs.Friends)}
+                sx={{
+                  color: (theme) =>
+                    currentTab === UserTabs.Friends
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+                alignSelf="center"
+              >
+                Друзья
+              </Box>
+            )}
+            {!!user.subscriberUsers.length && (
+              <Box
+                onClick={() => setCurrentTab(UserTabs.Subscribers)}
+                sx={{
+                  color: (theme) =>
+                    currentTab === UserTabs.Subscribers
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+                alignSelf="center"
+              >
+                Подписчики
+              </Box>
+            )}
             {userId === user.userId && (
               <Box
                 onClick={() => setCurrentTab(UserTabs.Settings)}
@@ -104,8 +108,12 @@ const UserBody = () => {
       </Paper>
       {currentTab === UserTabs.Info && <UserInfo />}
       {currentTab === UserTabs.Description && <UserDescription />}
-      {currentTab === UserTabs.Friends && <UserFriends />}
-      {currentTab === UserTabs.Subscribers && <UserSubscribers />}
+      {currentTab === UserTabs.Friends && !!user.friendUsers.length && (
+        <UserFriends />
+      )}
+      {currentTab === UserTabs.Subscribers && !!user.subscriberUsers.length && (
+        <UserSubscribers />
+      )}
       {currentTab === UserTabs.Settings && (
         <UserSettings user={user} setTab={setCurrentTab} />
       )}

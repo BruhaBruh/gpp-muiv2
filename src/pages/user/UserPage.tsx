@@ -1,4 +1,4 @@
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { LinearProgress, Stack, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React from "react";
@@ -16,6 +16,11 @@ const UserPage = () => {
   const user = useAppSelector((state) => state.cache.user);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const [inc] = useMutation(gql`
+    mutation inc($id: Int!) {
+      incView(id: $id)
+    }
+  `);
   const [getUser, { data, error, loading }] = useLazyQuery<{
     users: UsersConnection;
   }>(
@@ -37,7 +42,7 @@ const UserPage = () => {
             views
             sex
             role
-            isShowPhone
+            settings
             phone
             isBanned
             permissions
@@ -101,7 +106,12 @@ const UserPage = () => {
     if (!/^\d*$/.test(id)) return;
     if (user && user.userId === Number(id)) return;
     getUser({ variables: { userId: Number(id) } });
-  }, [id, getUser, user]);
+    const t = setTimeout(
+      () => inc({ variables: { id: Number(id) } }),
+      1000 * 10
+    );
+    return () => clearTimeout(t);
+  }, [id, getUser, user, inc]);
 
   React.useEffect(() => {
     if (!/^\d*$/.test(id)) return;

@@ -5,4 +5,5 @@ export interface CacheState {
   userUpdate: boolean;
   reports: Report[];
   reportsUpdate: boolean;
+  reportIsClosed: boolean;
 }

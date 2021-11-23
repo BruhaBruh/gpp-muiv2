@@ -37,8 +37,6 @@ export type Query = {
   reports?: Maybe<ReportsConnection>;
   reportMessages?: Maybe<ReportMessagesConnection>;
   notifications: Array<Notification>;
-  replymessage?: Maybe<Reportmessage>;
-  lastMessage?: Maybe<Reportmessage>;
 };
 
 export type QueryUsersArgs = {
@@ -78,14 +76,21 @@ export type Mutation = {
   __typename?: "Mutation";
   login: Scalars["Boolean"];
   initialUsersAdd: Scalars["Boolean"];
+  incView: Scalars["Boolean"];
   editUser: User;
   startSubscribe: User;
   endSubscribe: User;
   removeFriend: User;
   setRating: User;
   createReport: Report;
+  banReport: User;
   sendReportMessage: Reportmessage;
+  setReportIsClosed: Scalars["Boolean"];
   readNotification: Scalars["Boolean"];
+};
+
+export type MutationIncViewArgs = {
+  id: Scalars["Int"];
 };
 
 export type MutationEditUserArgs = {
@@ -114,8 +119,18 @@ export type MutationCreateReportArgs = {
   input: ReportCreateInput;
 };
 
+export type MutationBanReportArgs = {
+  id: Scalars["Int"];
+  isBanned: Scalars["Boolean"];
+};
+
 export type MutationSendReportMessageArgs = {
   input: ReportSendMessageInput;
+};
+
+export type MutationSetReportIsClosedArgs = {
+  reportId: Scalars["Int"];
+  isClosed: Scalars["Boolean"];
 };
 
 export type MutationReadNotificationArgs = {
@@ -142,12 +157,14 @@ export type UserFilterInput = {
   description?: Maybe<StringOperationFilterInput>;
   views?: Maybe<ComparableInt32OperationFilterInput>;
   sex?: Maybe<ComparableInt32OperationFilterInput>;
-  isShowPhone?: Maybe<BooleanOperationFilterInput>;
+  settings?: Maybe<ComparableInt64OperationFilterInput>;
   userRole?: Maybe<UserRoleEnumOperationFilterInput>;
   lastOnline?: Maybe<ComparableDateTimeOperationFilterInput>;
   createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
   updatedAt?: Maybe<ComparableDateTimeOperationFilterInput>;
   permissions?: Maybe<ComparableInt64OperationFilterInput>;
+  subscriptionEndAt?: Maybe<ComparableNullableOfDateTimeOperationFilterInput>;
+  banreportEndAt?: Maybe<ComparableNullableOfDateTimeOperationFilterInput>;
   billnotifications?: Maybe<ListFilterInputTypeOfBillnotificationFilterInput>;
   bills?: Maybe<ListFilterInputTypeOfBillFilterInput>;
   friendFriendNavigations?: Maybe<ListFilterInputTypeOfFriendFilterInput>;
@@ -183,12 +200,14 @@ export type UserSortInput = {
   description?: Maybe<SortEnumType>;
   views?: Maybe<SortEnumType>;
   sex?: Maybe<SortEnumType>;
-  isShowPhone?: Maybe<SortEnumType>;
+  settings?: Maybe<SortEnumType>;
   userRole?: Maybe<SortEnumType>;
   lastOnline?: Maybe<SortEnumType>;
   createdAt?: Maybe<SortEnumType>;
   updatedAt?: Maybe<SortEnumType>;
   permissions?: Maybe<SortEnumType>;
+  subscriptionEndAt?: Maybe<SortEnumType>;
+  banreportEndAt?: Maybe<SortEnumType>;
   nickname?: Maybe<SortEnumType>;
   tag?: Maybe<SortEnumType>;
   work?: Maybe<SortEnumType>;
@@ -349,6 +368,21 @@ export type ComparableDateTimeOperationFilterInput = {
   neq?: Maybe<Scalars["DateTime"]>;
   in?: Maybe<Array<Scalars["DateTime"]>>;
   nin?: Maybe<Array<Scalars["DateTime"]>>;
+  gt?: Maybe<Scalars["DateTime"]>;
+  ngt?: Maybe<Scalars["DateTime"]>;
+  gte?: Maybe<Scalars["DateTime"]>;
+  ngte?: Maybe<Scalars["DateTime"]>;
+  lt?: Maybe<Scalars["DateTime"]>;
+  nlt?: Maybe<Scalars["DateTime"]>;
+  lte?: Maybe<Scalars["DateTime"]>;
+  nlte?: Maybe<Scalars["DateTime"]>;
+};
+
+export type ComparableNullableOfDateTimeOperationFilterInput = {
+  eq?: Maybe<Scalars["DateTime"]>;
+  neq?: Maybe<Scalars["DateTime"]>;
+  in?: Maybe<Array<Maybe<Scalars["DateTime"]>>>;
+  nin?: Maybe<Array<Maybe<Scalars["DateTime"]>>>;
   gt?: Maybe<Scalars["DateTime"]>;
   ngt?: Maybe<Scalars["DateTime"]>;
   gte?: Maybe<Scalars["DateTime"]>;
@@ -521,12 +555,14 @@ export type User = {
   description: Scalars["String"];
   views: Scalars["Int"];
   sex: Scalars["Int"];
-  isShowPhone: Scalars["Boolean"];
+  settings: Scalars["Long"];
   userRole: UserRoleEnum;
   lastOnline: Scalars["DateTime"];
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
   permissions: Scalars["Long"];
+  subscriptionEndAt?: Maybe<Scalars["DateTime"]>;
+  banreportEndAt?: Maybe<Scalars["DateTime"]>;
   billnotifications: Array<Billnotification>;
   bills: Array<Bill>;
   friendFriendNavigations: Array<Friend>;
@@ -554,6 +590,7 @@ export type UsersEdge = {
 
 export type Report = {
   __typename?: "Report";
+  lastMessage?: Maybe<Reportmessage>;
   reportId: Scalars["Int"];
   type: ReportType;
   subtype: ReportSubType;
@@ -561,7 +598,6 @@ export type Report = {
   toId?: Maybe<Scalars["Int"]>;
   createdAt: Scalars["DateTime"];
   isClosed: Scalars["Boolean"];
-  lastMessage?: Maybe<Reportmessage>;
   owner: User;
   to?: Maybe<User>;
   reportmessages: Array<Reportmessage>;
@@ -578,14 +614,14 @@ export type ReportsEdge = {
 
 export type Reportmessage = {
   __typename?: "Reportmessage";
+  owner: User;
+  replymessage?: Maybe<Reportmessage>;
   reportmessageId: Scalars["Int"];
   reportId: Scalars["Int"];
   ownerId: Scalars["Int"];
   message: Scalars["String"];
   replymessageId?: Maybe<Scalars["Int"]>;
   createdAt: Scalars["DateTime"];
-  owner: User;
-  replymessage?: Maybe<Reportmessage>;
   report: Report;
   inverseReplymessage: Array<Reportmessage>;
 };
@@ -698,21 +734,6 @@ export type UserDiscordRoleFilterInput = {
   hoist?: Maybe<BooleanOperationFilterInput>;
 };
 
-export type ComparableNullableOfDateTimeOperationFilterInput = {
-  eq?: Maybe<Scalars["DateTime"]>;
-  neq?: Maybe<Scalars["DateTime"]>;
-  in?: Maybe<Array<Maybe<Scalars["DateTime"]>>>;
-  nin?: Maybe<Array<Maybe<Scalars["DateTime"]>>>;
-  gt?: Maybe<Scalars["DateTime"]>;
-  ngt?: Maybe<Scalars["DateTime"]>;
-  gte?: Maybe<Scalars["DateTime"]>;
-  ngte?: Maybe<Scalars["DateTime"]>;
-  lt?: Maybe<Scalars["DateTime"]>;
-  nlt?: Maybe<Scalars["DateTime"]>;
-  lte?: Maybe<Scalars["DateTime"]>;
-  nlte?: Maybe<Scalars["DateTime"]>;
-};
-
 export type UserStatus = {
   __typename?: "UserStatus";
   isFriends: Scalars["Boolean"];
@@ -743,6 +764,10 @@ export type UserEditInput = {
   avatar?: Maybe<Scalars["MediaLink"]>;
   banner?: Maybe<Scalars["MediaLink"]>;
   isShowPhone?: Maybe<Scalars["Boolean"]>;
+  isNotifyOnReport?: Maybe<Scalars["Boolean"]>;
+  isNotifyOnReportMessage?: Maybe<Scalars["Boolean"]>;
+  isNotifyOnNewSubscriber?: Maybe<Scalars["Boolean"]>;
+  isNotifyOnNewFriend?: Maybe<Scalars["Boolean"]>;
   role?: Maybe<UserRoleEnum>;
   permissions?: Maybe<Scalars["Long"]>;
 };

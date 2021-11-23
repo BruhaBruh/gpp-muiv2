@@ -9,8 +9,10 @@ import BugPage from "../pages/reports/BugPage";
 import ComplaintPage from "../pages/reports/ComplaintPage";
 import CreateReportPage from "../pages/reports/CreateReportPage";
 import FeaturePage from "../pages/reports/FeaturePage";
+import ReportPage from "../pages/reports/ReportPage";
 import ReportsPage from "../pages/reports/ReportsPage";
 import InterfacePage from "../pages/settings/InterfacePage";
+import NotificationPage from "../pages/settings/NotificationPage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
@@ -66,7 +68,7 @@ function App() {
                   <ComplaintPage />
                 </Route>
                 <Route exact path="/r/c/admin">
-                  <Head name="Жалоба на Администратора" /> {/* › */}
+                  <Head name="Жалоба на Персонал" /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Report}
                     subtype={ReportSubType.Admin}
@@ -115,6 +117,10 @@ function App() {
                     subtype={ReportSubType.Site}
                   />
                 </Route>
+                <Route exact path="/r/:id">
+                  <Head name="Репорт" />
+                  <ReportPage />
+                </Route>
                 <Route exact path="/settings">
                   <Head name="Настройки" />
                   <SettingsPage />
@@ -130,6 +136,10 @@ function App() {
                 <Route exact path="/settings/interface">
                   <Head name="Настройка интерфейса" />
                   <InterfacePage />
+                </Route>
+                <Route exact path="/settings/notification">
+                  <Head name="Настройки Discord уведомлений" />
+                  <NotificationPage />
                 </Route>
                 <Route exact path="/">
                   <Redirect to={redirect} />

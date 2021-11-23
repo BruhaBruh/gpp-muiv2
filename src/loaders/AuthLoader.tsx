@@ -6,10 +6,14 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   setAuthenticated,
   setAvatar,
+  setBanreportEndAt,
   setLoading,
   setLoggedIn,
   setNickname,
   setPermissions,
+  setSettings,
+  setSubscriptionEndAt,
+  setUpdateUser,
   setUserId,
   setUserRole,
 } from "../redux/userData/reducer";
@@ -23,26 +27,31 @@ const AuthLoader = () => {
 
   const [getMe, { data: meData, error: meError }] = useLazyQuery<{
     me: User;
-  }>(gql`
-    query getMe {
-      me {
-        userId
-        permissions
-        nickname
-        userRole
-        avatar
+  }>(
+    gql`
+      query getMe {
+        me {
+          userId
+          permissions
+          nickname
+          userRole
+          avatar
+          settings
+          banreportEndAt
+          subscriptionEndAt
+        }
       }
-    }
-  `);
+    `,
+    { fetchPolicy: "no-cache" }
+  );
 
   const { enqueueSnackbar } = useSnackbar();
   const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
   const dispatch = useAppDispatch();
+  const update = useAppSelector((state) => state.userData.updateUser);
 
   React.useEffect(() => {
     login();
-    const t = setInterval(login, 10000);
-    return () => clearInterval(t);
   }, [login]);
 
   React.useEffect(() => {
@@ -63,7 +72,15 @@ const AuthLoader = () => {
   React.useEffect(() => {
     if (!isLoggedIn) return;
     getMe();
+    const t = setInterval(getMe, 10000);
+    return () => clearInterval(t);
   }, [isLoggedIn, getMe]);
+
+  React.useEffect(() => {
+    if (!isLoggedIn || !update) return;
+    getMe();
+    dispatch(setUpdateUser(false));
+  }, [getMe, isLoggedIn, dispatch, update]);
 
   React.useEffect(() => {
     if (!meData) return;
@@ -72,6 +89,9 @@ const AuthLoader = () => {
     dispatch(setUserId(meData.me.userId));
     dispatch(setUserRole(meData.me.userRole));
     dispatch(setAvatar(meData.me.avatar));
+    dispatch(setBanreportEndAt(meData.me.banreportEndAt));
+    dispatch(setSubscriptionEndAt(meData.me.subscriptionEndAt));
+    dispatch(setSettings(meData.me.settings));
   }, [meData, dispatch]);
 
   return <></>;

@@ -52,13 +52,15 @@ const BugCreateForm: React.FC<{ subtype: ReportSubType }> = ({ subtype }) => {
       />
       <Button
         size="medium"
-        disabled={loading || text.length < 1 || text.length > 1000}
+        disabled={
+          loading || text.trim().length < 1 || text.trim().length > 1000
+        }
         onClick={() =>
           create({
             variables: {
               type: ReportType.Bug,
               subtype: subtype,
-              message: text,
+              message: text.trim(),
             },
           })
         }

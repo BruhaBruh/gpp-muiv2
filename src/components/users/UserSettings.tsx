@@ -27,6 +27,7 @@ import * as Yup from "yup";
 import { User } from "../../graphql/types";
 import { useAppDispatch } from "../../hooks/redux";
 import { setUserUpdate } from "../../redux/cache/reducer";
+import { checkSettings, Settings } from "../../redux/userData/types";
 import IconWrapper from "../ui/IconWrapper";
 import { UserTabs } from "./UserBody";
 
@@ -60,7 +61,7 @@ const UserSettings: React.FC<{
       description: user.description,
       avatar: user.avatar.includes("cdn.discordapp.com") ? "" : user.avatar,
       banner: user.banner,
-      showPhone: user.isShowPhone,
+      showPhone: checkSettings(Settings.ShowPhone, user.settings),
     },
     validateOnMount: true,
     validationSchema: formValidatiionSchema,

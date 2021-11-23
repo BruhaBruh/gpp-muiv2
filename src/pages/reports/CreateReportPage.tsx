@@ -61,8 +61,7 @@ const CreateReportPage: React.FC<{ type: ReportType; subtype: ReportSubType }> =
               variant="subtitle2"
               sx={{ color: (theme) => theme.palette.text.secondary }}
             >
-              {type === ReportType.Report &&
-                "Выберите профиль и напишите жалобу"}
+              {type === ReportType.Report && "Выберите профиль"}
               {type === ReportType.Bug && "Напишите что произошло"}
               {type === ReportType.Feature && "Напишите что вы бы добавили"}
             </Typography>

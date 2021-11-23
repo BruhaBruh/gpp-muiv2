@@ -13,7 +13,12 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { User } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
-import { getImageByRole, getSex } from "../../redux/userData/types";
+import {
+  checkSettings,
+  getImageByRole,
+  getSex,
+  Settings,
+} from "../../redux/userData/types";
 import Cell from "../ui/Cell";
 import IconWrapper from "../ui/IconWrapper";
 import RatingBar from "./RatingBar";
@@ -79,7 +84,7 @@ const UserInfo = () => {
             {user.views}
           </Cell>
         </Stack>
-        {user.phone && user.isShowPhone && (
+        {user.phone && checkSettings(Settings.ShowPhone, user.settings) && (
           <Stack>
             <Typography
               variant="subtitle2"

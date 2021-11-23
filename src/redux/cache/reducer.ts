@@ -6,6 +6,7 @@ export const initialState: CacheState = {
   userUpdate: false,
   reports: [],
   reportsUpdate: true,
+  reportIsClosed: false,
 };
 
 export const cacheSlice = createSlice({
@@ -33,6 +34,11 @@ export const cacheSlice = createSlice({
     setReportsUpdate: (state, action: PayloadAction<boolean>) => {
       state.reportsUpdate = action.payload;
     },
+    setReportIsClosed: (state, action: PayloadAction<boolean>) => {
+      if (state.reportIsClosed === action.payload) return;
+      state.reportIsClosed = action.payload;
+      state.reportsUpdate = true;
+    },
     clearReports: (state) => {
       state.reports = [];
     },
@@ -45,6 +51,7 @@ export const {
   addReports,
   setReportsUpdate,
   clearReports,
+  setReportIsClosed,
 } = cacheSlice.actions;
 
 export default cacheSlice.reducer;

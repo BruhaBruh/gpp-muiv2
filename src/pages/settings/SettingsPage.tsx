@@ -2,6 +2,7 @@ import { Paper, Stack } from "@mui/material";
 import {
   Icon28ChevronRightOutline,
   Icon28GridLayoutOutline,
+  Icon28Notifications,
   Icon28PaletteOutline,
 } from "@vkontakte/icons";
 import React from "react";
@@ -69,6 +70,31 @@ const SettingsPage = () => {
           }
         >
           Настройки интерфейса
+        </CellR>
+        <CellR
+          to="/settings/notification"
+          startIcon={
+            <IconWrapper
+              component="span"
+              size={size}
+              sx={{ color: (theme) => theme.palette.primary.main }}
+            >
+              <Icon28Notifications />
+            </IconWrapper>
+          }
+          endIcon={
+            <IconWrapper
+              component="span"
+              size={size}
+              sx={{
+                color: (theme) => theme.palette.info.main,
+              }}
+            >
+              <Icon28ChevronRightOutline />
+            </IconWrapper>
+          }
+        >
+          Настройки Discord уведомлений
         </CellR>
       </Stack>
     </Paper>

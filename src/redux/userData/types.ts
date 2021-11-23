@@ -10,14 +10,18 @@ import miner from "../../assets/images/roles/miner.png";
 import { UserRoleEnum } from "../../graphql/types";
 
 export interface UserDataState {
+  updateUser: boolean;
   isLoggedIn: boolean;
   isLoading: boolean;
   isAuthenticated: boolean;
   nickname: string;
   userRole: UserRoleEnum;
+  settings: number;
   userId: number;
   permissions: number;
   avatar: string;
+  banreportEndAt: string | null;
+  subscriptionEndAt: string | null;
 }
 
 export const getUserRoleString = (userRole: UserRoleEnum): string => {
@@ -87,6 +91,22 @@ export const checkPermissions = (
 ): boolean => {
   if (!userPermissions) return false;
   return (userPermissions & (allow % 2 === 0 ? allow + 1 : allow)) !== 0;
+};
+
+export const checkPermissionsWA = (
+  allow: number,
+  userPermissions: number | undefined
+): boolean => {
+  if (!userPermissions) return false;
+  return (userPermissions & allow) !== 0;
+};
+
+export const checkSettings = (
+  allow: number,
+  userSettings: number | undefined
+): boolean => {
+  if (!userSettings) return false;
+  return (userSettings & allow) !== 0;
 };
 
 export const getLastOnline = (lo: string): string => {
@@ -190,4 +210,14 @@ export enum Permissions {
   RemoveBan = 16,
   ShowReports = 32,
   ModifyRoles = 64,
+  Lite = 128,
+  Premium = 256,
+}
+
+export enum Settings {
+  ShowPhone = 1,
+  NotifyOnReport = 2,
+  NotifyOnReportMessage = 4,
+  NotifyOnNewSubscriber = 8,
+  NotifyOnNewFriend = 16,
 }

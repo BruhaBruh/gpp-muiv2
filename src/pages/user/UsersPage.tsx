@@ -8,13 +8,14 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
+import ScrollContainer from "react-indiana-drag-scroll";
 import UserCell from "../../components/users/UserCell";
 import { User, UserFilterInput, UsersConnection } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import useDebounce from "../../hooks/useDebounce";
 
 const UsersPage = () => {
-  const [afsFilter, setAFSFilter] = React.useState<0 | 1 | 2>(0);
+  const [afsFilter, setAFSFilter] = React.useState<0 | 1 | 2 | 3>(0);
   const [after, setAfter] = React.useState<string | null>();
   const [search, setSearch] = React.useState("");
   const debouncedSearch = useDebounce(search, 750);
@@ -76,6 +77,12 @@ const UsersPage = () => {
         return setWhere({
           subscriberSubscriberNavigations: { some: { userId: { eq: userId } } },
         });
+      case 3:
+        return setWhere({
+          lastOnline: {
+            gte: new Date(new Date().getTime() - 1000 * 60 * 5).toISOString(),
+          },
+        });
     }
   }, [afsFilter, userId]);
 
@@ -88,11 +95,15 @@ const UsersPage = () => {
   React.useEffect(() => {
     if (!usersData?.users.nodes) return;
     setAfter(usersData.users.pageInfo.endCursor);
-    setUsers([
-      ...users.filter(
-        (u) => !usersData.users.nodes?.map((n) => n.userId).includes(u.userId)
+    if (!usersData.users.nodes) return;
+    setUsers((prev) => [
+      ...prev.filter(
+        (u) =>
+          !(usersData.users.nodes as User[])
+            .map((n) => n.userId)
+            .includes(u.userId)
       ),
-      ...usersData.users.nodes,
+      ...(usersData.users.nodes as User[]),
     ]);
     // eslint-disable-next-line
   }, [usersData, setUsers]);
@@ -132,44 +143,59 @@ const UsersPage = () => {
           justifyContent="space-between"
           alignItems={lowerSM ? "stretch" : "center"}
         >
-          <Stack direction="row" spacing={2}>
-            <Box
-              onClick={() => setAFSFilter(0)}
-              sx={{
-                color: (theme) =>
-                  afsFilter === 0
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              Все
-            </Box>
-            <Box
-              onClick={() => setAFSFilter(1)}
-              sx={{
-                color: (theme) =>
-                  afsFilter === 1
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              Друзья
-            </Box>
-            <Box
-              onClick={() => setAFSFilter(2)}
-              sx={{
-                color: (theme) =>
-                  afsFilter === 2
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              Подписчики
-            </Box>
-          </Stack>
+          <ScrollContainer vertical={false} hideScrollbars>
+            <Stack direction="row" spacing={2} sx={{ width: "max-content" }}>
+              <Box
+                onClick={() => setAFSFilter(0)}
+                sx={{
+                  color: (theme) =>
+                    afsFilter === 0
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Все
+              </Box>
+              <Box
+                onClick={() => setAFSFilter(1)}
+                sx={{
+                  color: (theme) =>
+                    afsFilter === 1
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Друзья
+              </Box>
+              <Box
+                onClick={() => setAFSFilter(2)}
+                sx={{
+                  color: (theme) =>
+                    afsFilter === 2
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Подписчики
+              </Box>
+              <Box
+                onClick={() => setAFSFilter(3)}
+                sx={{
+                  color: (theme) =>
+                    afsFilter === 3
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Онлайн на сайте
+              </Box>
+            </Stack>
+          </ScrollContainer>
+
           <Stack direction="row" spacing={1}>
             <TextField
               value={search}

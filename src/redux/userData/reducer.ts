@@ -3,6 +3,7 @@ import { UserRoleEnum } from "../../graphql/types";
 import { UserDataState } from "./types";
 
 export const initialState: UserDataState = {
+  updateUser: false,
   isLoggedIn: false,
   isLoading: true,
   isAuthenticated: false,
@@ -10,7 +11,10 @@ export const initialState: UserDataState = {
   userId: 0,
   userRole: UserRoleEnum.None,
   permissions: 0,
+  settings: 0,
   avatar: "",
+  subscriptionEndAt: null,
+  banreportEndAt: null,
 };
 
 export const userDataSlice = createSlice({
@@ -41,6 +45,18 @@ export const userDataSlice = createSlice({
     setAvatar: (state, action: PayloadAction<string>) => {
       state.avatar = action.payload;
     },
+    setSubscriptionEndAt: (state, action: PayloadAction<string | null>) => {
+      state.subscriptionEndAt = action.payload;
+    },
+    setBanreportEndAt: (state, action: PayloadAction<string | null>) => {
+      state.banreportEndAt = action.payload;
+    },
+    setSettings: (state, action: PayloadAction<number>) => {
+      state.settings = action.payload;
+    },
+    setUpdateUser: (state, action: PayloadAction<boolean>) => {
+      state.updateUser = action.payload;
+    },
   },
 });
 
@@ -53,6 +69,10 @@ export const {
   setPermissions,
   setUserRole,
   setAvatar,
+  setSubscriptionEndAt,
+  setBanreportEndAt,
+  setSettings,
+  setUpdateUser,
 } = userDataSlice.actions;
 
 export default userDataSlice.reducer;

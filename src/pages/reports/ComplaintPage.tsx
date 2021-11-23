@@ -76,7 +76,7 @@ const ComplaintPage = () => {
             </IconWrapper>
           }
         >
-          Администратор
+          Персонал
         </CellR>
         <CellR
           to="/r/c/user"

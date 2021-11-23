@@ -1,13 +1,30 @@
-import { Avatar, ListItemText, Paper, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  ListItemText,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import {
+  Icon12Circle,
+  Icon12CircleOutline,
+  Icon24CrownOutline,
+  Icon28UserStarBadgeOutline,
+} from "@vkontakte/icons";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { User } from "../../graphql/types";
+import { User, UserRoleEnum } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import {
+  checkPermissionsWA,
   getImageByRole,
   getLastOnline,
   getUserRoleString,
+  Permissions,
 } from "../../redux/userData/types";
+import IconWrapper from "../ui/IconWrapper";
 
 const UserHeader = () => {
   const user = useAppSelector((state) => state.cache.user) as User;
@@ -39,7 +56,7 @@ const UserHeader = () => {
           />
           <ListItemText
             primary={
-              <Stack spacing={1} direction="row">
+              <Stack spacing={0.5} direction="row">
                 <Typography
                   variant="h6"
                   sx={{
@@ -49,13 +66,90 @@ const UserHeader = () => {
                 >
                   {user.nickname}
                 </Typography>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: (theme) => theme.palette.text.secondary }}
-                  alignSelf={"center"}
-                >
-                  {getLastOnline(user.lastOnline)}
-                </Typography>
+                {user.userRole !== UserRoleEnum.None && (
+                  <Tooltip
+                    title={`Персонал (${getUserRoleString(user.userRole)})`}
+                    placement="top"
+                  >
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconWrapper
+                        sx={{
+                          color: (theme) => theme.palette.info.main,
+                          alignSelf: "center",
+                        }}
+                        size={24}
+                      >
+                        <Icon28UserStarBadgeOutline />
+                      </IconWrapper>
+                    </Box>
+                  </Tooltip>
+                )}
+                {checkPermissionsWA(Permissions.Premium, user.permissions) && (
+                  <Tooltip title={`Premium`} placement="top">
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconWrapper
+                        sx={{
+                          color: process.env.REACT_APP_PREMIUM_COLOR,
+                          alignSelf: "center",
+                        }}
+                        size={24}
+                      >
+                        <Icon24CrownOutline />
+                      </IconWrapper>
+                    </Box>
+                  </Tooltip>
+                )}
+                {checkPermissionsWA(Permissions.Lite, user.permissions) && (
+                  <Tooltip title={`Lite`} placement="top">
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconWrapper
+                        sx={{
+                          color: process.env.REACT_APP_LITE_COLOR,
+                          alignSelf: "center",
+                        }}
+                        size={24}
+                      >
+                        <Icon24CrownOutline />
+                      </IconWrapper>
+                    </Box>
+                  </Tooltip>
+                )}
+                {getLastOnline(user.lastOnline) === "Онлайн" && (
+                  <Tooltip
+                    title={getLastOnline(user.lastOnline)}
+                    placement="top"
+                  >
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconWrapper
+                        sx={{
+                          color: (theme) => theme.palette.success.main,
+                          alignSelf: "center",
+                        }}
+                        size={12}
+                      >
+                        <Icon12Circle />
+                      </IconWrapper>
+                    </Box>
+                  </Tooltip>
+                )}
+                {getLastOnline(user.lastOnline) !== "Онлайн" && (
+                  <Tooltip
+                    title={getLastOnline(user.lastOnline)}
+                    placement="top"
+                  >
+                    <Box sx={{ alignSelf: "center" }}>
+                      <IconWrapper
+                        sx={{
+                          color: (theme) => theme.palette.error.main,
+                          alignSelf: "center",
+                        }}
+                        size={12}
+                      >
+                        <Icon12CircleOutline />
+                      </IconWrapper>
+                    </Box>
+                  </Tooltip>
+                )}
                 {getImageByRole(user.role) !== null && (
                   <LazyLoadImage
                     src={getImageByRole(user.role) as any}
@@ -78,9 +172,6 @@ const UserHeader = () => {
                 {user.status && (
                   <Typography variant="body1">{user.status}</Typography>
                 )}
-                <Typography variant="body1">
-                  {getUserRoleString(user.userRole)}
-                </Typography>
               </Stack>
             }
           />
