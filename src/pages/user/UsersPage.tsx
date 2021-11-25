@@ -49,6 +49,7 @@ const UsersPage = () => {
             banner
             lastOnline
             role
+            permissions
             discordRoles {
               id
               position

@@ -17,10 +17,10 @@ export type Scalars = {
   Float: number;
   /** Прямая ссылка на медиафайл сервисов postimg/imgur/tenor. Поддерживаются jpeg/jpg/png/gif/webp */
   MediaLink: any;
-  /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
-  DateTime: any;
   /** The `Long` scalar type represents non-fractional signed whole 64-bit numeric values. Long can represent values between -(2^63) and 2^63 - 1. */
   Long: any;
+  /** The `DateTime` scalar represents an ISO-8601 compliant date time type. */
+  DateTime: any;
 };
 
 export enum ApplyPolicy {
@@ -31,6 +31,8 @@ export enum ApplyPolicy {
 export type Query = {
   __typename?: "Query";
   users?: Maybe<UsersConnection>;
+  donateItems?: Maybe<DonateItemsConnection>;
+  top: Array<User>;
   discordRoles: Array<UserDiscordRole>;
   status: UserStatus;
   me: User;
@@ -46,6 +48,20 @@ export type QueryUsersArgs = {
   last?: Maybe<Scalars["Int"]>;
   before?: Maybe<Scalars["String"]>;
   where?: Maybe<UserFilterInput>;
+  order?: Maybe<Array<UserSortInput>>;
+};
+
+export type QueryDonateItemsArgs = {
+  first?: Maybe<Scalars["Int"]>;
+  after?: Maybe<Scalars["String"]>;
+  last?: Maybe<Scalars["Int"]>;
+  before?: Maybe<Scalars["String"]>;
+  where?: Maybe<DonateitemFilterInput>;
+  order?: Maybe<Array<DonateitemSortInput>>;
+};
+
+export type QueryTopArgs = {
+  type: UserTopEnum;
   order?: Maybe<Array<UserSortInput>>;
 };
 
@@ -74,6 +90,8 @@ export type QueryReportMessagesArgs = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  test: Scalars["Boolean"];
+  sendSystemNotification: Scalars["Boolean"];
   login: Scalars["Boolean"];
   initialUsersAdd: Scalars["Boolean"];
   incView: Scalars["Boolean"];
@@ -87,6 +105,12 @@ export type Mutation = {
   sendReportMessage: Reportmessage;
   setReportIsClosed: Scalars["Boolean"];
   readNotification: Scalars["Boolean"];
+  buyDonate: Donateitem;
+};
+
+export type MutationSendSystemNotificationArgs = {
+  toid?: Maybe<Scalars["Int"]>;
+  message: Scalars["String"];
 };
 
 export type MutationIncViewArgs = {
@@ -138,6 +162,11 @@ export type MutationReadNotificationArgs = {
   type: Scalars["String"];
 };
 
+export type MutationBuyDonateArgs = {
+  id: Scalars["Int"];
+  amount?: Maybe<Scalars["Int"]>;
+};
+
 export type Subscription = {
   __typename?: "Subscription";
   newReportMessage: Reportmessage;
@@ -167,6 +196,7 @@ export type UserFilterInput = {
   banreportEndAt?: Maybe<ComparableNullableOfDateTimeOperationFilterInput>;
   billnotifications?: Maybe<ListFilterInputTypeOfBillnotificationFilterInput>;
   bills?: Maybe<ListFilterInputTypeOfBillFilterInput>;
+  donatelogs?: Maybe<ListFilterInputTypeOfDonatelogFilterInput>;
   friendFriendNavigations?: Maybe<ListFilterInputTypeOfFriendFilterInput>;
   friendUsers?: Maybe<ListFilterInputTypeOfFriendFilterInput>;
   friendnotifications?: Maybe<ListFilterInputTypeOfFriendnotificationFilterInput>;
@@ -185,6 +215,9 @@ export type UserFilterInput = {
   role?: Maybe<StringOperationFilterInput>;
   level?: Maybe<ComparableInt32OperationFilterInput>;
   phone?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  trefs?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  totalFriends?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  totalSubscribers?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
   rating?: Maybe<UserRatingFilterInput>;
   discordRoles?: Maybe<ListFilterInputTypeOfUserDiscordRoleFilterInput>;
 };
@@ -214,7 +247,38 @@ export type UserSortInput = {
   role?: Maybe<SortEnumType>;
   level?: Maybe<SortEnumType>;
   phone?: Maybe<SortEnumType>;
+  trefs?: Maybe<SortEnumType>;
+  totalFriends?: Maybe<SortEnumType>;
+  totalSubscribers?: Maybe<SortEnumType>;
   rating?: Maybe<UserRatingSortInput>;
+};
+
+export type DonateitemFilterInput = {
+  and?: Maybe<Array<DonateitemFilterInput>>;
+  or?: Maybe<Array<DonateitemFilterInput>>;
+  donateitemId?: Maybe<ComparableInt32OperationFilterInput>;
+  name?: Maybe<StringOperationFilterInput>;
+  icon?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  cost?: Maybe<ComparableInt32OperationFilterInput>;
+  amount?: Maybe<ComparableInt32OperationFilterInput>;
+  isShow?: Maybe<BooleanOperationFilterInput>;
+  type?: Maybe<ComparableInt32OperationFilterInput>;
+  description?: Maybe<StringOperationFilterInput>;
+  donatelogBoughtItems?: Maybe<ListFilterInputTypeOfDonatelogFilterInput>;
+  donatelogLootItems?: Maybe<ListFilterInputTypeOfDonatelogFilterInput>;
+  loottableCases?: Maybe<ListFilterInputTypeOfLoottableFilterInput>;
+  loottableItems?: Maybe<ListFilterInputTypeOfLoottableFilterInput>;
+};
+
+export type DonateitemSortInput = {
+  donateitemId?: Maybe<SortEnumType>;
+  name?: Maybe<SortEnumType>;
+  icon?: Maybe<SortEnumType>;
+  cost?: Maybe<SortEnumType>;
+  amount?: Maybe<SortEnumType>;
+  isShow?: Maybe<SortEnumType>;
+  type?: Maybe<SortEnumType>;
+  description?: Maybe<SortEnumType>;
 };
 
 export type ReportFilterInput = {
@@ -282,6 +346,17 @@ export type UsersConnection = {
   edges?: Maybe<Array<UsersEdge>>;
   /** A flattened list of the nodes. */
   nodes?: Maybe<Array<User>>;
+};
+
+/** A connection to a list of items. */
+export type DonateItemsConnection = {
+  __typename?: "DonateItemsConnection";
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<DonateItemsEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Donateitem>>;
 };
 
 /** A connection to a list of items. */
@@ -407,6 +482,13 @@ export type ListFilterInputTypeOfBillFilterInput = {
   any?: Maybe<Scalars["Boolean"]>;
 };
 
+export type ListFilterInputTypeOfDonatelogFilterInput = {
+  all?: Maybe<DonatelogFilterInput>;
+  none?: Maybe<DonatelogFilterInput>;
+  some?: Maybe<DonatelogFilterInput>;
+  any?: Maybe<Scalars["Boolean"]>;
+};
+
 export type ListFilterInputTypeOfFriendFilterInput = {
   all?: Maybe<FriendFilterInput>;
   none?: Maybe<FriendFilterInput>;
@@ -508,6 +590,13 @@ export type UserRatingSortInput = {
   your?: Maybe<SortEnumType>;
 };
 
+export type ListFilterInputTypeOfLoottableFilterInput = {
+  all?: Maybe<LoottableFilterInput>;
+  none?: Maybe<LoottableFilterInput>;
+  some?: Maybe<LoottableFilterInput>;
+  any?: Maybe<Scalars["Boolean"]>;
+};
+
 export type ReportTypeOperationFilterInput = {
   eq?: Maybe<ReportType>;
   neq?: Maybe<ReportType>;
@@ -537,15 +626,17 @@ export type PageInfo = {
 
 export type User = {
   __typename?: "User";
+  phone?: Maybe<Scalars["Int"]>;
+  discordRoles: Array<UserDiscordRole>;
+  totalFriends: Scalars["Int"];
+  totalSubscribers: Scalars["Int"];
+  rating: UserRating;
   nickname: Scalars["String"];
   tag: Scalars["String"];
   avatar: Scalars["String"];
   work?: Maybe<Scalars["String"]>;
   role?: Maybe<Scalars["String"]>;
   level: Scalars["Int"];
-  phone?: Maybe<Scalars["Int"]>;
-  discordRoles: Array<UserDiscordRole>;
-  rating: UserRating;
   userId: Scalars["Int"];
   discordId: Scalars["Long"];
   money: Scalars["Int"];
@@ -565,6 +656,7 @@ export type User = {
   banreportEndAt?: Maybe<Scalars["DateTime"]>;
   billnotifications: Array<Billnotification>;
   bills: Array<Bill>;
+  donatelogs: Array<Donatelog>;
   friendFriendNavigations: Array<Friend>;
   friendUsers: Array<Friend>;
   friendnotifications: Array<Friendnotification>;
@@ -577,6 +669,7 @@ export type User = {
   subscriberUsers: Array<Subscriber>;
   subscribernotifications: Array<Subscribernotification>;
   systemnotifications: Array<Systemnotification>;
+  trefs?: Maybe<Scalars["Int"]>;
 };
 
 /** An edge in a connection. */
@@ -586,6 +679,31 @@ export type UsersEdge = {
   cursor: Scalars["String"];
   /** The item at the end of the edge. */
   node: User;
+};
+
+export type Donateitem = {
+  __typename?: "Donateitem";
+  donateitemId: Scalars["Int"];
+  name: Scalars["String"];
+  icon?: Maybe<Scalars["Int"]>;
+  cost: Scalars["Int"];
+  amount: Scalars["Int"];
+  isShow: Scalars["Boolean"];
+  type: Scalars["Int"];
+  description: Scalars["String"];
+  donatelogBoughtItems: Array<Donatelog>;
+  donatelogLootItems: Array<Donatelog>;
+  loottableCases: Array<Loottable>;
+  loottableItems: Array<Loottable>;
+};
+
+/** An edge in a connection. */
+export type DonateItemsEdge = {
+  __typename?: "DonateItemsEdge";
+  /** A cursor for use in pagination. */
+  cursor: Scalars["String"];
+  /** The item at the end of the edge. */
+  node: Donateitem;
 };
 
 export type Report = {
@@ -657,6 +775,20 @@ export type BillFilterInput = {
   completedAt?: Maybe<ComparableNullableOfDateTimeOperationFilterInput>;
   user?: Maybe<UserFilterInput>;
   billnotifications?: Maybe<ListFilterInputTypeOfBillnotificationFilterInput>;
+};
+
+export type DonatelogFilterInput = {
+  and?: Maybe<Array<DonatelogFilterInput>>;
+  or?: Maybe<Array<DonatelogFilterInput>>;
+  donatelogId?: Maybe<ComparableInt32OperationFilterInput>;
+  boughtItemId?: Maybe<ComparableInt32OperationFilterInput>;
+  lootItemId?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  userId?: Maybe<ComparableInt32OperationFilterInput>;
+  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
+  amount?: Maybe<ComparableInt32OperationFilterInput>;
+  boughtItem?: Maybe<DonateitemFilterInput>;
+  lootItem?: Maybe<DonateitemFilterInput>;
+  user?: Maybe<UserFilterInput>;
 };
 
 export type FriendFilterInput = {
@@ -734,11 +866,15 @@ export type UserDiscordRoleFilterInput = {
   hoist?: Maybe<BooleanOperationFilterInput>;
 };
 
-export type UserStatus = {
-  __typename?: "UserStatus";
-  isFriends: Scalars["Boolean"];
-  heIsSubscriber: Scalars["Boolean"];
-  youIsSubscriber: Scalars["Boolean"];
+export type LoottableFilterInput = {
+  and?: Maybe<Array<LoottableFilterInput>>;
+  or?: Maybe<Array<LoottableFilterInput>>;
+  loottableId?: Maybe<ComparableInt32OperationFilterInput>;
+  caseId?: Maybe<ComparableInt32OperationFilterInput>;
+  itemId?: Maybe<ComparableInt32OperationFilterInput>;
+  weight?: Maybe<ComparableInt32OperationFilterInput>;
+  case?: Maybe<DonateitemFilterInput>;
+  item?: Maybe<DonateitemFilterInput>;
 };
 
 export type UserDiscordRole = {
@@ -748,6 +884,27 @@ export type UserDiscordRole = {
   position: Scalars["Int"];
   color: Scalars["String"];
   hoist: Scalars["Boolean"];
+};
+
+export enum UserTopEnum {
+  Views = "VIEWS",
+  Rating = "RATING",
+  Friends = "FRIENDS",
+  Subscribers = "SUBSCRIBERS",
+  Years = "YEARS",
+}
+
+export enum ReportType {
+  Report = "REPORT",
+  Bug = "BUG",
+  Feature = "FEATURE",
+}
+
+export type UserStatus = {
+  __typename?: "UserStatus";
+  isFriends: Scalars["Boolean"];
+  heIsSubscriber: Scalars["Boolean"];
+  youIsSubscriber: Scalars["Boolean"];
 };
 
 export type Notification =
@@ -793,12 +950,6 @@ export type ReportSendMessageInput = {
   replyMessageId?: Maybe<Scalars["Int"]>;
 };
 
-export enum ReportType {
-  Report = "REPORT",
-  Bug = "BUG",
-  Feature = "FEATURE",
-}
-
 export enum ReportSubType {
   Admin = "ADMIN",
   User = "USER",
@@ -835,6 +986,19 @@ export type Bill = {
   completedAt?: Maybe<Scalars["DateTime"]>;
   user: User;
   billnotifications: Array<Billnotification>;
+};
+
+export type Donatelog = {
+  __typename?: "Donatelog";
+  donatelogId: Scalars["Int"];
+  boughtItemId: Scalars["Int"];
+  lootItemId?: Maybe<Scalars["Int"]>;
+  userId: Scalars["Int"];
+  createdAt: Scalars["DateTime"];
+  amount: Scalars["Int"];
+  boughtItem: Donateitem;
+  lootItem?: Maybe<Donateitem>;
+  user: User;
 };
 
 export type Friend = {
@@ -894,4 +1058,14 @@ export type Systemnotification = {
   createdAt: Scalars["DateTime"];
   message: Scalars["String"];
   to: User;
+};
+
+export type Loottable = {
+  __typename?: "Loottable";
+  loottableId: Scalars["Int"];
+  caseId: Scalars["Int"];
+  itemId: Scalars["Int"];
+  weight: Scalars["Int"];
+  case: Donateitem;
+  item: Donateitem;
 };

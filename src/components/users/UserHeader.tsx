@@ -25,6 +25,7 @@ import {
   Permissions,
 } from "../../redux/userData/types";
 import IconWrapper from "../ui/IconWrapper";
+import LinkR from "../ui/LinkR";
 
 const UserHeader = () => {
   const user = useAppSelector((state) => state.cache.user) as User;
@@ -87,30 +88,34 @@ const UserHeader = () => {
                 {checkPermissionsWA(Permissions.Premium, user.permissions) && (
                   <Tooltip title={`Premium`} placement="top">
                     <Box sx={{ alignSelf: "center" }}>
-                      <IconWrapper
-                        sx={{
-                          color: process.env.REACT_APP_PREMIUM_COLOR,
-                          alignSelf: "center",
-                        }}
-                        size={24}
-                      >
-                        <Icon24CrownOutline />
-                      </IconWrapper>
+                      <LinkR to="/d">
+                        <IconWrapper
+                          sx={{
+                            color: process.env.REACT_APP_PREMIUM_COLOR,
+                            alignSelf: "center",
+                          }}
+                          size={24}
+                        >
+                          <Icon24CrownOutline />
+                        </IconWrapper>
+                      </LinkR>
                     </Box>
                   </Tooltip>
                 )}
                 {checkPermissionsWA(Permissions.Lite, user.permissions) && (
                   <Tooltip title={`Lite`} placement="top">
                     <Box sx={{ alignSelf: "center" }}>
-                      <IconWrapper
-                        sx={{
-                          color: process.env.REACT_APP_LITE_COLOR,
-                          alignSelf: "center",
-                        }}
-                        size={24}
-                      >
-                        <Icon24CrownOutline />
-                      </IconWrapper>
+                      <LinkR to="/d">
+                        <IconWrapper
+                          sx={{
+                            color: process.env.REACT_APP_LITE_COLOR,
+                            alignSelf: "center",
+                          }}
+                          size={24}
+                        >
+                          <Icon24CrownOutline />
+                        </IconWrapper>
+                      </LinkR>
                     </Box>
                   </Tooltip>
                 )}

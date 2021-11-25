@@ -4,6 +4,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ReportSubType, ReportType } from "../graphql/types";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
+import DonatesPage from "../pages/donates/DonatesPage";
+import NotificationsPage from "../pages/notifications/NotificationsPage";
 import Page404 from "../pages/Page404";
 import BugPage from "../pages/reports/BugPage";
 import ComplaintPage from "../pages/reports/ComplaintPage";
@@ -16,6 +18,7 @@ import NotificationPage from "../pages/settings/NotificationPage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
+import TopsPage from "../pages/tops/TopsPage";
 import UserPage from "../pages/user/UserPage";
 import UsersPage from "../pages/user/UsersPage";
 import Head from "./ui/Head";
@@ -120,6 +123,18 @@ function App() {
                 <Route exact path="/r/:id">
                   <Head name="Репорт" />
                   <ReportPage />
+                </Route>
+                <Route exact path="/n">
+                  <Head name="Оповещения" />
+                  <NotificationsPage />
+                </Route>
+                <Route exact path="/d">
+                  <Head name="Донат" />
+                  <DonatesPage />
+                </Route>
+                <Route exact path="/t">
+                  <Head name="Топы" />
+                  <TopsPage />
                 </Route>
                 <Route exact path="/settings">
                   <Head name="Настройки" />

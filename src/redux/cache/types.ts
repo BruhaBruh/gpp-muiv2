@@ -1,4 +1,4 @@
-import { Report, User } from "../../graphql/types";
+import { Notification, Report, User } from "../../graphql/types";
 
 export interface CacheState {
   user?: User;
@@ -6,4 +6,5 @@ export interface CacheState {
   reports: Report[];
   reportsUpdate: boolean;
   reportIsClosed: boolean;
+  notifications: Notification[];
 }

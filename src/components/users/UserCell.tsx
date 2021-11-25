@@ -1,15 +1,153 @@
-import { Avatar, Badge, ListItemText, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Box,
+  ListItemText,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import {
+  Icon24CrownOutline,
+  Icon28UserStarBadgeOutline,
+} from "@vkontakte/icons";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { User } from "../../graphql/types";
-import { getImageByRole, getLastOnline } from "../../redux/userData/types";
+import { User, UserRoleEnum, UserTopEnum } from "../../graphql/types";
+import {
+  ageToStr,
+  checkPermissionsWA,
+  getImageByRole,
+  getLastOnline,
+  getUserRoleString,
+  Permissions,
+} from "../../redux/userData/types";
 import CellR from "../ui/CellR";
+import IconWrapper from "../ui/IconWrapper";
+import RatingBar from "./RatingBar";
 
 interface props {
   user: User;
+  type?: UserTopEnum;
 }
 
-const UserCell: React.FC<props> = ({ user }) => {
+const UserCell: React.FC<props> = ({ user, type }) => {
+  const getSecondary = () => {
+    switch (type) {
+      case UserTopEnum.Views:
+        return (
+          <Typography
+            variant="body2"
+            sx={{
+              padding: "0 2px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+              display: "flex",
+              color: (theme) => theme.palette.text.secondary,
+            }}
+          >
+            Просмотров: {user.views}
+          </Typography>
+        );
+      case UserTopEnum.Friends:
+        return (
+          <Typography
+            variant="body2"
+            sx={{
+              padding: "0 2px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+              display: "flex",
+              color: (theme) => theme.palette.text.secondary,
+            }}
+          >
+            Друзей: {user.totalFriends}
+          </Typography>
+        );
+      case UserTopEnum.Subscribers:
+        return (
+          <Typography
+            variant="body2"
+            sx={{
+              padding: "0 2px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+              display: "flex",
+              color: (theme) => theme.palette.text.secondary,
+            }}
+          >
+            Подписчиков: {user.totalSubscribers}
+          </Typography>
+        );
+      case UserTopEnum.Years:
+        return (
+          <Typography
+            variant="body2"
+            sx={{
+              padding: "0 2px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+              display: "flex",
+              color: (theme) => theme.palette.text.secondary,
+            }}
+          >
+            {user.level} {ageToStr(user.level)} в городе
+          </Typography>
+        );
+      case UserTopEnum.Rating:
+        return (
+          <Stack direction="row" spacing={1}>
+            <Typography
+              variant="body2"
+              sx={{
+                padding: "0 2px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                display: "flex",
+                color: (theme) => theme.palette.text.secondary,
+              }}
+            >
+              {user.rating.result}
+            </Typography>
+            <RatingBar rating={user.rating} sx={{ marginLeft: "8px" }} />
+          </Stack>
+        );
+      default:
+        return (
+          user.discordRoles.sort((a, b) => a.position - b.position)[0] && (
+            <Typography
+              variant="body2"
+              sx={{
+                padding: "0 2px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                display: "flex",
+                color: (theme) => theme.palette.text.secondary,
+              }}
+            >
+              {
+                user.discordRoles.sort((a, b) => a.position - b.position)[0]
+                  ?.name
+              }
+            </Typography>
+          )
+        );
+    }
+  };
+
   return (
     <Paper
       sx={{
@@ -87,6 +225,57 @@ const UserCell: React.FC<props> = ({ user }) => {
                 color: (theme) => theme.palette.text.primary,
               }}
             >
+              {user.userRole !== UserRoleEnum.None && (
+                <Tooltip
+                  title={`Персонал (${getUserRoleString(user.userRole)})`}
+                  placement="top"
+                >
+                  <Box sx={{ alignSelf: "center" }}>
+                    <IconWrapper
+                      sx={{
+                        color: (theme) => theme.palette.info.main,
+                        alignSelf: "center",
+                        marginRight: "2px",
+                      }}
+                      size={16}
+                    >
+                      <Icon28UserStarBadgeOutline />
+                    </IconWrapper>
+                  </Box>
+                </Tooltip>
+              )}
+              {checkPermissionsWA(Permissions.Premium, user.permissions) && (
+                <Tooltip title={`Premium`} placement="top">
+                  <Box sx={{ alignSelf: "center" }}>
+                    <IconWrapper
+                      sx={{
+                        color: process.env.REACT_APP_PREMIUM_COLOR,
+                        alignSelf: "center",
+                        marginRight: "2px",
+                      }}
+                      size={16}
+                    >
+                      <Icon24CrownOutline />
+                    </IconWrapper>
+                  </Box>
+                </Tooltip>
+              )}
+              {checkPermissionsWA(Permissions.Lite, user.permissions) && (
+                <Tooltip title={`Lite`} placement="top">
+                  <Box sx={{ alignSelf: "center" }}>
+                    <IconWrapper
+                      sx={{
+                        color: process.env.REACT_APP_LITE_COLOR,
+                        alignSelf: "center",
+                        marginRight: "2px",
+                      }}
+                      size={16}
+                    >
+                      <Icon24CrownOutline />
+                    </IconWrapper>
+                  </Box>
+                </Tooltip>
+              )}
               {user.nickname}
               {getImageByRole(user.role) !== null && (
                 <LazyLoadImage
@@ -105,27 +294,7 @@ const UserCell: React.FC<props> = ({ user }) => {
               )}
             </Typography>
           }
-          secondary={
-            user.discordRoles.sort((a, b) => a.position - b.position)[0] && (
-              <Typography
-                variant="body2"
-                sx={{
-                  padding: "0 2px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  textTransform: "none",
-                  display: "flex",
-                  color: (theme) => theme.palette.text.secondary,
-                }}
-              >
-                {
-                  user.discordRoles.sort((a, b) => a.position - b.position)[0]
-                    ?.name
-                }
-              </Typography>
-            )
-          }
+          secondary={getSecondary()}
         />
       </CellR>
     </Paper>

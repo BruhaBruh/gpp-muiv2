@@ -1,11 +1,14 @@
-import { Stack } from "@mui/material";
+import { Badge, Stack } from "@mui/material";
 import {
+  Icon20DiamondOutline,
   Icon24AdvertisingOutline,
   Icon24Back,
+  Icon24NotificationOutline,
   Icon28ChevronRightOutline,
   Icon28DoorArrowLeftOutline,
   Icon28DoorArrowRightOutline,
   Icon28SettingsOutline,
+  Icon28StatisticsOutline,
   Icon28UsersOutline,
 } from "@vkontakte/icons";
 import React from "react";
@@ -23,6 +26,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
   const isAuthenticated = useAppSelector(
     (state) => state.userData.isAuthenticated
   );
+  const notifications = useAppSelector((state) => state.cache.notifications);
 
   return (
     <Stack
@@ -53,11 +57,73 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             Профили
           </SidebarCell>
           <SidebarCell
-            to="/r"
+            to="/n"
+            startIcon={
+              <Badge
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                badgeContent={notifications.length}
+                max={99}
+                color={"info"}
+                sx={{ "& .MuiBadge-badge": { transform: "scale(0.7)" } }}
+              >
+                <IconWrapper size={size}>
+                  <Icon24NotificationOutline />
+                </IconWrapper>
+              </Badge>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Оповещения
+          </SidebarCell>
+          <SidebarCell
+            to="/d"
             startIcon={
               <IconWrapper
                 size={size}
                 sx={{ color: (theme) => theme.palette.primary.main }}
+              >
+                <Icon20DiamondOutline />
+              </IconWrapper>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Донат
+          </SidebarCell>
+          <SidebarCell
+            to="/t"
+            startIcon={
+              <IconWrapper
+                size={size}
+                sx={{ color: (theme) => theme.palette.text.primary }}
+              >
+                <Icon28StatisticsOutline />
+              </IconWrapper>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Топы
+          </SidebarCell>
+          <SidebarCell
+            to="/r"
+            startIcon={
+              <IconWrapper
+                size={size}
+                sx={{ color: (theme) => theme.palette.info.main }}
               >
                 <Icon24AdvertisingOutline />
               </IconWrapper>

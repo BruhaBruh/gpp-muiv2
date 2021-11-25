@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Report, User } from "../../graphql/types";
+import { Notification, Report, User } from "../../graphql/types";
 import { CacheState } from "./types";
 
 export const initialState: CacheState = {
@@ -7,6 +7,32 @@ export const initialState: CacheState = {
   reports: [],
   reportsUpdate: true,
   reportIsClosed: false,
+  notifications: [],
+};
+
+const getNotificationString = (n: Notification) => {
+  switch (n.__typename) {
+    case "Billnotification":
+      return JSON.stringify({
+        id: n.billnotificationId,
+        __typename: n.__typename,
+      });
+    case "Friendnotification":
+      return JSON.stringify({
+        id: n.friendnotificationId,
+        __typename: n.__typename,
+      });
+    case "Subscribernotification":
+      return JSON.stringify({
+        id: n.subscribernotificationId,
+        __typename: n.__typename,
+      });
+    case "Systemnotification":
+      return JSON.stringify({
+        id: n.systemnotificationId,
+        __typename: n.__typename,
+      });
+  }
 };
 
 export const cacheSlice = createSlice({
@@ -42,6 +68,27 @@ export const cacheSlice = createSlice({
     clearReports: (state) => {
       state.reports = [];
     },
+    addNotifications: (state, action: PayloadAction<Notification[]>) => {
+      state.notifications = [
+        ...state.notifications.filter((n) => {
+          const s = getNotificationString(n);
+          return !action.payload.map(getNotificationString).includes(s);
+        }),
+        ...action.payload,
+      ].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    },
+    clearNotifications: (state) => {
+      state.notifications = [];
+    },
+    removeNotification: (state, action: PayloadAction<Notification>) => {
+      state.notifications = state.notifications.filter(
+        (n) =>
+          getNotificationString(n) !== getNotificationString(action.payload)
+      );
+    },
   },
 });
 
@@ -52,6 +99,9 @@ export const {
   setReportsUpdate,
   clearReports,
   setReportIsClosed,
+  addNotifications,
+  clearNotifications,
+  removeNotification,
 } = cacheSlice.actions;
 
 export default cacheSlice.reducer;
