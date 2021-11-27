@@ -225,6 +225,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                 color: (theme) => theme.palette.text.primary,
               }}
             >
+              {user.nickname}
               {user.userRole !== UserRoleEnum.None && (
                 <Tooltip
                   title={`Персонал (${getUserRoleString(user.userRole)})`}
@@ -236,6 +237,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                         color: (theme) => theme.palette.info.main,
                         alignSelf: "center",
                         marginRight: "2px",
+                        marginLeft: "2px",
                       }}
                       size={16}
                     >
@@ -252,6 +254,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                         color: process.env.REACT_APP_PREMIUM_COLOR,
                         alignSelf: "center",
                         marginRight: "2px",
+                        marginLeft: "2px",
                       }}
                       size={16}
                     >
@@ -268,6 +271,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                         color: process.env.REACT_APP_LITE_COLOR,
                         alignSelf: "center",
                         marginRight: "2px",
+                        marginLeft: "2px",
                       }}
                       size={16}
                     >
@@ -276,7 +280,6 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                   </Box>
                 </Tooltip>
               )}
-              {user.nickname}
               {getImageByRole(user.role) !== null && (
                 <LazyLoadImage
                   src={getImageByRole(user.role) as any}

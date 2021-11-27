@@ -39,6 +39,9 @@ export type Query = {
   reports?: Maybe<ReportsConnection>;
   reportMessages?: Maybe<ReportMessagesConnection>;
   notifications: Array<Notification>;
+  forums: Array<Forum>;
+  threads?: Maybe<ThreadsConnection>;
+  posts?: Maybe<PostsConnection>;
 };
 
 export type QueryUsersArgs = {
@@ -88,12 +91,43 @@ export type QueryReportMessagesArgs = {
   order?: Maybe<Array<ReportmessageSortInput>>;
 };
 
+export type QueryForumsArgs = {
+  where?: Maybe<ForumFilterInput>;
+  order?: Maybe<Array<ForumSortInput>>;
+};
+
+export type QueryThreadsArgs = {
+  first?: Maybe<Scalars["Int"]>;
+  after?: Maybe<Scalars["String"]>;
+  last?: Maybe<Scalars["Int"]>;
+  before?: Maybe<Scalars["String"]>;
+  where?: Maybe<ThreadFilterInput>;
+  order?: Maybe<Array<ThreadSortInput>>;
+};
+
+export type QueryPostsArgs = {
+  first?: Maybe<Scalars["Int"]>;
+  after?: Maybe<Scalars["String"]>;
+  last?: Maybe<Scalars["Int"]>;
+  before?: Maybe<Scalars["String"]>;
+  where?: Maybe<PostFilterInput>;
+  order?: Maybe<Array<PostSortInput>>;
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   test: Scalars["Boolean"];
   sendSystemNotification: Scalars["Boolean"];
   login: Scalars["Boolean"];
   initialUsersAdd: Scalars["Boolean"];
+  createForum: Forum;
+  editForum: Forum;
+  removeForum: Forum;
+  createThread: Thread;
+  editThread: Thread;
+  removeThread: Thread;
+  createPost: Post;
+  editPost: Post;
   incView: Scalars["Boolean"];
   editUser: User;
   startSubscribe: User;
@@ -111,6 +145,38 @@ export type Mutation = {
 export type MutationSendSystemNotificationArgs = {
   toid?: Maybe<Scalars["Int"]>;
   message: Scalars["String"];
+};
+
+export type MutationCreateForumArgs = {
+  input: ForumCreateInput;
+};
+
+export type MutationEditForumArgs = {
+  input: ForumEditInput;
+};
+
+export type MutationRemoveForumArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationCreateThreadArgs = {
+  input: ThreadCreateInput;
+};
+
+export type MutationEditThreadArgs = {
+  input: ThreadEditInput;
+};
+
+export type MutationRemoveThreadArgs = {
+  id: Scalars["Int"];
+};
+
+export type MutationCreatePostArgs = {
+  input: PostCreateInput;
+};
+
+export type MutationEditPostArgs = {
+  input: PostEditInput;
 };
 
 export type MutationIncViewArgs = {
@@ -200,6 +266,7 @@ export type UserFilterInput = {
   friendFriendNavigations?: Maybe<ListFilterInputTypeOfFriendFilterInput>;
   friendUsers?: Maybe<ListFilterInputTypeOfFriendFilterInput>;
   friendnotifications?: Maybe<ListFilterInputTypeOfFriendnotificationFilterInput>;
+  posts?: Maybe<ListFilterInputTypeOfPostFilterInput>;
   ratingFroms?: Maybe<ListFilterInputTypeOfRatingFilterInput>;
   ratingTos?: Maybe<ListFilterInputTypeOfRatingFilterInput>;
   reportmessages?: Maybe<ListFilterInputTypeOfReportmessageFilterInput>;
@@ -337,6 +404,82 @@ export type ReportmessageSortInput = {
   report?: Maybe<ReportSortInput>;
 };
 
+export type ForumFilterInput = {
+  and?: Maybe<Array<ForumFilterInput>>;
+  or?: Maybe<Array<ForumFilterInput>>;
+  forumId?: Maybe<ComparableInt32OperationFilterInput>;
+  parentForumId?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  name?: Maybe<StringOperationFilterInput>;
+  link?: Maybe<StringOperationFilterInput>;
+  parentForum?: Maybe<ForumFilterInput>;
+  inverseParentForum?: Maybe<ListFilterInputTypeOfForumFilterInput>;
+  threads?: Maybe<ListFilterInputTypeOfThreadFilterInput>;
+};
+
+export type ForumSortInput = {
+  forumId?: Maybe<SortEnumType>;
+  parentForumId?: Maybe<SortEnumType>;
+  name?: Maybe<SortEnumType>;
+  link?: Maybe<SortEnumType>;
+  parentForum?: Maybe<ForumSortInput>;
+};
+
+export type ThreadFilterInput = {
+  and?: Maybe<Array<ThreadFilterInput>>;
+  or?: Maybe<Array<ThreadFilterInput>>;
+  threadId?: Maybe<ComparableInt32OperationFilterInput>;
+  forumId?: Maybe<ComparableInt32OperationFilterInput>;
+  name?: Maybe<StringOperationFilterInput>;
+  isPinned?: Maybe<BooleanOperationFilterInput>;
+  canChat?: Maybe<BooleanOperationFilterInput>;
+  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
+  forum?: Maybe<ForumFilterInput>;
+  posts?: Maybe<ListFilterInputTypeOfPostFilterInput>;
+  firstPost?: Maybe<PostFilterInput>;
+  lastPost?: Maybe<PostFilterInput>;
+};
+
+export type ThreadSortInput = {
+  threadId?: Maybe<SortEnumType>;
+  forumId?: Maybe<SortEnumType>;
+  name?: Maybe<SortEnumType>;
+  isPinned?: Maybe<SortEnumType>;
+  canChat?: Maybe<SortEnumType>;
+  createdAt?: Maybe<SortEnumType>;
+  forum?: Maybe<ForumSortInput>;
+  firstPost?: Maybe<PostSortInput>;
+  lastPost?: Maybe<PostSortInput>;
+};
+
+export type PostFilterInput = {
+  and?: Maybe<Array<PostFilterInput>>;
+  or?: Maybe<Array<PostFilterInput>>;
+  postId?: Maybe<ComparableInt32OperationFilterInput>;
+  threadId?: Maybe<ComparableInt32OperationFilterInput>;
+  ownerId?: Maybe<ComparableInt32OperationFilterInput>;
+  message?: Maybe<StringOperationFilterInput>;
+  replyId?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
+  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
+  updatedAt?: Maybe<ComparableDateTimeOperationFilterInput>;
+  owner?: Maybe<UserFilterInput>;
+  reply?: Maybe<PostFilterInput>;
+  thread?: Maybe<ThreadFilterInput>;
+  inverseReply?: Maybe<ListFilterInputTypeOfPostFilterInput>;
+};
+
+export type PostSortInput = {
+  postId?: Maybe<SortEnumType>;
+  threadId?: Maybe<SortEnumType>;
+  ownerId?: Maybe<SortEnumType>;
+  message?: Maybe<SortEnumType>;
+  replyId?: Maybe<SortEnumType>;
+  createdAt?: Maybe<SortEnumType>;
+  updatedAt?: Maybe<SortEnumType>;
+  owner?: Maybe<UserSortInput>;
+  reply?: Maybe<PostSortInput>;
+  thread?: Maybe<ThreadSortInput>;
+};
+
 /** A connection to a list of items. */
 export type UsersConnection = {
   __typename?: "UsersConnection";
@@ -346,6 +489,7 @@ export type UsersConnection = {
   edges?: Maybe<Array<UsersEdge>>;
   /** A flattened list of the nodes. */
   nodes?: Maybe<Array<User>>;
+  totalCount: Scalars["Int"];
 };
 
 /** A connection to a list of items. */
@@ -357,6 +501,7 @@ export type DonateItemsConnection = {
   edges?: Maybe<Array<DonateItemsEdge>>;
   /** A flattened list of the nodes. */
   nodes?: Maybe<Array<Donateitem>>;
+  totalCount: Scalars["Int"];
 };
 
 /** A connection to a list of items. */
@@ -368,6 +513,7 @@ export type ReportsConnection = {
   edges?: Maybe<Array<ReportsEdge>>;
   /** A flattened list of the nodes. */
   nodes?: Maybe<Array<Report>>;
+  totalCount: Scalars["Int"];
 };
 
 /** A connection to a list of items. */
@@ -379,6 +525,31 @@ export type ReportMessagesConnection = {
   edges?: Maybe<Array<ReportMessagesEdge>>;
   /** A flattened list of the nodes. */
   nodes?: Maybe<Array<Reportmessage>>;
+  totalCount: Scalars["Int"];
+};
+
+/** A connection to a list of items. */
+export type ThreadsConnection = {
+  __typename?: "ThreadsConnection";
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<ThreadsEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Thread>>;
+  totalCount: Scalars["Int"];
+};
+
+/** A connection to a list of items. */
+export type PostsConnection = {
+  __typename?: "PostsConnection";
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges?: Maybe<Array<PostsEdge>>;
+  /** A flattened list of the nodes. */
+  nodes?: Maybe<Array<Post>>;
+  totalCount: Scalars["Int"];
 };
 
 export type ComparableInt32OperationFilterInput = {
@@ -503,6 +674,13 @@ export type ListFilterInputTypeOfFriendnotificationFilterInput = {
   any?: Maybe<Scalars["Boolean"]>;
 };
 
+export type ListFilterInputTypeOfPostFilterInput = {
+  all?: Maybe<PostFilterInput>;
+  none?: Maybe<PostFilterInput>;
+  some?: Maybe<PostFilterInput>;
+  any?: Maybe<Scalars["Boolean"]>;
+};
+
 export type ListFilterInputTypeOfRatingFilterInput = {
   all?: Maybe<RatingFilterInput>;
   none?: Maybe<RatingFilterInput>;
@@ -611,6 +789,20 @@ export type ReportSubTypeOperationFilterInput = {
   nin?: Maybe<Array<ReportSubType>>;
 };
 
+export type ListFilterInputTypeOfForumFilterInput = {
+  all?: Maybe<ForumFilterInput>;
+  none?: Maybe<ForumFilterInput>;
+  some?: Maybe<ForumFilterInput>;
+  any?: Maybe<Scalars["Boolean"]>;
+};
+
+export type ListFilterInputTypeOfThreadFilterInput = {
+  all?: Maybe<ThreadFilterInput>;
+  none?: Maybe<ThreadFilterInput>;
+  some?: Maybe<ThreadFilterInput>;
+  any?: Maybe<Scalars["Boolean"]>;
+};
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: "PageInfo";
@@ -626,6 +818,7 @@ export type PageInfo = {
 
 export type User = {
   __typename?: "User";
+  level: Scalars["Int"];
   phone?: Maybe<Scalars["Int"]>;
   discordRoles: Array<UserDiscordRole>;
   totalFriends: Scalars["Int"];
@@ -636,7 +829,6 @@ export type User = {
   avatar: Scalars["String"];
   work?: Maybe<Scalars["String"]>;
   role?: Maybe<Scalars["String"]>;
-  level: Scalars["Int"];
   userId: Scalars["Int"];
   discordId: Scalars["Long"];
   money: Scalars["Int"];
@@ -660,6 +852,7 @@ export type User = {
   friendFriendNavigations: Array<Friend>;
   friendUsers: Array<Friend>;
   friendnotifications: Array<Friendnotification>;
+  posts: Array<Post>;
   ratingFroms: Array<Rating>;
   ratingTos: Array<Rating>;
   reportmessages: Array<Reportmessage>;
@@ -751,6 +944,53 @@ export type ReportMessagesEdge = {
   cursor: Scalars["String"];
   /** The item at the end of the edge. */
   node: Reportmessage;
+};
+
+export type Thread = {
+  __typename?: "Thread";
+  firstPost?: Maybe<Post>;
+  lastPost?: Maybe<Post>;
+  threadId: Scalars["Int"];
+  forumId: Scalars["Int"];
+  name: Scalars["String"];
+  isPinned: Scalars["Boolean"];
+  canChat?: Maybe<Scalars["Boolean"]>;
+  createdAt: Scalars["DateTime"];
+  forum: Forum;
+  posts: Array<Post>;
+};
+
+/** An edge in a connection. */
+export type ThreadsEdge = {
+  __typename?: "ThreadsEdge";
+  /** A cursor for use in pagination. */
+  cursor: Scalars["String"];
+  /** The item at the end of the edge. */
+  node: Thread;
+};
+
+export type Post = {
+  __typename?: "Post";
+  owner?: Maybe<User>;
+  reply?: Maybe<Post>;
+  postId: Scalars["Int"];
+  threadId: Scalars["Int"];
+  ownerId: Scalars["Int"];
+  message: Scalars["String"];
+  replyId?: Maybe<Scalars["Int"]>;
+  createdAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"];
+  thread: Thread;
+  inverseReply: Array<Post>;
+};
+
+/** An edge in a connection. */
+export type PostsEdge = {
+  __typename?: "PostsEdge";
+  /** A cursor for use in pagination. */
+  cursor: Scalars["String"];
+  /** The item at the end of the edge. */
+  node: Post;
 };
 
 export type BillnotificationFilterInput = {
@@ -894,11 +1134,14 @@ export enum UserTopEnum {
   Years = "YEARS",
 }
 
-export enum ReportType {
-  Report = "REPORT",
-  Bug = "BUG",
-  Feature = "FEATURE",
-}
+export type UserRating = {
+  __typename?: "UserRating";
+  total: Scalars["Int"];
+  result: Scalars["Int"];
+  positive: Scalars["Int"];
+  negative: Scalars["Int"];
+  your: Scalars["Int"];
+};
 
 export type UserStatus = {
   __typename?: "UserStatus";
@@ -912,6 +1155,64 @@ export type Notification =
   | Friendnotification
   | Subscribernotification
   | Systemnotification;
+
+export type Forum = {
+  __typename?: "Forum";
+  forumId: Scalars["Int"];
+  parentForumId?: Maybe<Scalars["Int"]>;
+  name: Scalars["String"];
+  link?: Maybe<Scalars["String"]>;
+  parentForum?: Maybe<Forum>;
+  inverseParentForum: Array<Forum>;
+  threads: Array<Thread>;
+};
+
+export type ForumCreateInput = {
+  name: Scalars["String"];
+  parentForumId: Scalars["Int"];
+  link?: Maybe<Scalars["String"]>;
+};
+
+export type ForumEditInput = {
+  id: Scalars["Int"];
+  name?: Maybe<Scalars["String"]>;
+  parentForumId?: Maybe<Scalars["Int"]>;
+  link?: Maybe<Scalars["String"]>;
+};
+
+export enum UserRoleEnum {
+  None = "NONE",
+  SiteDeveloper = "SITE_DEVELOPER",
+  Admin = "ADMIN",
+  Moderator = "MODERATOR",
+  JrModerator = "JR_MODERATOR",
+}
+
+export type ThreadCreateInput = {
+  name: Scalars["String"];
+  forumId: Scalars["Int"];
+  isPinned: Scalars["Boolean"];
+  canChat: Scalars["Boolean"];
+  message: Scalars["String"];
+};
+
+export type ThreadEditInput = {
+  id: Scalars["Int"];
+  name?: Maybe<Scalars["String"]>;
+  isPinned?: Maybe<Scalars["Boolean"]>;
+  canChat?: Maybe<Scalars["Boolean"]>;
+};
+
+export type PostCreateInput = {
+  threadId: Scalars["Int"];
+  message: Scalars["String"];
+  replyId?: Maybe<Scalars["Int"]>;
+};
+
+export type PostEditInput = {
+  id: Scalars["Int"];
+  message: Scalars["String"];
+};
 
 export type UserEditInput = {
   isBanned?: Maybe<Scalars["Boolean"]>;
@@ -929,12 +1230,10 @@ export type UserEditInput = {
   permissions?: Maybe<Scalars["Long"]>;
 };
 
-export enum UserRoleEnum {
-  None = "NONE",
-  SiteDeveloper = "SITE_DEVELOPER",
-  Admin = "ADMIN",
-  Moderator = "MODERATOR",
-  JrModerator = "JR_MODERATOR",
+export enum ReportType {
+  Report = "REPORT",
+  Bug = "BUG",
+  Feature = "FEATURE",
 }
 
 export type ReportCreateInput = {
@@ -956,15 +1255,6 @@ export enum ReportSubType {
   Server = "SERVER",
   Site = "SITE",
 }
-
-export type UserRating = {
-  __typename?: "UserRating";
-  total: Scalars["Int"];
-  result: Scalars["Int"];
-  positive: Scalars["Int"];
-  negative: Scalars["Int"];
-  your: Scalars["Int"];
-};
 
 export type Billnotification = {
   __typename?: "Billnotification";

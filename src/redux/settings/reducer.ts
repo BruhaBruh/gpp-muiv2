@@ -20,7 +20,7 @@ const loadHorizontalSnackbarPosition = (): string => {
 };
 
 export const initialState: SettingsState = {
-  redirect: "/info",
+  redirect: "/f",
   verticalSnackbarPosition: loadVerticalSnackbarPosition(),
   horizontalSnackbarPosition: loadHorizontalSnackbarPosition(),
 };

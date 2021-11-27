@@ -9,17 +9,12 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Icon24Add, Icon24Back, Icon28DeleteOutline } from "@vkontakte/icons";
+import { Icon24Add, Icon28DeleteOutline } from "@vkontakte/icons";
 import React from "react";
 import ButtonR from "../../components/ui/ButtonR";
-import CellR from "../../components/ui/CellR";
 import IconWrapper from "../../components/ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import {
-  removeCustomTheme,
-  setSidebarHeader,
-  setTheme,
-} from "../../redux/ui/reducer";
+import { removeCustomTheme, setTheme } from "../../redux/ui/reducer";
 import { darkThemeOptions } from "../../utils/theme";
 
 const ThemesPage = () => {
@@ -33,29 +28,6 @@ const ThemesPage = () => {
   }, [themeIndex, themes]);
   const lower = useMediaQuery("(max-width: 1200px)");
   const dispatch = useAppDispatch();
-
-  React.useEffect(() => {
-    dispatch(
-      setSidebarHeader(
-        <CellR
-          to="/settings"
-          onClick={() => dispatch(setSidebarHeader(null))}
-          sx={{ height: "100%" }}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={20}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24Back />
-            </IconWrapper>
-          }
-        >
-          Назад
-        </CellR>
-      )
-    );
-  }, [dispatch]);
 
   return (
     <Stack

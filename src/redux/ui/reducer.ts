@@ -47,7 +47,7 @@ const loadTheme = (): number => {
 
 export const initialState: UIState = {
   modal: null,
-  sidebarHeader: null,
+  sidebarHeader: false,
   header: null,
   theme: loadTheme(),
   themes: loadCustomThemes(),
@@ -60,7 +60,7 @@ export const uiSlice = createSlice({
     setModal: (state, action: PayloadAction<ReactElement | null>) => {
       state.modal = action.payload;
     },
-    setSidebarHeader: (state, action: PayloadAction<any>) => {
+    setSidebarHeader: (state, action: PayloadAction<boolean>) => {
       state.sidebarHeader = action.payload;
     },
     setTheme: (state, action: PayloadAction<Theme>) => {

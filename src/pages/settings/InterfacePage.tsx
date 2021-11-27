@@ -1,15 +1,12 @@
 import { Button, Paper, Stack, Typography } from "@mui/material";
-import { Icon24Back } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
-import CellR from "../../components/ui/CellR";
-import IconWrapper from "../../components/ui/IconWrapper";
 import StyledTab from "../../components/ui/StyledTab";
 import StyledTabs from "../../components/ui/StyledTabs";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   setHorizontalSnackbarPosition,
-  setVerticalSnackbarPosition,
+  setVerticalSnackbarPosition
 } from "../../redux/settings/reducer";
 import { setSidebarHeader } from "../../redux/ui/reducer";
 
@@ -25,23 +22,7 @@ const InterfacePage = () => {
 
   React.useEffect(() => {
     dispatch(
-      setSidebarHeader(
-        <CellR
-          to="/settings"
-          onClick={() => dispatch(setSidebarHeader(null))}
-          sx={{ height: "100%" }}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={20}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24Back />
-            </IconWrapper>
-          }
-        >
-          Назад
-        </CellR>
+      setSidebarHeader(true
       )
     );
   }, [dispatch]);

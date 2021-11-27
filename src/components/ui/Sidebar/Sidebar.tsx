@@ -6,11 +6,14 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Icon28Menu } from "@vkontakte/icons";
+import { Icon24Back, Icon28Menu } from "@vkontakte/icons";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/redux";
 import ButtonR from "../ButtonR";
+import Cell from "../Cell";
 import Drawer from "../Drawer";
+import IconWrapper from "../IconWrapper";
 import SidebarMenu from "./SidebarMenu";
 
 const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
@@ -31,6 +34,7 @@ const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
 
       setShowDrawer(open);
     };
+  const history = useHistory();
 
   return hide ? (
     <>
@@ -78,7 +82,22 @@ const Sidebar: React.FC<PaperProps> = ({ children, sx, ...props }) => {
         }}
       >
         {sidebarHeader ? (
-          sidebarHeader
+          <Cell
+            onClick={() => history.goBack()}
+            sx={{ height: "100%" }}
+            fullWidth
+            startIcon={
+              <IconWrapper
+                component="span"
+                size={20}
+                sx={{ color: (theme) => theme.palette.primary.main }}
+              >
+                <Icon24Back />
+              </IconWrapper>
+            }
+          >
+            Назад
+          </Cell>
         ) : (
           <ButtonR color="inherit" to="/" fullWidth sx={{ height: "100%" }}>
             <Box

@@ -4,6 +4,7 @@ import {
   Icon24AdvertisingOutline,
   Icon24Back,
   Icon24NotificationOutline,
+  Icon28ChatsOutline,
   Icon28ChevronRightOutline,
   Icon28DoorArrowLeftOutline,
   Icon28DoorArrowRightOutline,
@@ -81,6 +82,21 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             }
           >
             Оповещения
+          </SidebarCell>
+          <SidebarCell
+            to="/f"
+            startIcon={
+              <IconWrapper size={size}>
+                <Icon28ChatsOutline />
+              </IconWrapper>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Форум
           </SidebarCell>
           <SidebarCell
             to="/d"

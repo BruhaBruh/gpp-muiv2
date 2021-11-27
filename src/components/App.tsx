@@ -5,6 +5,9 @@ import { ReportSubType, ReportType } from "../graphql/types";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
 import DonatesPage from "../pages/donates/DonatesPage";
+import ForumPage from "../pages/forum/ForumPage";
+import IndexPage from "../pages/forum/IndexPage";
+import ThreadPage from "../pages/forum/ThreadPage";
 import NotificationsPage from "../pages/notifications/NotificationsPage";
 import Page404 from "../pages/Page404";
 import BugPage from "../pages/reports/BugPage";
@@ -67,61 +70,61 @@ function App() {
                   <ReportsPage />
                 </Route>
                 <Route exact path="/r/c">
-                  <Head name="Жалоба" /> {/* › */}
+                  <Head name="Жалоба" showBack /> {/* › */}
                   <ComplaintPage />
                 </Route>
                 <Route exact path="/r/c/admin">
-                  <Head name="Жалоба на Персонал" /> {/* › */}
+                  <Head name="Жалоба на Персонал" showBack /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Report}
                     subtype={ReportSubType.Admin}
                   />
                 </Route>
                 <Route exact path="/r/c/user">
-                  <Head name="Жалоба на Игрока" /> {/* › */}
+                  <Head name="Жалоба на Игрока" showBack /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Report}
                     subtype={ReportSubType.User}
                   />
                 </Route>
                 <Route exact path="/r/b">
-                  <Head name="Баг" /> {/* › */}
+                  <Head name="Баг" showBack /> {/* › */}
                   <BugPage />
                 </Route>
                 <Route exact path="/r/b/server">
-                  <Head name="Баг сервера" /> {/* › */}
+                  <Head name="Баг сервера" showBack /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Bug}
                     subtype={ReportSubType.Server}
                   />
                 </Route>
                 <Route exact path="/r/b/site">
-                  <Head name="Баг сайта" /> {/* › */}
+                  <Head name="Баг сайта" showBack /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Bug}
                     subtype={ReportSubType.Site}
                   />
                 </Route>
                 <Route exact path="/r/f">
-                  <Head name="Предложение" /> {/* › */}
+                  <Head name="Предложение" showBack /> {/* › */}
                   <FeaturePage />
                 </Route>
                 <Route exact path="/r/f/server">
-                  <Head name="Предложение для сервера" /> {/* › */}
+                  <Head name="Предложение для сервера" showBack /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Feature}
                     subtype={ReportSubType.Server}
                   />
                 </Route>
                 <Route exact path="/r/f/site">
-                  <Head name="Предложение для сайта" /> {/* › */}
+                  <Head name="Предложение для сайта" showBack /> {/* › */}
                   <CreateReportPage
                     type={ReportType.Feature}
                     subtype={ReportSubType.Site}
                   />
                 </Route>
                 <Route exact path="/r/:id">
-                  <Head name="Репорт" />
+                  <Head name="Репорт" showBack />
                   <ReportPage />
                 </Route>
                 <Route exact path="/n">
@@ -132,6 +135,18 @@ function App() {
                   <Head name="Донат" />
                   <DonatesPage />
                 </Route>
+                <Route exact path="/f">
+                  <Head name="Форум › Главная" />
+                  <IndexPage />
+                </Route>
+                <Route exact path="/f/:id">
+                  <Head name="Форум" />
+                  <ForumPage />
+                </Route>
+                <Route exact path="/th/:id">
+                  <Head name="Тема" showBack />
+                  <ThreadPage />
+                </Route>
                 <Route exact path="/t">
                   <Head name="Топы" />
                   <TopsPage />
@@ -141,19 +156,19 @@ function App() {
                   <SettingsPage />
                 </Route>
                 <Route exact path="/settings/themes">
-                  <Head name="Внешний вид" />
+                  <Head name="Внешний вид" showBack />
                   <ThemesPage />
                 </Route>
                 <Route exact path="/settings/themes/create">
-                  <Head name="Создание темы" />
+                  <Head name="Создание темы" showBack />
                   <ThemeCreatePage />
                 </Route>
                 <Route exact path="/settings/interface">
-                  <Head name="Настройка интерфейса" />
+                  <Head name="Настройка интерфейса" showBack />
                   <InterfacePage />
                 </Route>
                 <Route exact path="/settings/notification">
-                  <Head name="Настройки Discord уведомлений" />
+                  <Head name="Настройки Discord уведомлений" showBack />
                   <NotificationPage />
                 </Route>
                 <Route exact path="/">

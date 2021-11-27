@@ -29,6 +29,7 @@ const ReportsList = () => {
       gql`
         query reports($after: String, $where: ReportFilterInput) {
           reports(first: 25, after: $after, where: $where) {
+            totalCount
             nodes {
               reportId
               owner {
@@ -116,8 +117,8 @@ const ReportsList = () => {
           sx={{ color: (theme) => theme.palette.text.secondary }}
         >
           {checkPermissions(Permissions.ShowReports, permissions)
-            ? "Все репорты"
-            : "Ваши репорты"}
+            ? `Все репорты`
+            : `Ваши репорты`}
         </Typography>
         <Stack direction="row" spacing={2}>
           <Box
@@ -144,6 +145,16 @@ const ReportsList = () => {
           >
             Закрытые
           </Box>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: (theme) => theme.palette.text.disabled,
+              width: "100%",
+              textAlign: "right",
+            }}
+          >
+            Найдено: {reportsData?.reports.totalCount}
+          </Typography>
         </Stack>
         {reports.map((r) => (
           <ReportCell key={r.reportId} report={r} />

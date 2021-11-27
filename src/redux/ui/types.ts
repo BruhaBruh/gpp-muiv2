@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 
 export interface UIState {
   modal: ReactElement | null;
-  sidebarHeader: any;
+  sidebarHeader: boolean;
   header: any;
   theme: number;
   themes: ThemeOption[];

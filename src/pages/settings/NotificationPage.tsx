@@ -7,14 +7,10 @@ import {
   Switch,
   Typography,
 } from "@mui/material";
-import { Icon24Back } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
-import CellR from "../../components/ui/CellR";
-import IconWrapper from "../../components/ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setUserUpdate } from "../../redux/cache/reducer";
-import { setSidebarHeader } from "../../redux/ui/reducer";
 import { checkSettings, Settings } from "../../redux/userData/types";
 
 const NotificationPage = () => {
@@ -72,29 +68,6 @@ const NotificationPage = () => {
     setNotifyReportMessage,
     setNotifySubscriber,
   ]);
-
-  React.useEffect(() => {
-    dispatch(
-      setSidebarHeader(
-        <CellR
-          to="/settings"
-          onClick={() => dispatch(setSidebarHeader(null))}
-          sx={{ height: "100%" }}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={20}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24Back />
-            </IconWrapper>
-          }
-        >
-          Назад
-        </CellR>
-      )
-    );
-  }, [dispatch]);
 
   React.useEffect(() => {
     if (!data) return;

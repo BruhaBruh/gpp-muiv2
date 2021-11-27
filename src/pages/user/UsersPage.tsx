@@ -5,6 +5,7 @@ import {
   Paper,
   Stack,
   TextField,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
@@ -40,6 +41,7 @@ const UsersPage = () => {
           where: $where
           order: { userId: ASC }
         ) {
+          totalCount
           nodes {
             userId
             discordId
@@ -196,7 +198,15 @@ const UsersPage = () => {
               </Box>
             </Stack>
           </ScrollContainer>
-
+          <Typography
+            variant="subtitle2"
+            sx={{
+              alignSelf: "center",
+              color: (theme) => theme.palette.text.disabled,
+            }}
+          >
+            Найдено: {usersData?.users.totalCount}
+          </Typography>
           <Stack direction="row" spacing={1}>
             <TextField
               value={search}

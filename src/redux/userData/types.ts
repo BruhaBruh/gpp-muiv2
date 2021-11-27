@@ -212,6 +212,8 @@ export enum Permissions {
   ModifyRoles = 64,
   Lite = 128,
   Premium = 256,
+  ModifyForum = 512,
+  ModifyThread = 1024,
 }
 
 export enum Settings {

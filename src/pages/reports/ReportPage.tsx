@@ -1,17 +1,13 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import { LinearProgress, Stack } from "@mui/material";
-import { Icon24Back } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ReportButtons from "../../components/report/ReportButtons";
 import ReportChat from "../../components/report/ReportChat";
 import ReportHeader from "../../components/report/ReportHeader";
-import CellR from "../../components/ui/CellR";
-import IconWrapper from "../../components/ui/IconWrapper";
 import { ReportsConnection } from "../../graphql/types";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setSidebarHeader } from "../../redux/ui/reducer";
+import { useAppSelector } from "../../hooks/redux";
 import { checkPermissions, Permissions } from "../../redux/userData/types";
 
 const ReportPage = () => {
@@ -49,30 +45,6 @@ const ReportPage = () => {
     `,
     { fetchPolicy: "no-cache" }
   );
-  const dispatch = useAppDispatch();
-
-  React.useEffect(() => {
-    dispatch(
-      setSidebarHeader(
-        <CellR
-          to="/r"
-          onClick={() => dispatch(setSidebarHeader(null))}
-          sx={{ height: "100%" }}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={20}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24Back />
-            </IconWrapper>
-          }
-        >
-          Назад
-        </CellR>
-      )
-    );
-  }, [dispatch]);
 
   React.useEffect(() => {
     if (!/^\d*$/.test(id)) history.push("/r");
