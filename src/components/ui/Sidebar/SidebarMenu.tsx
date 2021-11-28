@@ -171,7 +171,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             Настройки
           </SidebarCell>
           <Cell
-            href={"api/auth/logout"}
+            href={"/api/auth/logout"}
             color="error"
             size="medium"
             sx={{

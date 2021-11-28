@@ -66,7 +66,14 @@ const AuthLoader = () => {
     dispatch(setLoading(false));
     dispatch(setLoggedIn(false));
     dispatch(setAuthenticated(false));
-    enqueueSnackbar(error?.message || meError?.message, { variant: "error" });
+    enqueueSnackbar(
+      error?.message.includes(
+        "The current user is not authorized to access this resource."
+      )
+        ? "Вы не авторизованы"
+        : error?.message || meError?.message,
+      { variant: "error" }
+    );
   }, [error, meError, enqueueSnackbar, dispatch]);
 
   React.useEffect(() => {
