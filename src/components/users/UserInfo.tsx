@@ -1,6 +1,5 @@
 import { Box, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import {
-  Icon20AccessibilityOutline,
   Icon24FavoriteOutline,
   Icon24StatisticsOutline,
   Icon24UserOutline,
@@ -196,7 +195,7 @@ const UserInfo = () => {
             {user.level}
           </Cell>
         </Stack>
-        <Stack>
+        {/*<Stack>
           <Typography
             variant="subtitle2"
             sx={{ color: (theme) => theme.palette.text.secondary }}
@@ -220,7 +219,7 @@ const UserInfo = () => {
             sx={{ textTransform: "none" }}
           >
             {user.role ?? "Нет"}
-            {/*getImageByRole(user.role) !== null && (
+            {getImageByRole(user.role) !== null && (
               <LazyLoadImage
                 src={getImageByRole(user.role) as any}
                 alt={user.role ? user.role : undefined}
@@ -234,9 +233,9 @@ const UserInfo = () => {
                 draggable={false}
                 height="24px"
               />
-              )*/}
+              )}
           </Cell>
-        </Stack>
+        </Stack>*/}
         <Stack>
           <Typography
             variant="subtitle2"
