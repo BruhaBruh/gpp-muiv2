@@ -55,6 +55,7 @@ const UserPage = () => {
                 userRole
                 avatar
                 banner
+                permissions
                 lastOnline
                 role
                 discordRoles {
@@ -73,6 +74,7 @@ const UserPage = () => {
                 userRole
                 avatar
                 banner
+                permissions
                 lastOnline
                 role
                 discordRoles {
