@@ -22,7 +22,7 @@ const DonateConvertToTref = () => {
   const dispatch = useAppDispatch();
   const [buy, { data, loading, error }] = useMutation(gql`
     mutation buy($amount: Int) {
-      buyDonate(id: 22, amount: $amount) {
+      buyDonate(id: 13, amount: $amount) {
         donateitemId
         name
         amount
