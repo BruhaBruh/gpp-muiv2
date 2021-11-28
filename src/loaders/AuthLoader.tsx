@@ -1,163 +1,98 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
 import { useSnackbar } from "notistack";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Profile, UserStatus } from "../graphql/graphql";
-import { getCookie } from "../libs/cookieService";
+import { User } from "../graphql/types";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
-  setBlacklist,
-  setIsLoading,
-  setIsLoggedIn,
-  setIsValidated,
+  setAuthenticated,
+  setAvatar,
+  setBanreportEndAt,
+  setLoading,
+  setLoggedIn,
   setNickname,
-  setOnServer,
   setPermissions,
-  setProfileId,
-  setRoles,
-  setServerId,
+  setSettings,
+  setSubscriptionEndAt,
+  setUpdateUser,
   setUserId,
+  setUserRole,
 } from "../redux/userData/reducer";
 
 const AuthLoader = () => {
-  const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
-  const [getProfile, { data: profileData, error: profileError }] =
-    useLazyQuery<{
-      profile: Profile;
-    }>(
-      gql`
-        query getProfile($id: ObjectID!) {
-          profile(id: $id) {
-            id
-            nickname
-            roles {
-              id
-              color
-              hoist
-              name
-              position
-            }
-            server
-            blacklist {
-              id
-            }
-            user {
-              id
-              permissions
-            }
-          }
-        }
-      `
-    );
+  const [login, { data, error }] = useMutation<{ login: boolean }>(gql`
+    mutation login {
+      login
+    }
+  `);
 
-  const [getStatus, { data: statusData, error: statusError }] = useLazyQuery<{
-    status: UserStatus;
+  const [getMe, { data: meData, error: meError }] = useLazyQuery<{
+    me: User;
   }>(
     gql`
-      query getStatus($id: ObjectID!) {
-        status(server: $id) {
-          isValidated
-          onServer
-        }
-      }
-    `
-  );
-  const [selectServer, { data: selectData, error: selectError }] = useMutation<{
-    selectProfile: Profile;
-  }>(
-    gql`
-      mutation selectServer($server: ObjectID!) {
-        selectProfile(server: $server) {
-          id
+      query getMe {
+        me {
+          userId
+          permissions
           nickname
-          roles {
-            id
-            color
-            hoist
-            name
-            position
-          }
-          server
-          blacklist {
-            id
-          }
-          user {
-            id
-            permissions
-          }
+          userRole
+          avatar
+          settings
+          banreportEndAt
+          subscriptionEndAt
         }
       }
     `,
-    { variables: { server: 1 } }
+    { fetchPolicy: "no-cache" }
   );
 
-  React.useEffect(() => {
-    if (!statusError && !profileError && !selectError) return;
-    enqueueSnackbar(
-      statusError?.message ||
-        profileError?.message === "Unexpected token < in JSON at position 0"
-        ? "Ошибка авторизации дискорда. Попробуйте позже"
-        : profileError?.message || selectError?.message,
-      {
-        variant: "error",
-      }
-    );
-  }, [statusError, profileError, enqueueSnackbar, selectError]);
+  const { enqueueSnackbar } = useSnackbar();
+  const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
+  const dispatch = useAppDispatch();
+  const update = useAppSelector((state) => state.userData.updateUser);
 
   React.useEffect(() => {
-    if (!!getCookie("access_token")) {
-      dispatch(setIsLoggedIn(true));
-      const selected_profile = getCookie("selected_profile");
-      if (!!selected_profile) {
-        if (!/^\d*$/.test(selected_profile)) {
-          window.location.pathname = "/auth/logout";
-          return;
-        }
-        dispatch(setProfileId(Number(selected_profile)));
-        getProfile({
-          variables: {
-            id: selected_profile,
-          },
-        });
-      } else {
-        selectServer();
-      }
-    } else {
-      dispatch(setIsLoading(false));
-    }
-  }, [dispatch, getProfile, selectServer]);
+    login();
+  }, [login]);
 
   React.useEffect(() => {
-    if (!profileData) return;
-    getStatus({ variables: { id: profileData.profile.server } });
-    dispatch(setNickname(profileData.profile.nickname));
-    dispatch(setServerId(profileData.profile.server));
-    dispatch(setPermissions(profileData.profile.user.permissions));
-    dispatch(setRoles(profileData.profile.roles));
-    dispatch(setUserId(profileData.profile.user.id));
-    dispatch(setBlacklist(profileData.profile.blacklist.map((el) => el.id)));
-  }, [profileData, dispatch, getStatus]);
+    if (!data) return;
+    dispatch(setLoggedIn(data.login));
+    dispatch(setAuthenticated(true));
+    dispatch(setLoading(false));
+  }, [data, dispatch]);
 
   React.useEffect(() => {
-    if (!statusData) return;
-    dispatch(setOnServer(statusData.status.onServer));
-    dispatch(setIsValidated(statusData.status.isValidated));
-    dispatch(setIsLoading(false));
-  }, [statusData, dispatch]);
+    if (!error && !meError) return;
+    dispatch(setLoading(false));
+    dispatch(setLoggedIn(false));
+    dispatch(setAuthenticated(false));
+    enqueueSnackbar(error?.message || meError?.message, { variant: "error" });
+  }, [error, meError, enqueueSnackbar, dispatch]);
 
   React.useEffect(() => {
-    if (!selectData) return;
-    getStatus({ variables: { id: selectData.selectProfile.server } });
-    dispatch(setProfileId(selectData.selectProfile.id));
-    dispatch(setNickname(selectData.selectProfile.nickname));
-    dispatch(setServerId(selectData.selectProfile.server));
-    dispatch(setPermissions(selectData.selectProfile.user.permissions));
-    dispatch(setRoles(selectData.selectProfile.roles));
-    dispatch(setUserId(selectData.selectProfile.user.id));
-    dispatch(
-      setBlacklist(selectData.selectProfile.blacklist.map((el) => el.id))
-    );
-  }, [selectData, dispatch, getStatus]);
+    if (!isLoggedIn) return;
+    getMe();
+    const t = setInterval(getMe, 10000);
+    return () => clearInterval(t);
+  }, [isLoggedIn, getMe]);
+
+  React.useEffect(() => {
+    if (!isLoggedIn || !update) return;
+    getMe();
+    dispatch(setUpdateUser(false));
+  }, [getMe, isLoggedIn, dispatch, update]);
+
+  React.useEffect(() => {
+    if (!meData) return;
+    dispatch(setNickname(meData.me.nickname));
+    dispatch(setPermissions(meData.me.permissions));
+    dispatch(setUserId(meData.me.userId));
+    dispatch(setUserRole(meData.me.userRole));
+    dispatch(setAvatar(meData.me.avatar));
+    dispatch(setBanreportEndAt(meData.me.banreportEndAt));
+    dispatch(setSubscriptionEndAt(meData.me.subscriptionEndAt));
+    dispatch(setSettings(meData.me.settings));
+  }, [meData, dispatch]);
 
   return <></>;
 };

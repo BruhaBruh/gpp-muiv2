@@ -14,15 +14,14 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import { Icon16Pen, Icon24Back } from "@vkontakte/icons";
+import { Icon16Pen } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { HexColorPicker } from "react-colorful";
-import CellR from "../../components/ui/CellR";
 import Drawer from "../../components/ui/Drawer";
 import IconWrapper from "../../components/ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { addCustomTheme, setSidebarHeader } from "../../redux/ui/reducer";
+import { addCustomTheme } from "../../redux/ui/reducer";
 import { darkThemeOptions, lightThemeOptions } from "../../utils/theme";
 
 type EditType = "light" | "main" | "dark" | "default" | "paper" | "text";
@@ -105,29 +104,6 @@ const ThemeCreatePage = () => {
       text: (themeEdit.palette as Palette).text.primary,
     });
   }, [themeEdit]);
-
-  React.useEffect(() => {
-    dispatch(
-      setSidebarHeader(
-        <CellR
-          to="/settings/themes"
-          onClick={() => dispatch(setSidebarHeader(null))}
-          sx={{ height: "100%" }}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={20}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24Back />
-            </IconWrapper>
-          }
-        >
-          Назад
-        </CellR>
-      )
-    );
-  }, [dispatch]);
 
   React.useEffect(() => {
     if (!!color || !editType) return;
@@ -250,13 +226,10 @@ const ThemeCreatePage = () => {
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Предпросмотр
           </Typography>
@@ -319,13 +292,10 @@ const ThemeCreatePage = () => {
           padding: (theme) => theme.spacing(2),
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Палитра
           </Typography>

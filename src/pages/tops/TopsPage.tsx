@@ -1,55 +1,144 @@
-import { Stack } from "@mui/material";
+import { useLazyQuery } from "@apollo/client";
+import { Box, LinearProgress, Paper, Stack } from "@mui/material";
+import gql from "graphql-tag";
 import React from "react";
-import BoughtTop from "../../components/tops/BoughtTop";
-import FriendsTop from "../../components/tops/FriendsTop";
-import LevelTop from "../../components/tops/LevelTop";
-import RatingTop from "../../components/tops/RatingTop";
-import SoldTop from "../../components/tops/SoldTop";
-import SubscribersTop from "../../components/tops/SubscribersTop";
-import ViewsTop from "../../components/tops/ViewsTop";
-import StyledTab from "../../components/ui/StyledTab";
-import StyledTabs from "../../components/ui/StyledTabs";
-import { TopBy } from "../../graphql/graphql";
+import ScrollContainer from "react-indiana-drag-scroll";
+import TopByFriends from "../../components/tops/TopByFriends";
+import TopByRatings from "../../components/tops/TopByRatings";
+import TopBySubscribers from "../../components/tops/TopBySubscribers";
+import TopByViews from "../../components/tops/TopByViews";
+import TopByYears from "../../components/tops/TopByYears";
+import { User, UserTopEnum } from "../../graphql/types";
 
 const TopsPage = () => {
-  const [currentTab, setCurrentTab] = React.useState<TopBy>(TopBy.Views);
+  const [type, setType] = React.useState<UserTopEnum>(UserTopEnum.Views);
+  const [getTop, { data, loading }] = useLazyQuery<{ top: User[] }>(
+    gql`
+      query top($type: UserTopEnum!) {
+        top(type: $type) {
+          userId
+          discordId
+          nickname
+          level
+          views
+          totalFriends
+          totalSubscribers
+          rating {
+            result
+            total
+            negative
+            positive
+          }
+          userRole
+          avatar
+          banner
+          lastOnline
+          role
+          permissions
+        }
+      }
+    `,
+    { fetchPolicy: "no-cache" }
+  );
+
+  React.useEffect(() => {
+    getTop({ variables: { type: type } });
+  }, [type, getTop]);
 
   return (
     <Stack
       spacing={2}
       sx={{
         margin: "auto",
-        width: "100%",
         maxWidth: (theme) => theme.breakpoints.values.lg,
       }}
     >
-      <StyledTabs
-        value={currentTab}
-        onChange={(e, v) => setCurrentTab(v)}
-        variant={"scrollable"}
-        scrollButtons="auto"
+      <Paper
+        sx={{
+          padding: (theme) => theme.spacing(2),
+        }}
       >
-        <StyledTab label="Просмотрам" value={TopBy.Views} />
-        <StyledTab label="Друзьям" value={TopBy.Friends} />
-        <StyledTab label="Подписчикам" value={TopBy.Subscribers} />
-        <StyledTab label="Рейтингу" value={TopBy.Rating} />
-        <StyledTab label="Лет в городе" value={TopBy.Level} />
-        <StyledTab
-          label="Проданным товарам/услугам"
-          value={TopBy.Soldproducts}
-        />
-        <StyledTab
-          label="Купленным товарам/услугам"
-          value={TopBy.Boughtproducts}
-        />
-      </StyledTabs>
-      {currentTab === TopBy.Rating && <RatingTop />}
-      {currentTab === TopBy.Soldproducts && <SoldTop />}
-      {currentTab === TopBy.Boughtproducts && <BoughtTop />}
-      {currentTab === TopBy.Views && <ViewsTop />}
-      {currentTab === TopBy.Friends && <FriendsTop />}
-      {currentTab === TopBy.Subscribers && <SubscribersTop />}
-      {currentTab === TopBy.Level && <LevelTop />}
+        <ScrollContainer vertical={false} hideScrollbars>
+          <Stack direction="row" spacing={2} sx={{ width: "max-content" }}>
+            <Box
+              onClick={() => setType(UserTopEnum.Views)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.Views
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По просмотрам
+            </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.Friends)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.Friends
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По друзьям
+            </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.Subscribers)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.Subscribers
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По подписчикам
+            </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.Years)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.Years
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По годам в городе
+            </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.Rating)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.Rating
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По рейтингу
+            </Box>
+          </Stack>
+        </ScrollContainer>
+      </Paper>
+      {loading && <LinearProgress />}
+      {!loading && data?.top && type === UserTopEnum.Views && (
+        <TopByViews users={data.top} />
+      )}
+      {!loading && data?.top && type === UserTopEnum.Friends && (
+        <TopByFriends users={data.top} />
+      )}
+      {!loading && data?.top && type === UserTopEnum.Subscribers && (
+        <TopBySubscribers users={data.top} />
+      )}
+      {!loading && data?.top && type === UserTopEnum.Years && (
+        <TopByYears users={data.top} />
+      )}
+      {!loading && data?.top && type === UserTopEnum.Rating && (
+        <TopByRatings users={data.top} />
+      )}
     </Stack>
   );
 };

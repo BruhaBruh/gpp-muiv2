@@ -1,60 +1,40 @@
-import { gql, useMutation } from "@apollo/client";
-import { Container, Stack } from "@mui/material";
+import { Container, LinearProgress, Stack } from "@mui/material";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { ReportSubType, ReportType } from "../graphql/types";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
-import ServerPage from "../pages/discord/ServerPage";
-import ValidatePage from "../pages/discord/ValidatePage";
-import DonatePage from "../pages/donate/DonatePage";
-import InfoPage from "../pages/info/InfoPage";
-import NewsPage from "../pages/news/NewsPage";
+import DonatesPage from "../pages/donates/DonatesPage";
+import ForumPage from "../pages/forum/ForumPage";
+import IndexPage from "../pages/forum/IndexPage";
+import ThreadPage from "../pages/forum/ThreadPage";
 import NotificationsPage from "../pages/notifications/NotificationsPage";
 import Page404 from "../pages/Page404";
-import ProfilePage from "../pages/profile/ProfilePage";
-import ProfilesPage from "../pages/profile/ProfilesPage";
-import ReportPage from "../pages/report/ReportPage";
-import ReportsPage from "../pages/report/ReportsPage";
-import ServicesPage from "../pages/services/ServicesPage";
-import BlacklistPage from "../pages/settings/BlacklistPage";
+import BugPage from "../pages/reports/BugPage";
+import ComplaintPage from "../pages/reports/ComplaintPage";
+import CreateReportPage from "../pages/reports/CreateReportPage";
+import FeaturePage from "../pages/reports/FeaturePage";
+import ReportPage from "../pages/reports/ReportPage";
+import ReportsPage from "../pages/reports/ReportsPage";
 import InterfacePage from "../pages/settings/InterfacePage";
+import NotificationPage from "../pages/settings/NotificationPage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
-import ProductsPage from "../pages/shop/ProductsPage";
 import TopsPage from "../pages/tops/TopsPage";
+import UserPage from "../pages/user/UserPage";
+import UsersPage from "../pages/user/UsersPage";
 import Head from "./ui/Head";
 import PageWrapper from "./ui/PageWrapper";
 import Sidebar from "./ui/Sidebar/Sidebar";
 
 function App() {
-  const redirect = useAppSelector((state) => state.settings.redirect);
-  const onServer = useAppSelector((state) => state.userData.onServer);
-  const isValidated = useAppSelector((state) => state.userData.isValidated);
   const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
   const isLoading = useAppSelector((state) => state.userData.isLoading);
-  const profile = useAppSelector((state) => state.userData.profileId);
-  const [updateOnline] = useMutation(gql`
-    mutation updateOnline($id: ObjectID!) {
-      updateLastOnline(id: $id) {
-        lastOnline
-      }
-    }
-  `);
-
-  React.useEffect(() => {
-    if (!profile) return;
-    const i = setInterval(
-      () =>
-        updateOnline({
-          variables: {
-            id: profile,
-          },
-        }),
-      15000
-    );
-    return () => clearInterval(i);
-  }, [profile, updateOnline]);
+  const isAuthenticated = useAppSelector(
+    (state) => state.userData.isAuthenticated
+  );
+  const redirect = useAppSelector((state) => state.settings.redirect);
 
   return (
     <Container
@@ -71,8 +51,145 @@ function App() {
     >
       <Stack spacing={0} direction={"row"} sx={{ position: "relative" }}>
         <Sidebar />
-
-        {!isLoading && (
+        <PageWrapper>
+          {isLoading ? (
+            <LinearProgress />
+          ) : isAuthenticated ? (
+            isLoggedIn ? (
+              <Switch>
+                <Route exact path="/u/:id">
+                  <Head name="Профиль" />
+                  <UserPage />
+                </Route>
+                <Route exact path="/u">
+                  <Head name="Профили" />
+                  <UsersPage />
+                </Route>
+                <Route exact path="/r">
+                  <Head name="Репорты" />
+                  <ReportsPage />
+                </Route>
+                <Route exact path="/r/c">
+                  <Head name="Жалоба" showBack /> {/* › */}
+                  <ComplaintPage />
+                </Route>
+                <Route exact path="/r/c/admin">
+                  <Head name="Жалоба на Персонал" showBack /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Report}
+                    subtype={ReportSubType.Admin}
+                  />
+                </Route>
+                <Route exact path="/r/c/user">
+                  <Head name="Жалоба на Игрока" showBack /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Report}
+                    subtype={ReportSubType.User}
+                  />
+                </Route>
+                <Route exact path="/r/b">
+                  <Head name="Баг" showBack /> {/* › */}
+                  <BugPage />
+                </Route>
+                <Route exact path="/r/b/server">
+                  <Head name="Баг сервера" showBack /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Bug}
+                    subtype={ReportSubType.Server}
+                  />
+                </Route>
+                <Route exact path="/r/b/site">
+                  <Head name="Баг сайта" showBack /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Bug}
+                    subtype={ReportSubType.Site}
+                  />
+                </Route>
+                <Route exact path="/r/f">
+                  <Head name="Предложение" showBack /> {/* › */}
+                  <FeaturePage />
+                </Route>
+                <Route exact path="/r/f/server">
+                  <Head name="Предложение для сервера" showBack /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Feature}
+                    subtype={ReportSubType.Server}
+                  />
+                </Route>
+                <Route exact path="/r/f/site">
+                  <Head name="Предложение для сайта" showBack /> {/* › */}
+                  <CreateReportPage
+                    type={ReportType.Feature}
+                    subtype={ReportSubType.Site}
+                  />
+                </Route>
+                <Route exact path="/r/:id">
+                  <Head name="Репорт" showBack />
+                  <ReportPage />
+                </Route>
+                <Route exact path="/n">
+                  <Head name="Оповещения" />
+                  <NotificationsPage />
+                </Route>
+                <Route exact path="/d">
+                  <Head name="Донат" />
+                  <DonatesPage />
+                </Route>
+                <Route exact path="/f">
+                  <Head name="Форум › Главная" />
+                  <IndexPage />
+                </Route>
+                <Route exact path="/f/:id">
+                  <Head name="Форум" />
+                  <ForumPage />
+                </Route>
+                <Route exact path="/th/:id">
+                  <Head name="Тема" showBack />
+                  <ThreadPage />
+                </Route>
+                <Route exact path="/t">
+                  <Head name="Топы" />
+                  <TopsPage />
+                </Route>
+                <Route exact path="/settings">
+                  <Head name="Настройки" />
+                  <SettingsPage />
+                </Route>
+                <Route exact path="/settings/themes">
+                  <Head name="Внешний вид" showBack />
+                  <ThemesPage />
+                </Route>
+                <Route exact path="/settings/themes/create">
+                  <Head name="Создание темы" showBack />
+                  <ThemeCreatePage />
+                </Route>
+                <Route exact path="/settings/interface">
+                  <Head name="Настройка интерфейса" showBack />
+                  <InterfacePage />
+                </Route>
+                <Route exact path="/settings/notification">
+                  <Head name="Настройки Discord уведомлений" showBack />
+                  <NotificationPage />
+                </Route>
+                <Route exact path="/">
+                  <Redirect to={redirect} />
+                </Route>
+                <Route exact path="*">
+                  <Head name="Ошибка 404" />
+                  <Page404 />
+                </Route>
+              </Switch>
+            ) : (
+              <>Вы не зарегистрированы на сервере Minecraft {/* TODO page */}</>
+            )
+          ) : (
+            <>
+              <Head name="Авторизация" />
+              <AuthPage />
+            </>
+          )}
+        </PageWrapper>
+        {/*!isLoading && (
           <>
             {!isLoggedIn && (
               <PageWrapper>
@@ -115,18 +232,6 @@ function App() {
                     <ServicesPage />
                   </PageWrapper>
                 </Route>
-                {/*<Route exact path="/chats">
-                      <Head name="Чаты" />
-                      <PageWrapper>
-                        <ChatsPage />
-                      </PageWrapper>
-                    </Route>
-                    <Route exact path="/chat/:id">
-                      <Head name="Чат" />
-                      <PageWrapper>
-                        <ChatPage />
-                      </PageWrapper>
-                </Route>*/}
                 <Route exact path="/profiles">
                   <Head name="Все профили" />
                   <PageWrapper>
@@ -216,7 +321,7 @@ function App() {
               </Switch>
             )}
           </>
-        )}
+        )*/}
       </Stack>
     </Container>
   );

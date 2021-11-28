@@ -34,7 +34,7 @@ const AuthPage = () => {
             </Typography>
           }
         />
-        <Button href="/auth/login" size="large">
+        <Button href="/api/auth/login" size="large">
           Авторизоваться
         </Button>
       </Stack>

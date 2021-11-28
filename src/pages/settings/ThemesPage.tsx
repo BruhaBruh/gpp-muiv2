@@ -9,17 +9,12 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { Icon24Add, Icon24Back, Icon28DeleteOutline } from "@vkontakte/icons";
+import { Icon24Add, Icon28DeleteOutline } from "@vkontakte/icons";
 import React from "react";
 import ButtonR from "../../components/ui/ButtonR";
-import CellR from "../../components/ui/CellR";
 import IconWrapper from "../../components/ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import {
-  removeCustomTheme,
-  setSidebarHeader,
-  setTheme,
-} from "../../redux/ui/reducer";
+import { removeCustomTheme, setTheme } from "../../redux/ui/reducer";
 import { darkThemeOptions } from "../../utils/theme";
 
 const ThemesPage = () => {
@@ -34,29 +29,6 @@ const ThemesPage = () => {
   const lower = useMediaQuery("(max-width: 1200px)");
   const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    dispatch(
-      setSidebarHeader(
-        <CellR
-          to="/settings"
-          onClick={() => dispatch(setSidebarHeader(null))}
-          sx={{ height: "100%" }}
-          startIcon={
-            <IconWrapper
-              component="span"
-              size={20}
-              sx={{ color: (theme) => theme.palette.primary.main }}
-            >
-              <Icon24Back />
-            </IconWrapper>
-          }
-        >
-          Назад
-        </CellR>
-      )
-    );
-  }, [dispatch]);
-
   return (
     <Stack
       spacing={2}
@@ -67,13 +39,10 @@ const ThemesPage = () => {
       }}
     >
       <Paper sx={{ overflow: "hidden", padding: (theme) => theme.spacing(2) }}>
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Палитра
           </Typography>
@@ -424,13 +393,10 @@ const ThemesPage = () => {
           alignSelf: "stretch",
         }}
       >
-        <Stack spacing={2}>
+        <Stack spacing={1}>
           <Typography
-            variant="body2"
-            sx={{
-              color: (theme) => theme.palette.text.secondary,
-              textTransform: "uppercase",
-            }}
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
           >
             Темы
           </Typography>
@@ -449,6 +415,8 @@ const ThemesPage = () => {
                         overflow: "hidden",
                         border: (theme) => `1px solid ${theme.palette.divider}`,
                         padding: 0,
+                        width: "max-content",
+                        margin: "0 auto",
                       }}
                       onClick={() => dispatch(setTheme(i))}
                     >

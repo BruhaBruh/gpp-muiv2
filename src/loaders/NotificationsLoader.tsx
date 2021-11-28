@@ -1,48 +1,51 @@
 import { gql, useLazyQuery, useSubscription } from "@apollo/client";
 import React from "react";
-import { Notification } from "../graphql/graphql";
+import { Notification } from "../graphql/types";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { addNotifications } from "../redux/notifications/reducer";
+import { addNotifications, clearNotifications } from "../redux/cache/reducer";
 
 const NotificationsLoader = () => {
-  const server = useAppSelector((state) => state.userData.serverId);
-  const profile = useAppSelector((state) => state.userData.profileId);
+  const isLoggedIn = useAppSelector((state) => state.userData.isLoggedIn);
+  const dispatch = useAppDispatch();
   const [getNotifications, { data }] = useLazyQuery<{
     notifications: Notification[];
   }>(gql`
-    query notifications($server: ObjectID!) {
-      notifications(server: $server) {
+    query notifications {
+      notifications {
         __typename
-        ... on SystemNotification {
-          id
-          message
-          createdAt
-        }
-        ... on SubscriberNotification {
-          id
-          createdAt
-          subscriber {
-            id
-            avatar
-            nickname
-            lastOnline
+        ... on Billnotification {
+          billnotificationId
+          bill {
+            billId
+            amount
+            status
+            createdAt
+            completedAt
           }
         }
-        ... on OrderNotification {
-          id
+        ... on Systemnotification {
+          systemnotificationId
           createdAt
-          cost
-          amount
-          product {
-            icon {
-              name
-              image
-              category {
-                color
-              }
+          message
+        }
+        ... on Friendnotification {
+          friendnotificationId
+          friendRs {
+            friendNavigation {
+              userId
+              avatar
+              discordId
+              nickname
             }
-            owner {
-              id
+          }
+        }
+        ... on Subscribernotification {
+          subscribernotificationId
+          subscriberRs {
+            subscriberNavigation {
+              userId
+              avatar
+              discordId
               nickname
             }
           }
@@ -50,57 +53,58 @@ const NotificationsLoader = () => {
       }
     }
   `);
-  const { data: subData } = useSubscription<{
+  const { data: newNotificationData } = useSubscription<{
     newNotification: Notification;
-  }>(
-    gql`
-      subscription newNotification($profile: ObjectID!) {
-        newNotification(profile: $profile) {
-          __typename
-          ... on SystemNotification {
-            id
-            message
+  }>(gql`
+    subscription newNotifications {
+      newNotification {
+        __typename
+        ... on Billnotification {
+          billnotificationId
+          bill {
+            billId
+            amount
+            status
             createdAt
+            completedAt
           }
-          ... on SubscriberNotification {
-            id
-            createdAt
-            subscriber {
-              id
+        }
+        ... on Systemnotification {
+          systemnotificationId
+          createdAt
+          message
+        }
+        ... on Friendnotification {
+          friendnotificationId
+          friendRs {
+            friendNavigation {
+              userId
               avatar
+              discordId
               nickname
-              lastOnline
             }
           }
-          ... on OrderNotification {
-            id
-            createdAt
-            cost
-            amount
-            product {
-              icon {
-                name
-                image
-              }
-              owner {
-                id
-                avatar
-                nickname
-                lastOnline
-              }
+        }
+        ... on Subscribernotification {
+          subscribernotificationId
+          subscriberRs {
+            subscriberNavigation {
+              userId
+              avatar
+              discordId
+              nickname
             }
           }
         }
       }
-    `,
-    { variables: { profile } }
-  );
-  const dispatch = useAppDispatch();
+    }
+  `);
 
   React.useEffect(() => {
-    if (!server) return;
-    getNotifications({ variables: { server } });
-  }, [server, getNotifications]);
+    if (!isLoggedIn) return;
+    clearNotifications();
+    getNotifications();
+  }, [isLoggedIn, getNotifications]);
 
   React.useEffect(() => {
     if (!data) return;
@@ -108,9 +112,9 @@ const NotificationsLoader = () => {
   }, [data, dispatch]);
 
   React.useEffect(() => {
-    if (!subData) return;
-    dispatch(addNotifications([subData.newNotification]));
-  }, [subData, dispatch]);
+    if (!newNotificationData) return;
+    dispatch(addNotifications([newNotificationData.newNotification]));
+  }, [newNotificationData, dispatch]);
 
   return <></>;
 };

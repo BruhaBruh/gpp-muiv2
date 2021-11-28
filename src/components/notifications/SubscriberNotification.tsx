@@ -1,129 +1,135 @@
-import { useMutation } from "@apollo/client";
-import { Avatar, Badge, IconButton, Stack, Tooltip } from "@mui/material";
-import { Icon20Cancel, Icon20UserAddOutline } from "@vkontakte/icons";
-import gql from "graphql-tag";
-import { useSnackbar } from "notistack";
-import React from "react";
-import { LazyLoadComponent } from "react-lazy-load-image-component";
+import { gql, useMutation } from "@apollo/client";
 import {
-  NotificationType,
-  SubscriberNotification as N,
-} from "../../graphql/graphql";
+  Avatar,
+  IconButton,
+  ListItemText,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { Icon28CancelOutline, Icon28UserAddOutline } from "@vkontakte/icons";
+import React from "react";
+import { Subscribernotification } from "../../graphql/types";
 import { useAppDispatch } from "../../hooks/redux";
-import { readNotification } from "../../redux/notifications/reducer";
-import { getLastOnline } from "../../redux/userData/types";
-import Cell from "../ui/Cell";
+import { removeNotification } from "../../redux/cache/reducer";
 import IconWrapper from "../ui/IconWrapper";
+import LinkR from "../ui/LinkR";
 
-const SubscriberNotification: React.FC<{ notification: N }> = ({
-  notification,
-}) => {
-  const size = 32;
-  const [read, { error }] = useMutation(
-    gql`
-      mutation read($id: ObjectID!, $type: NotificationType!) {
-        readNotification(id: $id, type: $type)
-      }
-    `,
-    {
-      variables: {
-        id: Number(notification.id),
-        type: NotificationType.Subscriber,
-      },
-    }
-  );
-  const [startSub, { error: startError }] = useMutation(gql`
-    mutation startSub($id: ObjectID!) {
+const SubscriberNotification: React.FC<{
+  notification: Subscribernotification;
+}> = ({ notification }) => {
+  const [sub] = useMutation(gql`
+    mutation startSubscribe($id: Int!) {
       startSubscribe(id: $id) {
-        id
+        userId
       }
     }
   `);
+  const [read] = useMutation(gql`
+    mutation read($id: Int!, $type: String!) {
+      readNotification(id: $id, type: $type)
+    }
+  `);
   const dispatch = useAppDispatch();
-  const { enqueueSnackbar } = useSnackbar();
-
-  React.useEffect(() => {
-    if (!error && !startError) return;
-    enqueueSnackbar(error?.message || startError?.message, {
-      variant: "error",
-    });
-  }, [error, startError, enqueueSnackbar]);
 
   return (
-    <Cell
-      startIcon={
-        <LazyLoadComponent>
-          <Badge
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            variant="dot"
-            badgeContent={
-              getLastOnline(notification.subscriber.lastOnline) === "Онлайн"
-                ? " "
-                : 0
-            }
-            overlap="circular"
-            color={"success"}
-            sx={{
-              marginRight: (theme) => theme.spacing(2),
-              ".MuiBadge-dot": {
-                border: (theme) =>
-                  `2px solid ${theme.palette.background.paper}`,
-                minWidth: "auto",
-                width: "7px",
-                height: "7px",
-                borderRadius: "100px",
-                boxSizing: "content-box",
-              },
-            }}
-          >
-            <Avatar
-              src={notification.subscriber.avatar}
-              sx={{
-                width: size,
-                height: size,
-              }}
-            />
-          </Badge>
-        </LazyLoadComponent>
-      }
-      endIcon={
-        <Stack spacing={1} direction="row">
-          <Tooltip placement="top" title="Добавить в друзья">
-            <IconButton
-              onClick={() => {
-                startSub({ variables: { id: notification.subscriber.id } });
-                read();
-                dispatch(readNotification(notification));
-              }}
-              color="primary"
-            >
-              <IconWrapper size={size - 8}>
-                <Icon20UserAddOutline />
-              </IconWrapper>
-            </IconButton>
-          </Tooltip>
-          <Tooltip placement="top" title="Игнорировать">
-            <IconButton
-              color="error"
-              onClick={() => {
-                read();
-                dispatch(readNotification(notification));
-              }}
-            >
-              <IconWrapper size={size - 8}>
-                <Icon20Cancel />
-              </IconWrapper>
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      }
-      sx={{ textTransform: "none", textAlign: "left" }}
+    <Paper
+      sx={{
+        padding: (theme) => theme.spacing(2),
+      }}
     >
-      {notification.subscriber.nickname} подписался(ась) на вас
-    </Cell>
+      <Stack spacing={1} direction="row">
+        <Avatar
+          sx={{
+            width: 32,
+            height: 32,
+            alignSelf: "center",
+          }}
+          src={notification.subscriberRs.subscriberNavigation.avatar}
+          children={notification.subscriberRs.subscriberNavigation.nickname.substr(
+            0,
+            1
+          )}
+        />
+        <ListItemText
+          sx={{
+            margin: 0,
+            alignSelf: "center",
+          }}
+          primary={
+            <Typography
+              variant="body2"
+              sx={{
+                padding: "0 2px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                display: "flex",
+                color: (theme) => theme.palette.text.primary,
+              }}
+            >
+              Новый подписчик
+            </Typography>
+          }
+          secondary={
+            <Typography
+              variant="body2"
+              sx={{
+                padding: "0 2px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                display: "flex",
+                color: (theme) => theme.palette.text.secondary,
+              }}
+            >
+              <LinkR
+                to={`/u/${notification.subscriberRs.subscriberNavigation.userId}`}
+                sx={{ marginRight: "4px" }}
+                underline="hover"
+              >
+                {notification.subscriberRs.subscriberNavigation.nickname}
+              </LinkR>
+              подписался(ась) на вас
+            </Typography>
+          }
+        />
+        <IconButton
+          color="primary"
+          sx={{ alignSelf: "center", height: "min-content" }}
+          onClick={() => {
+            sub({
+              variables: {
+                id: notification.subscriberRs.subscriberNavigation.userId,
+              },
+            });
+            dispatch(removeNotification(notification));
+          }}
+        >
+          <IconWrapper>
+            <Icon28UserAddOutline />
+          </IconWrapper>
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            read({
+              variables: {
+                id: notification.subscribernotificationId,
+                type: notification.__typename,
+              },
+            });
+            dispatch(removeNotification(notification));
+          }}
+          sx={{ alignSelf: "center", height: "min-content" }}
+        >
+          <IconWrapper>
+            <Icon28CancelOutline />
+          </IconWrapper>
+        </IconButton>
+      </Stack>
+    </Paper>
   );
 };
 

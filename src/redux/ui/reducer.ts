@@ -9,20 +9,27 @@ import {
 import { Theme, ThemeOption, UIState } from "./types";
 
 const loadCustomThemes = (): ThemeOption[] => {
+  if (
+    localStorage.getItem("site-version") === null ||
+    localStorage.getItem("site-version") !== "1"
+  ) {
+    localStorage.clear();
+    localStorage.setItem("site-version", "1");
+  }
   const themes = localStorage.getItem("customThemes");
   if (themes === null) {
     return [
-      { name: "Тёмная", theme: darkThemeOptions },
-      { name: "Светлая", theme: lightThemeOptions },
-      { name: "OLED", theme: oledThemeOptions },
-      { name: "Ночная", theme: nightThemeOptions },
+      { name: "Тёмная", system: true, theme: darkThemeOptions },
+      { name: "Светлая", system: true, theme: lightThemeOptions },
+      { name: "OLED", system: true, theme: oledThemeOptions },
+      { name: "Ночная", system: true, theme: nightThemeOptions },
     ];
   } else {
     return [
-      { name: "Тёмная", theme: darkThemeOptions },
-      { name: "Светлая", theme: lightThemeOptions },
-      { name: "OLED", theme: oledThemeOptions },
-      { name: "Ночная", theme: nightThemeOptions },
+      { name: "Тёмная", system: true, theme: darkThemeOptions },
+      { name: "Светлая", system: true, theme: lightThemeOptions },
+      { name: "OLED", system: true, theme: oledThemeOptions },
+      { name: "Ночная", system: true, theme: nightThemeOptions },
       ...(JSON.parse(themes) as ThemeOption[]).slice(4),
     ];
   }
@@ -40,7 +47,7 @@ const loadTheme = (): number => {
 
 export const initialState: UIState = {
   modal: null,
-  sidebarHeader: null,
+  sidebarHeader: false,
   header: null,
   theme: loadTheme(),
   themes: loadCustomThemes(),
@@ -53,7 +60,7 @@ export const uiSlice = createSlice({
     setModal: (state, action: PayloadAction<ReactElement | null>) => {
       state.modal = action.payload;
     },
-    setSidebarHeader: (state, action: PayloadAction<any>) => {
+    setSidebarHeader: (state, action: PayloadAction<boolean>) => {
       state.sidebarHeader = action.payload;
     },
     setTheme: (state, action: PayloadAction<Theme>) => {
@@ -65,6 +72,7 @@ export const uiSlice = createSlice({
     },
     addCustomTheme: (state, action: PayloadAction<ThemeOption>) => {
       state.themes = [...(state.themes as any), action.payload];
+      state.theme = state.themes.length - 1;
       localStorage.setItem("customThemes", JSON.stringify(state.themes));
     },
     removeCustomTheme: (state, action: PayloadAction<string>) => {
