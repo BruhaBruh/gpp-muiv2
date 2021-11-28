@@ -9,16 +9,10 @@ import {
 } from "@vkontakte/icons";
 import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { User } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
-import {
-  checkSettings,
-  getImageByRole,
-  getSex,
-  Settings,
-} from "../../redux/userData/types";
+import { checkSettings, getSex, Settings } from "../../redux/userData/types";
 import Cell from "../ui/Cell";
 import IconWrapper from "../ui/IconWrapper";
 import RatingBar from "./RatingBar";
@@ -227,7 +221,7 @@ const UserInfo = () => {
             sx={{ textTransform: "none" }}
           >
             {user.role ?? "Нет"}
-            {getImageByRole(user.role) !== null && (
+            {/*getImageByRole(user.role) !== null && (
               <LazyLoadImage
                 src={getImageByRole(user.role) as any}
                 alt={user.role ? user.role : undefined}
@@ -241,7 +235,7 @@ const UserInfo = () => {
                 draggable={false}
                 height="24px"
               />
-            )}
+              )*/}
           </Cell>
         </Stack>
         <Stack>

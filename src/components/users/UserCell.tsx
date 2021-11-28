@@ -13,12 +13,10 @@ import {
   Icon28UserStarBadgeOutline,
 } from "@vkontakte/icons";
 import React from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { User, UserRoleEnum, UserTopEnum } from "../../graphql/types";
 import {
   ageToStr,
   checkPermissionsWA,
-  getImageByRole,
   getLastOnline,
   getUserRoleString,
   Permissions,
@@ -222,7 +220,12 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                 whiteSpace: "nowrap",
                 textTransform: "none",
                 display: "flex",
-                color: (theme) => theme.palette.text.primary,
+                color: (theme) =>
+                  user.userId === 1254
+                    ? theme.palette.success.light
+                    : user.userId === 1136
+                    ? theme.palette.error.main
+                    : theme.palette.text.primary,
               }}
             >
               {user.nickname}
@@ -280,7 +283,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                   </Box>
                 </Tooltip>
               )}
-              {getImageByRole(user.role) !== null && (
+              {/*getImageByRole(user.role) !== null && (
                 <LazyLoadImage
                   src={getImageByRole(user.role) as any}
                   alt={user.role ? user.role : undefined}
@@ -294,7 +297,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
                   draggable={false}
                   height="20px"
                 />
-              )}
+                )*/}
             </Typography>
           }
           secondary={getSecondary()}

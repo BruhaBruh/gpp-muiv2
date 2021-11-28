@@ -19,7 +19,6 @@ import { User, UserRoleEnum } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import {
   checkPermissionsWA,
-  getImageByRole,
   getLastOnline,
   getUserRoleString,
   Permissions,
@@ -62,7 +61,13 @@ const UserHeader = () => {
                   variant="h6"
                   sx={{
                     color: (theme) =>
-                      user.isBanned ? theme.palette.error.main : undefined,
+                      user.isBanned
+                        ? theme.palette.error.main
+                        : user.userId === 1254
+                        ? theme.palette.success.light
+                        : user.userId === 1136
+                        ? theme.palette.error.main
+                        : theme.palette.text.primary,
                   }}
                 >
                   {user.nickname}
@@ -155,7 +160,7 @@ const UserHeader = () => {
                     </Box>
                   </Tooltip>
                 )}
-                {getImageByRole(user.role) !== null && (
+                {/*getImageByRole(user.role) !== null && (
                   <LazyLoadImage
                     src={getImageByRole(user.role) as any}
                     alt={user.role ? user.role : undefined}
@@ -169,7 +174,7 @@ const UserHeader = () => {
                     draggable={false}
                     height="24px"
                   />
-                )}
+                  )*/}
               </Stack>
             }
             secondary={

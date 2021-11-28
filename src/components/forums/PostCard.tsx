@@ -19,13 +19,11 @@ import {
 } from "@vkontakte/icons";
 import dayjs from "dayjs";
 import React from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Post, UserRoleEnum } from "../../graphql/types";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
 import {
   checkPermissionsWA,
-  getImageByRole,
   getLastOnline,
   getUserRoleString,
   Permissions,
@@ -131,7 +129,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                   </Box>
                 </Tooltip>
               )}
-              {getImageByRole(post.owner.role) !== null && (
+              {/*getImageByRole(post.owner.role) !== null && (
                 <LazyLoadImage
                   src={getImageByRole(post.owner.role) as any}
                   alt={post.owner.role ? post.owner.role : undefined}
@@ -145,7 +143,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                   draggable={false}
                   height="20px"
                 />
-              )}
+                )*/}
             </Typography>
           )}
         </Stack>
