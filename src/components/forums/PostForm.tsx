@@ -57,13 +57,13 @@ const PostForm: React.FC<{ threadId: number }> = ({ threadId }) => {
             if (e.key === "Enter") {
               if (e.shiftKey) return;
               e.preventDefault();
-              if (text.trim().length >= 1 && text.trim().length <= 2000) {
+              if (text.trim().length >= 1 && text.trim().length <= 6000) {
                 send({ variables: { threadId: threadId, message: text } });
               }
             }
           }}
         />
-        {text.trim().length >= 1 && text.trim().length <= 2000 && (
+        {text.trim().length >= 1 && text.trim().length <= 6000 && (
           <IconButton
             disabled={loading}
             onClick={() =>

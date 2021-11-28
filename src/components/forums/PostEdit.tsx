@@ -74,10 +74,10 @@ const PostEdit: React.FC<{ post: Post }> = ({ post }) => {
               variant="outlined"
               value={message}
               onChange={(e) => setMessage(e.currentTarget.value)}
-              error={message.length < 1 || message.length > 2000}
+              error={message.length < 1 || message.length > 6000}
               helperText={
-                message.length < 1 || message.length > 2000
-                  ? "От 1 до 2000 символов"
+                message.length < 1 || message.length > 6000
+                  ? "От 1 до 6000 символов"
                   : undefined
               }
             />
@@ -86,7 +86,7 @@ const PostEdit: React.FC<{ post: Post }> = ({ post }) => {
             size="medium"
             fullWidth
             disabled={
-              message.length < 1 || message.length > 2000 || saveLoading
+              message.length < 1 || message.length > 6000 || saveLoading
             }
             onClick={() =>
               save({

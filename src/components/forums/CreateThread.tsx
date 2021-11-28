@@ -193,12 +193,12 @@ const CreateThread = () => {
               variant="outlined"
               value={message}
               onChange={(e) => setMessage(e.currentTarget.value)}
-              error={message.length < 1 || message.length > 2000}
+              error={message.length < 1 || message.length > 6000}
               multiline
               maxRows={5}
               helperText={
-                message.length < 1 || message.length > 2000
-                  ? "От 1 до 2000 символов"
+                message.length < 1 || message.length > 6000
+                  ? "От 1 до 6000 символов"
                   : undefined
               }
             />
@@ -225,7 +225,7 @@ const CreateThread = () => {
             disabled={
               createLoading ||
               message.length < 1 ||
-              message.length > 2000 ||
+              message.length > 6000 ||
               name.length < 1 ||
               name.length > 128 ||
               forum === -1
