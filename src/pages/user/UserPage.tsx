@@ -106,12 +106,16 @@ const UserPage = () => {
     if (!/^\d*$/.test(id)) return;
     if (user && user.userId === Number(id)) return;
     getUser({ variables: { userId: Number(id) } });
+  }, [id, getUser, user]);
+
+  React.useEffect(() => {
+    if (!/^\d*$/.test(id)) return;
     const t = setTimeout(
       () => inc({ variables: { id: Number(id) } }),
       1000 * 10
     );
     return () => clearTimeout(t);
-  }, [id, getUser, user, inc]);
+  }, [id, inc]);
 
   React.useEffect(() => {
     if (!/^\d*$/.test(id)) return;

@@ -1132,6 +1132,7 @@ export enum UserTopEnum {
   Friends = "FRIENDS",
   Subscribers = "SUBSCRIBERS",
   Years = "YEARS",
+  RatingN = "RATING_N",
 }
 
 export type UserRating = {

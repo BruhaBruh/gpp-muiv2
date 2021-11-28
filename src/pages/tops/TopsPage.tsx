@@ -120,6 +120,18 @@ const TopsPage = () => {
             >
               По рейтингу
             </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.RatingN)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.RatingN
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По негативному рейтингу
+            </Box>
           </Stack>
         </ScrollContainer>
       </Paper>
@@ -138,6 +150,9 @@ const TopsPage = () => {
       )}
       {!loading && data?.top && type === UserTopEnum.Rating && (
         <TopByRatings users={data.top} />
+      )}
+      {!loading && data?.top && type === UserTopEnum.RatingN && (
+        <TopByRatings users={data.top} bad />
       )}
     </Stack>
   );

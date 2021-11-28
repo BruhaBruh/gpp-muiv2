@@ -22,7 +22,7 @@ const ReportMessageForm: React.FC<{
 }> = ({ setReplied, replied, reportId }) => {
   const [text, setText] = React.useState("");
   const { enqueueSnackbar } = useSnackbar();
-  const [send, { data, error, loading }] = useMutation(gql`
+  const [send, { data, error }] = useMutation(gql`
     mutation sendReportMessage($report: Int!, $message: String!, $reply: Int) {
       sendReportMessage(
         input: { reportId: $report, message: $message, replyMessageId: $reply }

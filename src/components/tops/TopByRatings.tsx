@@ -10,10 +10,13 @@ import Head from "../ui/Head";
 import IconWrapper from "../ui/IconWrapper";
 import UserCell from "../users/UserCell";
 
-const TopByRatings: React.FC<{ users: User[] }> = ({ users }) => {
+const TopByRatings: React.FC<{ users: User[]; bad?: boolean }> = ({
+  users,
+  bad,
+}) => {
   return (
     <Stack spacing={1}>
-      <Head name="Топ по рейтингу" />
+      <Head name={bad ? "Топ по негативному рейтингу" : "Топ по рейтингу"} />
       {users.map((u, i) => (
         <Stack spacing={1} direction="row">
           <Typography
