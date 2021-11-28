@@ -123,7 +123,9 @@ const UserCell: React.FC<props> = ({ user, type }) => {
         );
       default:
         return (
-          user.discordRoles.sort((a, b) => a.position - b.position)[0] && (
+          user.discordRoles
+            .map((d) => d)
+            .sort((a, b) => a.position - b.position)[0] && (
             <Typography
               variant="body2"
               sx={{
@@ -137,8 +139,9 @@ const UserCell: React.FC<props> = ({ user, type }) => {
               }}
             >
               {
-                user.discordRoles.sort((a, b) => a.position - b.position)[0]
-                  ?.name
+                user.discordRoles
+                  .map((d) => d)
+                  .sort((a, b) => a.position - b.position)[0]?.name
               }
             </Typography>
           )
