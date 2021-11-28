@@ -1,7 +1,6 @@
 import { Box, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import {
   Icon20AccessibilityOutline,
-  Icon20PhoneOutline,
   Icon24FavoriteOutline,
   Icon24StatisticsOutline,
   Icon24UserOutline,
@@ -12,7 +11,7 @@ import ScrollContainer from "react-indiana-drag-scroll";
 import { User } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
-import { checkSettings, getSex, Settings } from "../../redux/userData/types";
+import { getSex } from "../../redux/userData/types";
 import Cell from "../ui/Cell";
 import IconWrapper from "../ui/IconWrapper";
 import RatingBar from "./RatingBar";
@@ -78,7 +77,7 @@ const UserInfo = () => {
             {user.views}
           </Cell>
         </Stack>
-        {user.phone && checkSettings(Settings.ShowPhone, user.settings) && (
+        {/*user.phone && checkSettings(Settings.ShowPhone, user.settings) && (
           <Stack>
             <Typography
               variant="subtitle2"
@@ -116,7 +115,7 @@ const UserInfo = () => {
               </Cell>
             </Tooltip>
           </Stack>
-        )}
+              )*/}
         <Stack>
           <Typography
             variant="subtitle2"

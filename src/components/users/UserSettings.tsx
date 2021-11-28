@@ -6,8 +6,6 @@ import {
   Select,
   Stack,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import {
@@ -15,7 +13,6 @@ import {
   Icon24TextTtOutline,
   Icon24UserSquareOutline,
   Icon28ArticleOutline,
-  Icon28PhoneOutline,
   Icon28RefreshOutline,
   Icon28UserOutline,
   Icon56GalleryOutline,
@@ -242,7 +239,7 @@ const UserSettings: React.FC<{
             </IconWrapper>
           </Stack>
         </Stack>
-        <Stack>
+        {/*<Stack>
           <Typography
             variant="subtitle2"
             sx={{ color: (theme) => theme.palette.text.secondary }}
@@ -276,7 +273,7 @@ const UserSettings: React.FC<{
               <Icon28PhoneOutline />
             </IconWrapper>
           </Stack>
-        </Stack>
+            </Stack>*/}
         <Stack>
           <Typography
             variant="subtitle2"

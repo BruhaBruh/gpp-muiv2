@@ -43,7 +43,6 @@ const UserPage = () => {
             sex
             role
             settings
-            phone
             isBanned
             permissions
             subscriberUsers {
