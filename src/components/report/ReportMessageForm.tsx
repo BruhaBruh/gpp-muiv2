@@ -141,7 +141,6 @@ const ReportMessageForm: React.FC<{
         />
         {text.trim().length >= 1 && text.trim().length <= 1000 && (
           <IconButton
-            disabled={loading}
             size="medium"
             color="primary"
             sx={{ alignSelf: "end" }}
