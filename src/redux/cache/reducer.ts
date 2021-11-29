@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Notification, Report, User } from "../../graphql/types";
+import { Notification, Report, ReportType, User } from "../../graphql/types";
 import { CacheState } from "./types";
 
 export const initialState: CacheState = {
@@ -7,6 +7,7 @@ export const initialState: CacheState = {
   reports: [],
   reportsUpdate: true,
   reportIsClosed: false,
+  reportType: ReportType.Report,
   notifications: [],
 };
 
@@ -65,6 +66,11 @@ export const cacheSlice = createSlice({
       state.reportIsClosed = action.payload;
       state.reportsUpdate = true;
     },
+    setReportType: (state, action: PayloadAction<ReportType>) => {
+      if (state.reportType === action.payload) return;
+      state.reportType = action.payload;
+      state.reportsUpdate = true;
+    },
     clearReports: (state) => {
       state.reports = [];
     },
@@ -102,6 +108,7 @@ export const {
   addNotifications,
   clearNotifications,
   removeNotification,
+  setReportType,
 } = cacheSlice.actions;
 
 export default cacheSlice.reducer;

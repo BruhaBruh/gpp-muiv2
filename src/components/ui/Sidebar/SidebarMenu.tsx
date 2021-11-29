@@ -58,32 +58,6 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             Профили
           </SidebarCell>
           <SidebarCell
-            to="/n"
-            startIcon={
-              <Badge
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                badgeContent={notifications.length}
-                max={99}
-                color={"info"}
-                sx={{ "& .MuiBadge-badge": { transform: "scale(0.7)" } }}
-              >
-                <IconWrapper size={size}>
-                  <Icon24NotificationOutline />
-                </IconWrapper>
-              </Badge>
-            }
-            endIcon={
-              <IconWrapper size={size}>
-                <Icon28ChevronRightOutline />
-              </IconWrapper>
-            }
-          >
-            Оповещения
-          </SidebarCell>
-          <SidebarCell
             to="/f"
             startIcon={
               <IconWrapper size={size}>
@@ -97,6 +71,24 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             }
           >
             Форум
+          </SidebarCell>
+          <SidebarCell
+            to="/r"
+            startIcon={
+              <IconWrapper
+                size={size}
+                sx={{ color: (theme) => theme.palette.info.main }}
+              >
+                <Icon24AdvertisingOutline />
+              </IconWrapper>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Репорты
           </SidebarCell>
           <SidebarCell
             to="/d"
@@ -135,24 +127,6 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             Топы
           </SidebarCell>
           <SidebarCell
-            to="/r"
-            startIcon={
-              <IconWrapper
-                size={size}
-                sx={{ color: (theme) => theme.palette.info.main }}
-              >
-                <Icon24AdvertisingOutline />
-              </IconWrapper>
-            }
-            endIcon={
-              <IconWrapper size={size}>
-                <Icon28ChevronRightOutline />
-              </IconWrapper>
-            }
-          >
-            Репорты
-          </SidebarCell>
-          <SidebarCell
             to="/settings"
             startIcon={
               <IconWrapper
@@ -169,6 +143,32 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
             }
           >
             Настройки
+          </SidebarCell>
+          <SidebarCell
+            to="/n"
+            startIcon={
+              <Badge
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                badgeContent={notifications.length}
+                max={99}
+                color={"info"}
+                sx={{ "& .MuiBadge-badge": { transform: "scale(0.7)" } }}
+              >
+                <IconWrapper size={size}>
+                  <Icon24NotificationOutline />
+                </IconWrapper>
+              </Badge>
+            }
+            endIcon={
+              <IconWrapper size={size}>
+                <Icon28ChevronRightOutline />
+              </IconWrapper>
+            }
+          >
+            Оповещения
           </SidebarCell>
           <Cell
             href={"/api/auth/logout"}

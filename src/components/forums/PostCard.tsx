@@ -54,6 +54,10 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               {post.owner?.nickname}
+            </Typography>
+          )}
+          {post.owner && (
+            <Stack spacing={0.5} direction="row" justifyContent="center">
               {post.owner?.userRole !== UserRoleEnum.None && (
                 <Tooltip
                   title={`Персонал (${getUserRoleString(post.owner.userRole)})`}
@@ -67,7 +71,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                         marginRight: "2px",
                         marginLeft: "2px",
                       }}
-                      size={16}
+                      size={20}
                     >
                       <Icon28UserStarBadgeOutline />
                     </IconWrapper>
@@ -87,7 +91,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                         marginRight: "2px",
                         marginLeft: "2px",
                       }}
-                      size={16}
+                      size={20}
                     >
                       <Icon24CrownOutline />
                     </IconWrapper>
@@ -104,7 +108,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                         marginRight: "2px",
                         marginLeft: "2px",
                       }}
-                      size={16}
+                      size={20}
                     >
                       <Icon24CrownOutline />
                     </IconWrapper>
@@ -122,7 +126,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                         color: (theme) => theme.palette.success.main,
                         alignSelf: "center",
                       }}
-                      size={12}
+                      size={16}
                     >
                       <Icon12Circle />
                     </IconWrapper>
@@ -144,7 +148,7 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                   height="20px"
                 />
                 )*/}
-            </Typography>
+            </Stack>
           )}
         </Stack>
         <Stack spacing={0.5} sx={{ flex: 1 }}>
@@ -196,15 +200,6 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
 
         {post.owner?.userId === userId && (
           <Stack spacing={0.5}>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: (theme) => theme.palette.text.disabled,
-                textAlign: "right",
-              }}
-            >
-              #{post.postId}
-            </Typography>
             <IconButton
               onClick={() => dispatch(setModal(<PostEdit post={post} />))}
             >

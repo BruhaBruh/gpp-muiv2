@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useSnackbar } from "notistack";
@@ -14,6 +13,7 @@ import { useHistory } from "react-router";
 import { Post } from "../../graphql/types";
 import { useAppDispatch } from "../../hooks/redux";
 import { setModal } from "../../redux/ui/reducer";
+import RichText from "../ui/RichText";
 
 const PostEdit: React.FC<{ post: Post }> = ({ post }) => {
   const [message, setMessage] = React.useState(post.message);
@@ -52,7 +52,7 @@ const PostEdit: React.FC<{ post: Post }> = ({ post }) => {
 
   return (
     <Dialog
-      maxWidth="sm"
+      maxWidth="lg"
       fullWidth
       open={true}
       onClose={() => dispatch(setModal(null))}
@@ -67,26 +67,13 @@ const PostEdit: React.FC<{ post: Post }> = ({ post }) => {
             >
               Сообщение
             </Typography>
-            <TextField
-              margin="none"
-              size="small"
-              fullWidth
-              variant="outlined"
-              value={message}
-              onChange={(e) => setMessage(e.currentTarget.value)}
-              error={message.length < 1 || message.length > 6000}
-              helperText={
-                message.length < 1 || message.length > 6000
-                  ? "От 1 до 6000 символов"
-                  : undefined
-              }
-            />
+            <RichText value={message} onChange={(v) => setMessage(v)} />
           </Stack>
           <Button
             size="medium"
             fullWidth
             disabled={
-              message.length < 1 || message.length > 6000 || saveLoading
+              message.length < 1 || message.length > 20000 || saveLoading
             }
             onClick={() =>
               save({

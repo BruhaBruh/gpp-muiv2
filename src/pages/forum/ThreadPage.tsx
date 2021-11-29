@@ -1,7 +1,6 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import { LinearProgress, Stack } from "@mui/material";
 import React from "react";
-import ScrollContainer from "react-indiana-drag-scroll";
 import { useParams } from "react-router-dom";
 import PostForm from "../../components/forums/PostForm";
 import PostsList from "../../components/forums/PostsList";
@@ -59,16 +58,7 @@ const ThreadPage = () => {
         <>
           <Head name={data.threads.nodes[0].name} showBack />
           <ThreadCell thread={data.threads.nodes[0]} />
-          <ScrollContainer
-            className="hide-scrollbar"
-            hideScrollbars={false}
-            horizontal={false}
-            style={{
-              maxHeight: "calc(100vh - 305px)",
-            }}
-          >
-            <PostsList threadId={data.threads.nodes[0].threadId} />
-          </ScrollContainer>
+          <PostsList threadId={data.threads.nodes[0].threadId} />
           {data.threads.nodes[0].canChat && (
             <PostForm threadId={data.threads.nodes[0].threadId} />
           )}

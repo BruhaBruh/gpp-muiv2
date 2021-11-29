@@ -411,6 +411,7 @@ export type ForumFilterInput = {
   parentForumId?: Maybe<ComparableNullableOfInt32OperationFilterInput>;
   name?: Maybe<StringOperationFilterInput>;
   link?: Maybe<StringOperationFilterInput>;
+  isOpen?: Maybe<BooleanOperationFilterInput>;
   parentForum?: Maybe<ForumFilterInput>;
   inverseParentForum?: Maybe<ListFilterInputTypeOfForumFilterInput>;
   threads?: Maybe<ListFilterInputTypeOfThreadFilterInput>;
@@ -421,6 +422,7 @@ export type ForumSortInput = {
   parentForumId?: Maybe<SortEnumType>;
   name?: Maybe<SortEnumType>;
   link?: Maybe<SortEnumType>;
+  isOpen?: Maybe<SortEnumType>;
   parentForum?: Maybe<ForumSortInput>;
 };
 
@@ -1163,6 +1165,7 @@ export type Forum = {
   parentForumId?: Maybe<Scalars["Int"]>;
   name: Scalars["String"];
   link?: Maybe<Scalars["String"]>;
+  isOpen: Scalars["Boolean"];
   parentForum?: Maybe<Forum>;
   inverseParentForum: Array<Forum>;
   threads: Array<Thread>;
@@ -1172,6 +1175,7 @@ export type ForumCreateInput = {
   name: Scalars["String"];
   parentForumId: Scalars["Int"];
   link?: Maybe<Scalars["String"]>;
+  isOpen: Scalars["Boolean"];
 };
 
 export type ForumEditInput = {

@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Stack,
   TextField,
+  ToggleButton,
   Typography,
 } from "@mui/material";
 import gql from "graphql-tag";
@@ -45,6 +46,7 @@ const CreateForum = () => {
   const [forum, setForum] = React.useState(-1);
   const [name, setName] = React.useState("");
   const [link, setLink] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false);
   const history = useHistory();
 
   const reload = () => {
@@ -184,6 +186,14 @@ const CreateForum = () => {
               helperText={link.length > 256 ? "до 256 символов" : undefined}
             />
           </Stack>
+          <ToggleButton
+            value="pin"
+            selected={isOpen}
+            onClick={() => setIsOpen((prev) => !prev)}
+            sx={{ flex: 1 }}
+          >
+            Открытое создание тем: {isOpen ? "Да" : "Нет"}
+          </ToggleButton>
           <Button
             size="medium"
             fullWidth
@@ -201,6 +211,7 @@ const CreateForum = () => {
                     name: name,
                     link: link,
                     parentForumId: forum,
+                    isOpen: isOpen,
                   },
                 },
               })

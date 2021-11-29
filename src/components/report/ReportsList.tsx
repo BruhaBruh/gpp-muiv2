@@ -1,14 +1,26 @@
 import { useLazyQuery } from "@apollo/client";
-import { Box, LinearProgress, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  darken,
+  LinearProgress,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import gql from "graphql-tag";
 import React from "react";
-import { ReportFilterInput, ReportsConnection } from "../../graphql/types";
+import {
+  ReportFilterInput,
+  ReportsConnection,
+  ReportType,
+} from "../../graphql/types";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   addReports,
   clearReports,
   setReportIsClosed,
   setReportsUpdate,
+  setReportType,
 } from "../../redux/cache/reducer";
 import { checkPermissions, Permissions } from "../../redux/userData/types";
 import ReportCell from "./ReportCell";
@@ -18,6 +30,7 @@ const ReportsList = () => {
   const observer = React.useRef<IntersectionObserver>();
   const lastElementRef = React.useRef<HTMLDivElement | null>(null);
   const isClosed = useAppSelector((state) => state.cache.reportIsClosed);
+  const type = useAppSelector((state) => state.cache.reportType);
   const [after, setAfter] = React.useState<string | null>(null);
   const dispatch = useAppDispatch();
   const reportsUpdate = useAppSelector((state) => state.cache.reportsUpdate);
@@ -70,15 +83,21 @@ const ReportsList = () => {
   React.useEffect(() => {
     if (!reportsUpdate) return;
     if (isClosed) {
-      const where: ReportFilterInput = { isClosed: { eq: true } };
+      const where: ReportFilterInput = {
+        isClosed: { eq: true },
+        type: { eq: type },
+      };
       getReports({ variables: { where } });
     } else {
-      const where: ReportFilterInput = { isClosed: { eq: false } };
+      const where: ReportFilterInput = {
+        isClosed: { eq: false },
+        type: { eq: type },
+      };
       getReports({ variables: { where } });
     }
     dispatch(clearReports());
     dispatch(setReportsUpdate(false));
-  }, [getReports, reportsUpdate, isClosed, dispatch]);
+  }, [getReports, reportsUpdate, isClosed, dispatch, type]);
 
   React.useEffect(() => {
     if (
@@ -155,6 +174,44 @@ const ReportsList = () => {
           >
             Найдено: {reportsData?.reports.totalCount}
           </Typography>
+        </Stack>
+        <Stack direction="row" spacing={2}>
+          <Box
+            onClick={() => dispatch(setReportType(ReportType.Report))}
+            sx={{
+              color: (theme) =>
+                type === ReportType.Report
+                  ? theme.palette.error.main
+                  : darken(theme.palette.error.main, 0.25),
+              cursor: "pointer",
+            }}
+          >
+            Жалоба
+          </Box>
+          <Box
+            onClick={() => dispatch(setReportType(ReportType.Bug))}
+            sx={{
+              color: (theme) =>
+                type === ReportType.Bug
+                  ? theme.palette.warning.main
+                  : darken(theme.palette.warning.main, 0.25),
+              cursor: "pointer",
+            }}
+          >
+            Баг
+          </Box>
+          <Box
+            onClick={() => dispatch(setReportType(ReportType.Feature))}
+            sx={{
+              color: (theme) =>
+                type === ReportType.Feature
+                  ? theme.palette.info.main
+                  : darken(theme.palette.info.main, 0.25),
+              cursor: "pointer",
+            }}
+          >
+            Предложение
+          </Box>
         </Stack>
         {reports.map((r) => (
           <ReportCell key={r.reportId} report={r} />
