@@ -1,12 +1,14 @@
 import { Box, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import {
   Icon24FavoriteOutline,
+  Icon24InfoCircleOutline,
   Icon24StatisticsOutline,
   Icon24UserOutline,
   Icon24ViewOutline,
 } from "@vkontakte/icons";
 import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
+import { Link } from "react-router-dom";
 import { User } from "../../graphql/types";
 import { useAppSelector } from "../../hooks/redux";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
@@ -17,6 +19,7 @@ import RatingBar from "./RatingBar";
 
 const UserInfo = () => {
   const user = useAppSelector((state) => state.cache.user) as User;
+  const userId = useAppSelector((state) => state.userData.userId);
   const [copied, copy, clear] = useCopyToClipboard();
   const timer = React.useRef<any>();
 
@@ -43,6 +46,22 @@ const UserInfo = () => {
               >
                 <Icon24StatisticsOutline />
               </IconWrapper>
+            }
+            endIcon={
+              user.userId === userId ? (
+                <Link to={`/ratings`}>
+                  <IconWrapper
+                    size={24}
+                    sx={{
+                      color: (theme) => theme.palette.info.main,
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Icon24InfoCircleOutline />
+                  </IconWrapper>
+                </Link>
+              ) : undefined
             }
             sx={{ textTransform: "none" }}
           >

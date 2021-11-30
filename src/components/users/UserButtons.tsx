@@ -1,12 +1,5 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import {
-  Button,
-  LinearProgress,
-  MenuItem,
-  Select,
-  Stack,
-  useMediaQuery,
-} from "@mui/material";
+import { Button, LinearProgress, MenuItem, Select, Stack } from "@mui/material";
 import {
   Icon20UserSlashOutline,
   Icon24BlockOutline,
@@ -27,7 +20,6 @@ const UserButtons = () => {
   const userId = useAppSelector((state) => state.userData.userId);
   const permissions = useAppSelector((state) => state.userData.permissions);
   const { enqueueSnackbar } = useSnackbar();
-  const lowerSM = useMediaQuery("(max-width: 600px)");
   const [getStatus, { data, error, loading }] = useLazyQuery<{
     status: UserStatus;
   }>(
@@ -142,12 +134,7 @@ const UserButtons = () => {
   return loading ? (
     <LinearProgress />
   ) : (
-    <Stack
-      spacing={1}
-      direction={lowerSM ? "column" : "row"}
-      flex={1}
-      justifyContent="end"
-    >
+    <Stack spacing={1} direction={"row"} flex={1} justifyContent="end">
       {user.userId !== userId && (
         <Select
           defaultValue={user.rating.your.toString()}
@@ -188,7 +175,6 @@ const UserButtons = () => {
       )}
       {data?.status.heIsSubscriber && (
         <Button
-          fullWidth={lowerSM}
           color="primary"
           size="medium"
           sx={{ whiteSpace: "nowrap" }}
@@ -207,7 +193,6 @@ const UserButtons = () => {
         !data?.status.isFriends &&
         !data?.status.youIsSubscriber && (
           <Button
-            fullWidth={lowerSM}
             color="inherit"
             size="medium"
             sx={{ whiteSpace: "nowrap" }}
@@ -224,7 +209,6 @@ const UserButtons = () => {
         )}
       {data?.status.youIsSubscriber && (
         <Button
-          fullWidth={lowerSM}
           color="error"
           size="medium"
           sx={{ whiteSpace: "nowrap" }}
@@ -241,7 +225,6 @@ const UserButtons = () => {
       )}
       {data?.status.isFriends && (
         <Button
-          fullWidth={lowerSM}
           color="error"
           size="medium"
           sx={{ whiteSpace: "nowrap" }}
@@ -279,7 +262,6 @@ const UserButtons = () => {
       )}
       {checkPermissions(Permissions.SetBan, permissions) && !user.isBanned && (
         <Button
-          fullWidth={lowerSM}
           color="error"
           size="medium"
           sx={{ whiteSpace: "nowrap" }}
@@ -298,7 +280,6 @@ const UserButtons = () => {
       )}
       {checkPermissions(Permissions.RemoveBan, permissions) && user.isBanned && (
         <Button
-          fullWidth={lowerSM}
           color="error"
           size="medium"
           sx={{ whiteSpace: "nowrap" }}

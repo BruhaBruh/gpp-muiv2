@@ -14,6 +14,7 @@ const UserPage = () => {
   const { id } = useParams<{ id: string }>();
   const userUpdate = useAppSelector((state) => state.cache.userUpdate);
   const user = useAppSelector((state) => state.cache.user);
+  const userId = useAppSelector((state) => state.userData.userId);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [inc] = useMutation(gql`
@@ -111,12 +112,13 @@ const UserPage = () => {
 
   React.useEffect(() => {
     if (!/^\d*$/.test(id)) return;
+    if (userId === Number(id)) return;
     const t = setTimeout(
       () => inc({ variables: { id: Number(id) } }),
       1000 * 10
     );
     return () => clearTimeout(t);
-  }, [id, inc]);
+  }, [id, inc, userId]);
 
   React.useEffect(() => {
     if (!/^\d*$/.test(id)) return;

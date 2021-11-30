@@ -165,39 +165,45 @@ const UserCell: React.FC<props> = ({ user, type }) => {
         flex: 1,
       }}
     >
-      <CellR to={"/u/" + user.userId} color="inherit">
-        <Badge
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          variant="dot"
-          badgeContent={getLastOnline(user.lastOnline) === "Онлайн" ? " " : 0}
-          overlap="circular"
-          color={"success"}
-          sx={{
-            marginRight: (theme) => theme.spacing(1),
-            height: "min-content",
-            alignSelf: "center",
-            ".MuiBadge-dot": {
-              border: (theme) => `2px solid ${theme.palette.background.paper}`,
-              minWidth: "auto",
-              width: "7px",
-              height: "7px",
-              borderRadius: "100px",
-              boxSizing: "content-box",
-            },
-          }}
-        >
-          <Avatar
-            src={user.avatar}
-            children={user.nickname.substr(0, 1)}
-            sx={{
-              width: 48,
-              height: 48,
+      <CellR
+        to={"/u/" + user.userId}
+        startIcon={
+          <Badge
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
             }}
-          />
-        </Badge>
+            variant="dot"
+            badgeContent={getLastOnline(user.lastOnline) === "Онлайн" ? " " : 0}
+            overlap="circular"
+            color={"success"}
+            sx={{
+              marginRight: (theme) => theme.spacing(1),
+              height: "min-content",
+              alignSelf: "center",
+              ".MuiBadge-dot": {
+                border: (theme) =>
+                  `2px solid ${theme.palette.background.paper}`,
+                minWidth: "auto",
+                width: "7px",
+                height: "7px",
+                borderRadius: "100px",
+                boxSizing: "content-box",
+              },
+            }}
+          >
+            <Avatar
+              src={user.avatar}
+              children={user.nickname.substr(0, 1)}
+              sx={{
+                width: 48,
+                height: 48,
+              }}
+            />
+          </Badge>
+        }
+        color="inherit"
+      >
         <ListItemText
           sx={{
             margin: 0,

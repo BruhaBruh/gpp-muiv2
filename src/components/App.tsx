@@ -4,12 +4,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ReportSubType, ReportType } from "../graphql/types";
 import { useAppSelector } from "../hooks/redux";
 import AuthPage from "../pages/auth/AuthPage";
+import DonatesHistory from "../pages/donates/DonatesHistory";
 import DonatesPage from "../pages/donates/DonatesPage";
 import ForumPage from "../pages/forum/ForumPage";
 import IndexPage from "../pages/forum/IndexPage";
 import ThreadPage from "../pages/forum/ThreadPage";
 import NotificationsPage from "../pages/notifications/NotificationsPage";
 import Page404 from "../pages/Page404";
+import RatingsPage from "../pages/ratings/RatingsPage";
 import BugPage from "../pages/reports/BugPage";
 import ComplaintPage from "../pages/reports/ComplaintPage";
 import CreateReportPage from "../pages/reports/CreateReportPage";
@@ -68,6 +70,10 @@ function App() {
                 <Route exact path="/r">
                   <Head name="Репорты" />
                   <ReportsPage />
+                </Route>
+                <Route exact path="/ratings">
+                  <Head name="Рейтинги" showBack />
+                  <RatingsPage />
                 </Route>
                 <Route exact path="/r/c">
                   <Head name="Жалоба" showBack /> {/* › */}
@@ -134,6 +140,10 @@ function App() {
                 <Route exact path="/d">
                   <Head name="Донат" />
                   <DonatesPage />
+                </Route>
+                <Route exact path="/d/h">
+                  <Head name="История пополнений" showBack />
+                  <DonatesHistory />
                 </Route>
                 <Route exact path="/f">
                   <Head name="Форум › Главная" />
