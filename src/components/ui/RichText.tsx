@@ -41,10 +41,6 @@ const RichText: React.FC<{
           zIndex: 100,
           background: (theme) => theme.palette.background.paper,
         },
-        "& .ql-container": {
-          maxHeight: "200px",
-          overflowY: "scroll",
-        },
         "& .ql-container, & .ql-toolbar": {
           border: "none",
         },
