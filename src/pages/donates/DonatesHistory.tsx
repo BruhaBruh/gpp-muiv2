@@ -33,7 +33,7 @@ const DonatesHistory = () => {
     >
       {loading && <LinearProgress />}
       {data?.me.bills && data?.me.bills.length === 0 && (
-        <Typography variant="subtitle2">Вам еще не пополняли баланс</Typography>
+        <Typography variant="subtitle2">Вы еще не пополняли баланс</Typography>
       )}
       {data?.me.bills && data?.me.bills.length !== 0 && (
         <Paper

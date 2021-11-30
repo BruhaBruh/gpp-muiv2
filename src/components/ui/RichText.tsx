@@ -33,6 +33,17 @@ const RichText: React.FC<{
         "& .quill": {
           borderRadius: (theme) => theme.spacing(1),
           border: (theme) => `1px solid ${theme.palette.divider}`,
+          overflow: "hidden",
+        },
+        "& .ql-toolbar": {
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          background: (theme) => theme.palette.background.paper,
+        },
+        "& .ql-container": {
+          maxHeight: "200px",
+          overflowY: "scroll",
         },
         "& .ql-container, & .ql-toolbar": {
           border: "none",

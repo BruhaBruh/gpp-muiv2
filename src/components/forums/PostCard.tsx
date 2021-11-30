@@ -29,7 +29,7 @@ import {
   Permissions,
 } from "../../redux/userData/types";
 import IconWrapper from "../ui/IconWrapper";
-import Marksy from "../utils/Marksy";
+import ToJSX from "../utils/ToJSX";
 import PostEdit from "./PostEdit";
 
 const PostCard: React.FC<{ post: Post }> = ({ post }) => {
@@ -190,12 +190,12 @@ const PostCard: React.FC<{ post: Post }> = ({ post }) => {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Marksy text={post.reply.message} />
+                  <ToJSX value={post.reply.message} />
                 </AccordionDetails>
               </Accordion>
             </Box>
           )}
-          <Marksy text={post.message} />
+          <ToJSX value={post.message} />
         </Stack>
 
         {post.owner?.userId === userId && (
