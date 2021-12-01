@@ -66,6 +66,7 @@ const AuthLoader = () => {
     dispatch(setLoading(false));
     dispatch(setLoggedIn(false));
     dispatch(setAuthenticated(false));
+    const t = setTimeout(login, 15000);
     enqueueSnackbar(
       error?.message.includes(
         "The current user is not authorized to access this resource."
@@ -74,13 +75,11 @@ const AuthLoader = () => {
         : error?.message || meError?.message,
       { variant: "error" }
     );
+    return () => clearTimeout(t);
   }, [error, meError, enqueueSnackbar, dispatch]);
 
   React.useEffect(() => {
-    if (!isLoggedIn) {
-      setTimeout(getMe, 30000);
-      return;
-    }
+    if (!isLoggedIn) return;
     getMe();
     const t = setInterval(getMe, 10000);
     return () => clearInterval(t);
