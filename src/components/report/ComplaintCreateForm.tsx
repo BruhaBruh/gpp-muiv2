@@ -152,70 +152,70 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
           </AccordionSummary>
           <AccordionDetails>
             {subtype === ReportSubType.User && (
-              <Stack spacing={0.25}>
-                <Typography variant="subtitle1">
+              <Stack spacing={0.5}>
+                <Typography variant="subtitle2">
                   При подаче жалобы, вы соглашаетесь с правилами.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   При неуважительном отношении к персоналу - жалоба не будет
                   рассмотрена.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   При неправильном заполнение формы жалобы, она будет закрыта
                   без рассмотрения.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Принимаются только прямые доказательства. Без прямых
                   доказательств, жалоба будет закрыта без рассмотрения.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   В случае намеренного спама одной и той же заявки жалобами, вы
                   будете замучены или забанены на сайте.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Скриншот или видеозапись должны быть не обрезаны и полными.
                   Если доказательства будут обрезанными или отредактированы, то
                   жалоба будет отклонена.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Источник получения прямых доказательств в качестве отпечатков
                   пальцев происходит через детектива, только после данного
                   действия разрешено подавать жалобу по определенным правилам.
                   Возможны исключения.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Логи не будут проверяться, даже если по вашему мнению игрок
                   нарушил больше, но у вас нет на это доказательств.
                 </Typography>
               </Stack>
             )}
             {subtype === ReportSubType.Admin && (
-              <Stack spacing={0.25}>
-                <Typography variant="subtitle1">
+              <Stack spacing={0.5}>
+                <Typography variant="subtitle2">
                   При подаче жалобы, вы соглашаетесь с правилами.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   При неуважительном отношении к персоналу - жалоба не будет
                   рассмотрена.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   При неправильном заполнение формы жалобы, она будет закрыта
                   без рассмотрения.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Принимаются только прямые доказательства. Без прямых
                   доказательств, жалоба будет закрыта без рассмотрения.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   В случае намеренного спама одной и той же заявки жалобами, вы
                   будете замучены или забанены на сайте.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Скриншот или видеозапись должны быть не обрезаны и полными.
                   Если доказательства будут обрезанными или отредактированы, то
                   жалоба будет отклонена.
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle2">
                   Раздел служит только для жалоб на Модератора или Хелпера.
                   Относится к неверной выдачи наказания, нарушения правил для
                   Модератора или Хелпера. Если правила были нарушены по другим

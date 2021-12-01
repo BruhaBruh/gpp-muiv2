@@ -1,10 +1,11 @@
 import { gql, useMutation } from "@apollo/client";
-import { IconButton, Paper, Stack, TextField } from "@mui/material";
+import { IconButton, Paper, Stack } from "@mui/material";
 import { Icon28SendOutline } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import IconWrapper from "../ui/IconWrapper";
+import RichText from "../ui/RichText";
 
 const PostForm: React.FC<{ threadId: number }> = ({ threadId }) => {
   const [text, setText] = React.useState("");
@@ -43,27 +44,21 @@ const PostForm: React.FC<{ threadId: number }> = ({ threadId }) => {
   return (
     <Paper sx={{ padding: (theme) => theme.spacing(1) }}>
       <Stack spacing={1} direction="row">
-        <TextField
-          size="small"
-          margin="none"
-          multiline
-          maxRows={4}
-          placeholder="Сообщение"
-          sx={{ marginTop: "auto" }}
-          value={text}
-          onChange={(e) => setText(e.currentTarget.value)}
+        <RichText
           fullWidth
+          value={text}
+          onChange={(v) => setText(text)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (e.shiftKey) return;
               e.preventDefault();
-              if (text.trim().length >= 1 && text.trim().length <= 6000) {
+              if (text.trim().length >= 1 && text.trim().length <= 20000) {
                 send({ variables: { threadId: threadId, message: text } });
               }
             }
           }}
         />
-        {text.trim().length >= 1 && text.trim().length <= 6000 && (
+        {text.trim().length >= 1 && text.trim().length <= 20000 && (
           <IconButton
             disabled={loading}
             onClick={() =>

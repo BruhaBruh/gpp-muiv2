@@ -6,11 +6,14 @@ import "react-quill/dist/quill.snow.css";
 
 const RichText: React.FC<{
   value: string | undefined;
-  onChange: ((content: string) => void) | undefined;
-}> = ({ value, onChange }) => {
+  onChange?: (content: string) => void;
+  onKeyDown?: (event: any) => void;
+  fullWidth?: boolean;
+}> = ({ value, onChange, onKeyDown, fullWidth }) => {
   return (
     <Box
       sx={{
+        width: fullWidth ? "100%" : undefined,
         "& *": {
           color: (theme) => `${theme.palette.text.primary} !important`,
           stroke: (theme) => `${theme.palette.text.primary} !important`,
@@ -49,7 +52,12 @@ const RichText: React.FC<{
         },
       }}
     >
-      <ReactQuill theme="snow" value={value} onChange={onChange} />
+      <ReactQuill
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+      />
     </Box>
   );
 };
