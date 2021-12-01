@@ -77,7 +77,10 @@ const AuthLoader = () => {
   }, [error, meError, enqueueSnackbar, dispatch]);
 
   React.useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn) {
+      setTimeout(getMe, 30000);
+      return;
+    }
     getMe();
     const t = setInterval(getMe, 10000);
     return () => clearInterval(t);
