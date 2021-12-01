@@ -74,22 +74,10 @@ const ReportChat: React.FC<{ report: Report }> = ({ report }) => {
     React.useState<Reportmessage | null>(null);
   const { data: newData } = useSubscription<{
     newReportMessage: Reportmessage;
-  }>(gql`
-    subscription newReportMessage {
-      newReportMessage {
-        reportmessageId
-        message
-        ownerId
-        owner {
-          userId
-          discordId
-          nickname
-          lastOnline
-          avatar
-        }
-        createdAt
-        replymessageId
-        replymessage {
+  }>(
+    gql`
+      subscription newReportMessage($id: Int!) {
+        newReportMessage(id: $id) {
           reportmessageId
           message
           ownerId
@@ -97,13 +85,28 @@ const ReportChat: React.FC<{ report: Report }> = ({ report }) => {
             userId
             discordId
             nickname
+            lastOnline
             avatar
           }
           createdAt
+          replymessageId
+          replymessage {
+            reportmessageId
+            message
+            ownerId
+            owner {
+              userId
+              discordId
+              nickname
+              avatar
+            }
+            createdAt
+          }
         }
       }
-    }
-  `);
+    `,
+    { variables: { id: report.reportId } }
+  );
 
   React.useEffect(() => {
     if (!report?.reportId) return;

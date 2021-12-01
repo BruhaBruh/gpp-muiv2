@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Icon24ReplyOutline } from "@vkontakte/icons";
 import React from "react";
+import Linkify from "react-linkify";
 import { Reportmessage } from "../../graphql/types";
 import { getLastOnline } from "../../redux/userData/types";
 import IconWrapper from "../ui/IconWrapper";
@@ -76,9 +77,12 @@ const ReportMessage: React.FC<{
               whiteSpace: "nowrap",
               textOverflow: "ellipsis",
               overflow: "hidden",
+              "& a": {
+                color: "currentColor",
+              },
             }}
           >
-            {message.replymessage.message}
+            <Linkify>{message.replymessage.message}</Linkify>
           </Typography>
         </Stack>
       )}
@@ -158,10 +162,13 @@ const ReportMessage: React.FC<{
                 theme.palette.getContrastText(theme.palette.primary.main),
               fontStyle: "italic",
             },
+            "& a": {
+              color: "currentColor",
+            },
           }}
           elevation={2}
         >
-          {message.message}
+          <Linkify>{message.message}</Linkify>
         </Paper>
         {seeButton ? (
           <IconButton

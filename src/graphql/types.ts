@@ -239,6 +239,10 @@ export type Subscription = {
   newNotification: Notification;
 };
 
+export type SubscriptionNewReportMessageArgs = {
+  id: Scalars["Int"];
+};
+
 export type UserFilterInput = {
   and?: Maybe<Array<UserFilterInput>>;
   or?: Maybe<Array<UserFilterInput>>;
@@ -825,6 +829,8 @@ export type User = {
   discordRoles: Array<UserDiscordRole>;
   totalFriends: Scalars["Int"];
   totalSubscribers: Scalars["Int"];
+  bills: Array<Bill>;
+  ratingTos: Array<Rating>;
   rating: UserRating;
   nickname: Scalars["String"];
   tag: Scalars["String"];
@@ -849,14 +855,12 @@ export type User = {
   subscriptionEndAt?: Maybe<Scalars["DateTime"]>;
   banreportEndAt?: Maybe<Scalars["DateTime"]>;
   billnotifications: Array<Billnotification>;
-  bills: Array<Bill>;
   donatelogs: Array<Donatelog>;
   friendFriendNavigations: Array<Friend>;
   friendUsers: Array<Friend>;
   friendnotifications: Array<Friendnotification>;
   posts: Array<Post>;
   ratingFroms: Array<Rating>;
-  ratingTos: Array<Rating>;
   reportmessages: Array<Reportmessage>;
   reportOwners: Array<Report>;
   reportTos: Array<Report>;
@@ -1137,13 +1141,16 @@ export enum UserTopEnum {
   RatingN = "RATING_N",
 }
 
-export type UserRating = {
-  __typename?: "UserRating";
-  total: Scalars["Int"];
-  result: Scalars["Int"];
-  positive: Scalars["Int"];
-  negative: Scalars["Int"];
-  your: Scalars["Int"];
+export type Bill = {
+  __typename?: "Bill";
+  billId: Scalars["Int"];
+  amount: Scalars["Int"];
+  status: Scalars["String"];
+  userId: Scalars["Int"];
+  createdAt: Scalars["DateTime"];
+  completedAt?: Maybe<Scalars["DateTime"]>;
+  user: User;
+  billnotifications: Array<Billnotification>;
 };
 
 export type UserStatus = {
@@ -1261,6 +1268,25 @@ export enum ReportSubType {
   Site = "SITE",
 }
 
+export type Rating = {
+  __typename?: "Rating";
+  from: User;
+  ratingId: Scalars["Int"];
+  fromId: Scalars["Int"];
+  toId: Scalars["Int"];
+  positive: Scalars["Boolean"];
+  to: User;
+};
+
+export type UserRating = {
+  __typename?: "UserRating";
+  total: Scalars["Int"];
+  result: Scalars["Int"];
+  positive: Scalars["Int"];
+  negative: Scalars["Int"];
+  your: Scalars["Int"];
+};
+
 export type Billnotification = {
   __typename?: "Billnotification";
   bill: Bill;
@@ -1269,18 +1295,6 @@ export type Billnotification = {
   createdAt: Scalars["DateTime"];
   billId: Scalars["Int"];
   to: User;
-};
-
-export type Bill = {
-  __typename?: "Bill";
-  billId: Scalars["Int"];
-  amount: Scalars["Int"];
-  status: Scalars["String"];
-  userId: Scalars["Int"];
-  createdAt: Scalars["DateTime"];
-  completedAt?: Maybe<Scalars["DateTime"]>;
-  user: User;
-  billnotifications: Array<Billnotification>;
 };
 
 export type Donatelog = {
@@ -1313,16 +1327,6 @@ export type Friendnotification = {
   toId: Scalars["Int"];
   createdAt: Scalars["DateTime"];
   friendRsId: Scalars["Int"];
-  to: User;
-};
-
-export type Rating = {
-  __typename?: "Rating";
-  ratingId: Scalars["Int"];
-  fromId: Scalars["Int"];
-  toId: Scalars["Int"];
-  positive: Scalars["Boolean"];
-  from: User;
   to: User;
 };
 
