@@ -33,6 +33,7 @@ export type Query = {
   users?: Maybe<UsersConnection>;
   donateItems?: Maybe<DonateItemsConnection>;
   siteOnlineLogs: Array<Siteonlinelog>;
+  serverOnlineLogs: Array<Serveronlinelog>;
   top: Array<User>;
   discordRoles: Array<UserDiscordRole>;
   status: UserStatus;
@@ -67,6 +68,11 @@ export type QueryDonateItemsArgs = {
 export type QuerySiteOnlineLogsArgs = {
   where?: Maybe<SiteonlinelogFilterInput>;
   order?: Maybe<Array<SiteonlinelogSortInput>>;
+};
+
+export type QueryServerOnlineLogsArgs = {
+  where?: Maybe<ServeronlinelogFilterInput>;
+  order?: Maybe<Array<ServeronlinelogSortInput>>;
 };
 
 export type QueryTopArgs = {
@@ -368,6 +374,20 @@ export type SiteonlinelogFilterInput = {
 
 export type SiteonlinelogSortInput = {
   siteonlinelogId?: Maybe<SortEnumType>;
+  online?: Maybe<SortEnumType>;
+  createdAt?: Maybe<SortEnumType>;
+};
+
+export type ServeronlinelogFilterInput = {
+  and?: Maybe<Array<ServeronlinelogFilterInput>>;
+  or?: Maybe<Array<ServeronlinelogFilterInput>>;
+  serveronlinelogId?: Maybe<ComparableInt32OperationFilterInput>;
+  online?: Maybe<ComparableInt32OperationFilterInput>;
+  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
+};
+
+export type ServeronlinelogSortInput = {
+  serveronlinelogId?: Maybe<SortEnumType>;
   online?: Maybe<SortEnumType>;
   createdAt?: Maybe<SortEnumType>;
 };
@@ -1143,15 +1163,6 @@ export type LoottableFilterInput = {
   item?: Maybe<DonateitemFilterInput>;
 };
 
-export enum UserTopEnum {
-  Views = "VIEWS",
-  Rating = "RATING",
-  Friends = "FRIENDS",
-  Subscribers = "SUBSCRIBERS",
-  Years = "YEARS",
-  RatingN = "RATING_N",
-}
-
 export type Bill = {
   __typename?: "Bill";
   billId: Scalars["Int"];
@@ -1164,12 +1175,28 @@ export type Bill = {
   billnotifications: Array<Billnotification>;
 };
 
+export type Serveronlinelog = {
+  __typename?: "Serveronlinelog";
+  serveronlinelogId: Scalars["Int"];
+  online: Scalars["Int"];
+  createdAt: Scalars["DateTime"];
+};
+
 export type Siteonlinelog = {
   __typename?: "Siteonlinelog";
   siteonlinelogId: Scalars["Int"];
   online: Scalars["Int"];
   createdAt: Scalars["DateTime"];
 };
+
+export enum UserTopEnum {
+  Views = "VIEWS",
+  Rating = "RATING",
+  Friends = "FRIENDS",
+  Subscribers = "SUBSCRIBERS",
+  Years = "YEARS",
+  RatingN = "RATING_N",
+}
 
 export type UserDiscordRole = {
   __typename?: "UserDiscordRole";
