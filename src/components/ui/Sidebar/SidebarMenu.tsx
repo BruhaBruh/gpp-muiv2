@@ -173,36 +173,25 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
           <SidebarCell
             to="/s"
             startIcon={
-              <Badge
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
+              <IconWrapper
+                size={size}
+                sx={{
+                  "& svg": {
+                    transform: "scale(1.25)",
+                  },
                 }}
-                badgeContent={notifications.length}
-                max={99}
-                color={"info"}
-                sx={{ "& .MuiBadge-badge": { transform: "scale(0.7)" } }}
               >
-                <IconWrapper
-                  size={size}
-                  sx={{
-                    "& svg": {
-                      transform: "scale(1.25)",
-                    },
-                  }}
-                >
-                  <svg viewBox="0 0 28 28">
-                    <path
-                      d="M0 14C0 6.268 6.268 0 14 0s14 6.268 14 14-6.268 14-14 14S0 21.732 0 14z"
-                      fill="url(#statistic_circle_fill_blue_28_a)"
-                    ></path>
-                    <path
-                      d="M14 11a1 1 0 011 1v7a1 1 0 11-2 0v-7a1 1 0 011-1zm-5 2a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm10-5a1 1 0 011 1v10a1 1 0 11-2 0V9a1 1 0 011-1z"
-                      fill="#fff"
-                    ></path>
-                  </svg>
-                </IconWrapper>
-              </Badge>
+                <svg viewBox="0 0 28 28">
+                  <path
+                    d="M0 14C0 6.268 6.268 0 14 0s14 6.268 14 14-6.268 14-14 14S0 21.732 0 14z"
+                    fill="url(#statistic_circle_fill_blue_28_a)"
+                  ></path>
+                  <path
+                    d="M14 11a1 1 0 011 1v7a1 1 0 11-2 0v-7a1 1 0 011-1zm-5 2a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm10-5a1 1 0 011 1v10a1 1 0 11-2 0V9a1 1 0 011-1z"
+                    fill="#fff"
+                  ></path>
+                </svg>
+              </IconWrapper>
             }
             endIcon={
               <IconWrapper size={size}>
