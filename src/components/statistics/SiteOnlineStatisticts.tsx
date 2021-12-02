@@ -117,7 +117,10 @@ const SiteOnlineStatisticts = () => {
           date = c.createdAt.replace(/\d\d\.\d*Z/i, "00.000Z");
           break;
         }
-        case StatType.Day:
+        case StatType.Day: {
+          date = c.createdAt.replace(/\d\d:\d\d\.\d*Z/i, "00:00.000Z");
+          break;
+        }
         case StatType.Week:
         case StatType.Month: {
           date = c.createdAt.replace(/\d\d:\d\d:\d\d\.\d*Z/i, "00:00:00.000Z");
@@ -131,7 +134,11 @@ const SiteOnlineStatisticts = () => {
             case StatType.Hour: {
               return d.createdAt.replace(/\d\d\.\d*Z/i, "00.000Z") === date;
             }
-            case StatType.Day:
+            case StatType.Day: {
+              return (
+                d.createdAt.replace(/\d\d:\d\d\.\d*Z/i, "00:00.000Z") === date
+              );
+            }
             case StatType.Week:
             case StatType.Month: {
               return (
