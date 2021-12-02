@@ -13,6 +13,7 @@ import {
   Icon28UsersOutline,
 } from "@vkontakte/icons";
 import React from "react";
+import { UserRoleEnum } from "../../../graphql/types";
 import { useAppSelector } from "../../../hooks/redux";
 import Cell from "../Cell";
 import IconWrapper from "../IconWrapper";
@@ -27,6 +28,7 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
   const isAuthenticated = useAppSelector(
     (state) => state.userData.isAuthenticated
   );
+  const userRole = useAppSelector((state) => state.userData.userRole);
   const notifications = useAppSelector((state) => state.cache.notifications);
 
   return (
@@ -170,6 +172,50 @@ const SidebarMenu: React.FC<props> = ({ showBack, setShow }) => {
           >
             Оповещения
           </SidebarCell>
+          {userRole !== UserRoleEnum.None && (
+            <SidebarCell
+              to="/s"
+              startIcon={
+                <Badge
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  badgeContent={notifications.length}
+                  max={99}
+                  color={"info"}
+                  sx={{ "& .MuiBadge-badge": { transform: "scale(0.7)" } }}
+                >
+                  <IconWrapper
+                    size={size}
+                    sx={{
+                      "& svg": {
+                        transform: "scale(1.25)",
+                      },
+                    }}
+                  >
+                    <svg viewBox="0 0 28 28">
+                      <path
+                        d="M0 14C0 6.268 6.268 0 14 0s14 6.268 14 14-6.268 14-14 14S0 21.732 0 14z"
+                        fill="url(#statistic_circle_fill_blue_28_a)"
+                      ></path>
+                      <path
+                        d="M14 11a1 1 0 011 1v7a1 1 0 11-2 0v-7a1 1 0 011-1zm-5 2a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm10-5a1 1 0 011 1v10a1 1 0 11-2 0V9a1 1 0 011-1z"
+                        fill="#fff"
+                      ></path>
+                    </svg>
+                  </IconWrapper>
+                </Badge>
+              }
+              endIcon={
+                <IconWrapper size={size}>
+                  <Icon28ChevronRightOutline />
+                </IconWrapper>
+              }
+            >
+              Статистика
+            </SidebarCell>
+          )}
           <Cell
             href={"/api/auth/logout"}
             color="error"

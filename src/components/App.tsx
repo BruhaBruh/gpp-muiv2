@@ -23,6 +23,7 @@ import NotificationPage from "../pages/settings/NotificationPage";
 import SettingsPage from "../pages/settings/SettingsPage";
 import ThemeCreatePage from "../pages/settings/ThemeCreatePage";
 import ThemesPage from "../pages/settings/ThemesPage";
+import StatisticsPage from "../pages/statistics/StatisticsPage";
 import TopsPage from "../pages/tops/TopsPage";
 import UserPage from "../pages/user/UserPage";
 import UsersPage from "../pages/user/UsersPage";
@@ -160,6 +161,10 @@ function App() {
                 <Route exact path="/t">
                   <Head name="Топы" />
                   <TopsPage />
+                </Route>
+                <Route exact path="/s">
+                  <Head name="Статистика" />
+                  <StatisticsPage />
                 </Route>
                 <Route exact path="/settings">
                   <Head name="Настройки" />

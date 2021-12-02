@@ -11,6 +11,9 @@ const IconWrapper: React.FC<props> = ({ children, sx, size, ...props }) => {
       {...props}
       sx={{
         ...sx,
+        justifyContent: "center",
+        alignItems: "center",
+        display: "flex",
         "& .Icon, & svg": {
           width: `${size !== undefined ? size : 24}px !important`,
           height: `${size !== undefined ? size : 24}px !important`,

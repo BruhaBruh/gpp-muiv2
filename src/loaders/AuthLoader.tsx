@@ -76,7 +76,7 @@ const AuthLoader = () => {
       { variant: "error" }
     );
     return () => clearTimeout(t);
-  }, [error, meError, enqueueSnackbar, dispatch]);
+  }, [error, meError, enqueueSnackbar, dispatch, login]);
 
   React.useEffect(() => {
     if (!isLoggedIn) return;

@@ -32,6 +32,7 @@ export type Query = {
   __typename?: "Query";
   users?: Maybe<UsersConnection>;
   donateItems?: Maybe<DonateItemsConnection>;
+  siteOnlineLogs: Array<Siteonlinelog>;
   top: Array<User>;
   discordRoles: Array<UserDiscordRole>;
   status: UserStatus;
@@ -61,6 +62,11 @@ export type QueryDonateItemsArgs = {
   before?: Maybe<Scalars["String"]>;
   where?: Maybe<DonateitemFilterInput>;
   order?: Maybe<Array<DonateitemSortInput>>;
+};
+
+export type QuerySiteOnlineLogsArgs = {
+  where?: Maybe<SiteonlinelogFilterInput>;
+  order?: Maybe<Array<SiteonlinelogSortInput>>;
 };
 
 export type QueryTopArgs = {
@@ -350,6 +356,20 @@ export type DonateitemSortInput = {
   isShow?: Maybe<SortEnumType>;
   type?: Maybe<SortEnumType>;
   description?: Maybe<SortEnumType>;
+};
+
+export type SiteonlinelogFilterInput = {
+  and?: Maybe<Array<SiteonlinelogFilterInput>>;
+  or?: Maybe<Array<SiteonlinelogFilterInput>>;
+  siteonlinelogId?: Maybe<ComparableInt32OperationFilterInput>;
+  online?: Maybe<ComparableInt32OperationFilterInput>;
+  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
+};
+
+export type SiteonlinelogSortInput = {
+  siteonlinelogId?: Maybe<SortEnumType>;
+  online?: Maybe<SortEnumType>;
+  createdAt?: Maybe<SortEnumType>;
 };
 
 export type ReportFilterInput = {
@@ -1123,15 +1143,6 @@ export type LoottableFilterInput = {
   item?: Maybe<DonateitemFilterInput>;
 };
 
-export type UserDiscordRole = {
-  __typename?: "UserDiscordRole";
-  id: Scalars["Long"];
-  name: Scalars["String"];
-  position: Scalars["Int"];
-  color: Scalars["String"];
-  hoist: Scalars["Boolean"];
-};
-
 export enum UserTopEnum {
   Views = "VIEWS",
   Rating = "RATING",
@@ -1151,6 +1162,22 @@ export type Bill = {
   completedAt?: Maybe<Scalars["DateTime"]>;
   user: User;
   billnotifications: Array<Billnotification>;
+};
+
+export type Siteonlinelog = {
+  __typename?: "Siteonlinelog";
+  siteonlinelogId: Scalars["Int"];
+  online: Scalars["Int"];
+  createdAt: Scalars["DateTime"];
+};
+
+export type UserDiscordRole = {
+  __typename?: "UserDiscordRole";
+  id: Scalars["Long"];
+  name: Scalars["String"];
+  position: Scalars["Int"];
+  color: Scalars["String"];
+  hoist: Scalars["Boolean"];
 };
 
 export type UserStatus = {
