@@ -1,12 +1,12 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { alpha, Box, Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Siteonlinelog } from "../../graphql/types";
 
-type Online = { date: string; value: number };
+type Online = { date: string; value: number; min: number; max: number };
 
 enum StatType {
   Hour,
@@ -20,14 +20,20 @@ const CustomTooltip: React.FC<{ active?: any; payload?: any[]; label?: any }> =
     if (active && payload && payload.length) {
       return (
         <Paper sx={{ padding: (theme) => theme.spacing(1) }} elevation={1}>
-          <Typography variant="subtitle1">
-            Онлайн: {payload[0].value}
-          </Typography>
           <Typography
             variant="subtitle2"
             sx={{ color: (theme) => theme.palette.text.secondary }}
           >
-            Дата: {dayjs(payload[0].payload.date).format("HH:mm DD.MM.YYYY")}
+            {dayjs(payload[0].payload.date).format("HH:mm DD.MM.YYYY")}
+          </Typography>
+          <Typography variant="subtitle1">
+            Максимум: {payload[0].payload.max}
+          </Typography>
+          <Typography variant="subtitle1">
+            Средний: {payload[0].payload.value}
+          </Typography>
+          <Typography variant="subtitle1">
+            Минимум: {payload[0].payload.min}
           </Typography>
         </Paper>
       );
@@ -155,10 +161,14 @@ const SiteOnlineStatisticts = () => {
 
       const sum = online.reduce((a, b) => a + b, 0);
       const avg = Math.floor(sum / online.length) || 0;
+      const max = Math.max(...online);
+      const min = Math.min(...online);
 
       init.push({
         date,
         value: avg,
+        max,
+        min,
       });
     });
     return init;
@@ -169,11 +179,14 @@ const SiteOnlineStatisticts = () => {
       <Stack
         spacing={1}
         sx={{
-          "path[stroke=none]": {
-            fill: (theme) => alpha(theme.palette.success.main, 0.5),
-          },
-          "path[fill=none]": {
+          ".online path[fill=none]": {
             stroke: (theme) => theme.palette.success.main,
+          },
+          ".max path[fill=none]": {
+            stroke: (theme) => theme.palette.info.main,
+          },
+          ".min path[fill=none]": {
+            stroke: (theme) => theme.palette.error.main,
           },
         }}
       >
@@ -186,13 +199,49 @@ const SiteOnlineStatisticts = () => {
         {data?.siteOnlineLogs && (
           <ResponsiveContainer width="100%" height={200}>
             <AreaChart data={getData()}>
+              <defs>
+                <linearGradient id="colorOnline" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#44B462" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#44B462" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorMax" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#42A5F5" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#42A5F5" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorMin" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#FF6C6D" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#FF6C6D" stopOpacity={0} />
+                </linearGradient>
+              </defs>
               <Area
+                className="online"
                 activeDot={{
                   fill: "#44B462",
                   stroke: "rgba(233, 233, 233, 0.54)",
                 }}
+                fill="url(#colorOnline)"
                 type="monotone"
                 dataKey="value"
+              />
+              <Area
+                className="max"
+                activeDot={{
+                  fill: "#42A5F5",
+                  stroke: "rgba(233, 233, 233, 0.54)",
+                }}
+                fill="url(#colorMax)"
+                type="monotone"
+                dataKey="max"
+              />
+              <Area
+                className="min"
+                activeDot={{
+                  fill: "#FF6C6D",
+                  stroke: "rgba(233, 233, 233, 0.54)",
+                }}
+                fill="url(#colorMin)"
+                type="monotone"
+                dataKey="min"
               />
               <Tooltip content={<CustomTooltip />} />
             </AreaChart>
