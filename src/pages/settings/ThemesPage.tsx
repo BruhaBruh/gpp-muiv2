@@ -14,6 +14,7 @@ import React from "react";
 import ButtonR from "../../components/ui/ButtonR";
 import IconWrapper from "../../components/ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 import { removeCustomTheme, setTheme } from "../../redux/ui/reducer";
 import { darkThemeOptions } from "../../utils/theme";
 
@@ -27,6 +28,7 @@ const ThemesPage = () => {
     return createTheme(themes[themeIndex].theme);
   }, [themeIndex, themes]);
   const lower = useMediaQuery("(max-width: 1200px)");
+  const [_, copy] = useCopyToClipboard();
   const dispatch = useAppDispatch();
 
   return (
@@ -58,6 +60,7 @@ const ThemesPage = () => {
           >
             <Button
               color="inherit"
+              onClick={() => copy(theme.palette.primary.light)}
               sx={{
                 aspectRatio: "1 / 1",
                 borderRadius: 0,
@@ -109,6 +112,7 @@ const ThemesPage = () => {
             </Button>
             <Button
               color="inherit"
+              onClick={() => copy(theme.palette.primary.main)}
               sx={{
                 aspectRatio: lower ? "2 / 1" : "1 / 1",
                 borderRadius: 0,
@@ -177,6 +181,7 @@ const ThemesPage = () => {
             </Button>
             <Button
               color="inherit"
+              onClick={() => copy(theme.palette.primary.dark)}
               sx={{
                 aspectRatio: "1 / 1",
                 borderRadius: 0,
@@ -228,6 +233,7 @@ const ThemesPage = () => {
             </Button>
             <Button
               color="inherit"
+              onClick={() => copy(theme.palette.background.default)}
               sx={{
                 aspectRatio: "1 / 1",
                 borderRadius: 0,
@@ -281,6 +287,7 @@ const ThemesPage = () => {
             </Button>
             <Button
               color="inherit"
+              onClick={() => copy(theme.palette.background.paper)}
               sx={{
                 aspectRatio: lower ? "2 / 1" : "1 / 1",
                 borderRadius: 0,
@@ -334,6 +341,7 @@ const ThemesPage = () => {
             </Button>
             <Button
               color="inherit"
+              onClick={() => copy(theme.palette.text.primary)}
               sx={{
                 aspectRatio: "1 / 1",
                 borderRadius: 0,

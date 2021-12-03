@@ -59,7 +59,11 @@ const TopsPage = () => {
         }}
       >
         <ScrollContainer vertical={false} hideScrollbars>
-          <Stack direction="row" spacing={2} sx={{ width: "max-content" }}>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{ width: "max-content", userSelect: "none" }}
+          >
             <Box
               onClick={() => setType(UserTopEnum.Views)}
               sx={{

@@ -27,7 +27,7 @@ const UserBody = () => {
     <>
       <Paper sx={{ padding: (theme) => theme.spacing(2) }}>
         <ScrollContainer vertical={false} hideScrollbars>
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={2} sx={{ userSelect: "none" }}>
             <Box
               onClick={() => setCurrentTab(UserTabs.Info)}
               sx={{

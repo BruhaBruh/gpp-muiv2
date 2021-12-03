@@ -147,7 +147,11 @@ const UsersPage = () => {
           alignItems={lowerSM ? "stretch" : "center"}
         >
           <ScrollContainer vertical={false} hideScrollbars>
-            <Stack direction="row" spacing={2} sx={{ width: "max-content" }}>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ width: "max-content", userSelect: "none" }}
+            >
               <Box
                 onClick={() => setAFSFilter(0)}
                 sx={{

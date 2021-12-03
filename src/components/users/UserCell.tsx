@@ -28,9 +28,10 @@ import RatingBar from "./RatingBar";
 interface props {
   user: User;
   type?: UserTopEnum;
+  elevation?: number;
 }
 
-const UserCell: React.FC<props> = ({ user, type }) => {
+const UserCell: React.FC<props> = ({ user, type, elevation }) => {
   const getSecondary = () => {
     switch (type) {
       case UserTopEnum.Views:
@@ -164,6 +165,7 @@ const UserCell: React.FC<props> = ({ user, type }) => {
         cursor: "pointer",
         flex: 1,
       }}
+      elevation={elevation}
     >
       <CellR
         to={"/u/" + user.userId}
