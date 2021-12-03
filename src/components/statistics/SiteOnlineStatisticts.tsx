@@ -144,7 +144,7 @@ const SiteOnlineStatisticts = () => {
   };
 
   return (
-    <Paper sx={{ padding: (theme) => theme.spacing(2) }}>
+    <Paper sx={{ padding: (theme) => theme.spacing(2), userSelect: "none" }}>
       <Stack
         spacing={1}
         sx={{
