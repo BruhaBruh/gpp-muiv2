@@ -1,46 +1,9 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import { Box, Paper, Stack, Typography } from "@mui/material";
-import dayjs from "dayjs";
 import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 import { Siteonlinelog } from "../../graphql/types";
-
-type Online = { date: string; value: number; min: number; max: number };
-
-enum StatType {
-  Hour,
-  Day,
-  Week,
-  Month,
-}
-
-const CustomTooltip: React.FC<{ active?: any; payload?: any[]; label?: any }> =
-  ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
-      return (
-        <Paper sx={{ padding: (theme) => theme.spacing(1) }} elevation={1}>
-          <Typography
-            variant="subtitle2"
-            sx={{ color: (theme) => theme.palette.text.secondary }}
-          >
-            {dayjs(payload[0].payload.date).format("HH:mm DD.MM.YYYY")}
-          </Typography>
-          <Typography variant="subtitle1">
-            Максимум: {payload[0].payload.max}
-          </Typography>
-          <Typography variant="subtitle1">
-            Средний: {payload[0].payload.value}
-          </Typography>
-          <Typography variant="subtitle1">
-            Минимум: {payload[0].payload.min}
-          </Typography>
-        </Paper>
-      );
-    }
-
-    return null;
-  };
+import OnlineStats, { Online, OnlineStatType, ShowOnline } from "./OnlineStats";
 
 const SiteOnlineStatisticts = () => {
   const [getOnline, { data }] = useLazyQuery<{
@@ -54,12 +17,17 @@ const SiteOnlineStatisticts = () => {
     }
   `);
 
-  const [type, setType] = React.useState<StatType>(StatType.Hour);
+  const [type, setType] = React.useState<OnlineStatType>(OnlineStatType.Hour);
+  const [showOnline, setShowOnline] = React.useState<ShowOnline>({
+    min: false,
+    avg: true,
+    max: false,
+  });
 
   React.useEffect(() => {
     // 2021-12-02T00:22:22.016Z
     switch (type) {
-      case StatType.Hour: {
+      case OnlineStatType.Hour: {
         return getOnline({
           variables: {
             where: {
@@ -72,7 +40,7 @@ const SiteOnlineStatisticts = () => {
           },
         });
       }
-      case StatType.Day: {
+      case OnlineStatType.Day: {
         return getOnline({
           variables: {
             where: {
@@ -85,7 +53,7 @@ const SiteOnlineStatisticts = () => {
           },
         });
       }
-      case StatType.Week: {
+      case OnlineStatType.Week: {
         return getOnline({
           variables: {
             where: {
@@ -98,7 +66,7 @@ const SiteOnlineStatisticts = () => {
           },
         });
       }
-      case StatType.Month: {
+      case OnlineStatType.Month: {
         return getOnline({
           variables: {
             where: {
@@ -113,22 +81,23 @@ const SiteOnlineStatisticts = () => {
       }
     }
   }, [getOnline, type]);
+
   const getData = (): Online[] => {
     if (!data?.siteOnlineLogs) return [];
     const init: Online[] = [];
     data.siteOnlineLogs.forEach((c) => {
       let date = "";
       switch (type) {
-        case StatType.Hour: {
+        case OnlineStatType.Hour: {
           date = c.createdAt.replace(/\d\d\.\d*Z/i, "00.000Z");
           break;
         }
-        case StatType.Day: {
+        case OnlineStatType.Day: {
           date = c.createdAt.replace(/\d\d:\d\d\.\d*Z/i, "00:00.000Z");
           break;
         }
-        case StatType.Week:
-        case StatType.Month: {
+        case OnlineStatType.Week:
+        case OnlineStatType.Month: {
           date = c.createdAt.replace(/\d\d:\d\d:\d\d\.\d*Z/i, "00:00:00.000Z");
           break;
         }
@@ -137,16 +106,16 @@ const SiteOnlineStatisticts = () => {
       const online = data.siteOnlineLogs
         .filter((d) => {
           switch (type) {
-            case StatType.Hour: {
+            case OnlineStatType.Hour: {
               return d.createdAt.replace(/\d\d\.\d*Z/i, "00.000Z") === date;
             }
-            case StatType.Day: {
+            case OnlineStatType.Day: {
               return (
                 d.createdAt.replace(/\d\d:\d\d\.\d*Z/i, "00:00.000Z") === date
               );
             }
-            case StatType.Week:
-            case StatType.Month: {
+            case OnlineStatType.Week:
+            case OnlineStatType.Month: {
               return (
                 d.createdAt.replace(
                   /\d\d:\d\d:\d\d\.\d*Z/i,
@@ -197,106 +166,110 @@ const SiteOnlineStatisticts = () => {
           Онлайн на сайте
         </Typography>
         {data?.siteOnlineLogs && (
-          <ResponsiveContainer width="100%" height={200}>
-            <AreaChart data={getData()}>
-              <defs>
-                <linearGradient id="colorOnline" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#44B462" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#44B462" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorMax" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#42A5F5" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#42A5F5" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="colorMin" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#FF6C6D" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#FF6C6D" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <Area
-                className="online"
-                activeDot={{
-                  fill: "#44B462",
-                  stroke: "rgba(233, 233, 233, 0.54)",
-                }}
-                fill="url(#colorOnline)"
-                type="monotone"
-                dataKey="value"
-              />
-              <Area
-                className="max"
-                activeDot={{
-                  fill: "#42A5F5",
-                  stroke: "rgba(233, 233, 233, 0.54)",
-                }}
-                fill="url(#colorMax)"
-                type="monotone"
-                dataKey="max"
-              />
-              <Area
-                className="min"
-                activeDot={{
-                  fill: "#FF6C6D",
-                  stroke: "rgba(233, 233, 233, 0.54)",
-                }}
-                fill="url(#colorMin)"
-                type="monotone"
-                dataKey="min"
-              />
-              <Tooltip content={<CustomTooltip />} />
-            </AreaChart>
-          </ResponsiveContainer>
+          <OnlineStats data={getData()} showOnline={showOnline} />
         )}
         <ScrollContainer vertical={false} hideScrollbars>
-          <Stack direction="row" spacing={2} sx={{ width: "max-content" }}>
-            <Box
-              onClick={() => setType(StatType.Hour)}
-              sx={{
-                color: (theme) =>
-                  type === StatType.Hour
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              Час
-            </Box>
-            <Box
-              onClick={() => setType(StatType.Day)}
-              sx={{
-                color: (theme) =>
-                  type === StatType.Day
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              День
-            </Box>
-            <Box
-              onClick={() => setType(StatType.Week)}
-              sx={{
-                color: (theme) =>
-                  type === StatType.Week
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              Неделя
-            </Box>
-            <Box
-              onClick={() => setType(StatType.Month)}
-              sx={{
-                color: (theme) =>
-                  type === StatType.Month
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-                cursor: "pointer",
-              }}
-            >
-              Месяц
-            </Box>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            spacing={2}
+            sx={{ width: "max-content", minWidth: "100%" }}
+          >
+            <Stack direction="row" spacing={2}>
+              <Box
+                onClick={() => setType(OnlineStatType.Hour)}
+                sx={{
+                  color: (theme) =>
+                    type === OnlineStatType.Hour
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Час
+              </Box>
+              <Box
+                onClick={() => setType(OnlineStatType.Day)}
+                sx={{
+                  color: (theme) =>
+                    type === OnlineStatType.Day
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                День
+              </Box>
+              <Box
+                onClick={() => setType(OnlineStatType.Week)}
+                sx={{
+                  color: (theme) =>
+                    type === OnlineStatType.Week
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Неделя
+              </Box>
+              <Box
+                onClick={() => setType(OnlineStatType.Month)}
+                sx={{
+                  color: (theme) =>
+                    type === OnlineStatType.Month
+                      ? theme.palette.text.primary
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Месяц
+              </Box>
+            </Stack>
+
+            <Stack direction="row" spacing={2}>
+              <Box
+                onClick={() =>
+                  setShowOnline((prev) => ({ ...prev, min: !prev.min }))
+                }
+                sx={{
+                  color: (theme) =>
+                    showOnline.min
+                      ? theme.palette.error.main
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Минимум
+              </Box>
+              <Box
+                onClick={() =>
+                  setShowOnline((prev) => ({ ...prev, avg: !prev.avg }))
+                }
+                sx={{
+                  color: (theme) =>
+                    showOnline.avg
+                      ? theme.palette.success.main
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Средний
+              </Box>
+              <Box
+                onClick={() =>
+                  setShowOnline((prev) => ({ ...prev, max: !prev.max }))
+                }
+                sx={{
+                  color: (theme) =>
+                    showOnline.max
+                      ? theme.palette.info.main
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                }}
+              >
+                Максимум
+              </Box>
+            </Stack>
           </Stack>
         </ScrollContainer>
       </Stack>
