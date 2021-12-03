@@ -47,7 +47,7 @@ const PostForm: React.FC<{ threadId: number }> = ({ threadId }) => {
         <RichText
           fullWidth
           value={text}
-          onChange={(v) => setText(text)}
+          onChange={(v) => setText(v)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               if (e.shiftKey) return;

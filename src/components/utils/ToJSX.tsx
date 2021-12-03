@@ -6,7 +6,10 @@ const ToJSX: React.FC<{ value: string }> = ({ value }) => {
   return (
     <Box
       sx={{
-        "& *": { color: (theme) => `${theme.palette.text.primary} !important` },
+        "& *": {
+          listStylePosition: "inside",
+          color: (theme) => `${theme.palette.text.primary} !important`,
+        },
       }}
     >
       <JsxParser autoCloseVoidElements jsx={value} />
