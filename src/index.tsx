@@ -7,6 +7,7 @@ import {
   Icon28InfoOutline,
   Icon28WarningTriangleOutline,
 } from "@vkontakte/icons";
+import LogRocket from "logrocket";
 import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -42,6 +43,10 @@ const IndexWithProviders = () => {
     (state) => state.settings.verticalSnackbarPosition
   );
   const modal = useAppSelector((state) => state.ui.modal);
+
+  React.useEffect(() => {
+    LogRocket.init("k1itd7/gpp");
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
