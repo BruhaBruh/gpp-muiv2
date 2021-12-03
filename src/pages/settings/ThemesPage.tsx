@@ -28,7 +28,7 @@ const ThemesPage = () => {
     return createTheme(themes[themeIndex].theme);
   }, [themeIndex, themes]);
   const lower = useMediaQuery("(max-width: 1200px)");
-  const [_, copy] = useCopyToClipboard();
+  const [, copy] = useCopyToClipboard();
   const dispatch = useAppDispatch();
 
   return (

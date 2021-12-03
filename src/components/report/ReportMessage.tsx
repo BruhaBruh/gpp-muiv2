@@ -165,6 +165,8 @@ const ReportMessage: React.FC<{
             "& a": {
               color: "currentColor",
             },
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
           elevation={2}
         >

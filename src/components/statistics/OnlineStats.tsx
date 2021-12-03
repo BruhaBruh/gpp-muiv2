@@ -2,14 +2,8 @@ import { Paper, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import React from "react";
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Online } from "../../graphql/types";
 
-export type Online = { date: string; value: number; min: number; max: number };
-export enum OnlineStatType {
-  Hour,
-  Day,
-  Week,
-  Month,
-}
 export type ShowOnline = { max: boolean; avg: boolean; min: boolean };
 
 const CustomTooltip: React.FC<{
@@ -25,12 +19,12 @@ const CustomTooltip: React.FC<{
           variant="subtitle2"
           sx={{ color: (theme) => theme.palette.text.secondary }}
         >
-          {dayjs(payload[0].payload.date).format("HH:mm DD.MM.YYYY")}
+          {dayjs(payload[0].payload.time).format("HH:mm DD.MM.YYYY")}
         </Typography>
         {showOnline.max && (
           <Typography
             variant="subtitle1"
-            sx={{ color: (theme) => theme.palette.error.main }}
+            sx={{ color: (theme) => theme.palette.info.main }}
           >
             Максимум: {payload[0].payload.max}
           </Typography>
@@ -40,13 +34,13 @@ const CustomTooltip: React.FC<{
             variant="subtitle1"
             sx={{ color: (theme) => theme.palette.success.main }}
           >
-            Средний: {payload[0].payload.value}
+            Средний: {payload[0].payload.avg}
           </Typography>
         )}
         {showOnline.min && (
           <Typography
             variant="subtitle1"
-            sx={{ color: (theme) => theme.palette.info.main }}
+            sx={{ color: (theme) => theme.palette.error.main }}
           >
             Минимум: {payload[0].payload.min}
           </Typography>
@@ -58,13 +52,24 @@ const CustomTooltip: React.FC<{
   return null;
 };
 
-const OnlineStats: React.FC<{ data: Online[]; showOnline: ShowOnline }> = ({
+const OnlineStats: React.FC<{ data?: Online[]; showOnline: ShowOnline }> = ({
   data,
   showOnline,
 }) => {
   return (
     <ResponsiveContainer width="100%" height={200}>
-      <AreaChart data={data}>
+      <AreaChart
+        data={
+          data
+            ? data
+                .map((d) => d)
+                .sort(
+                  (a, b) =>
+                    new Date(a.time).getTime() - new Date(b.time).getTime()
+                )
+            : []
+        }
+      >
         <defs>
           <linearGradient id="colorOnline" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="#44B462" stopOpacity={0.8} />
@@ -88,7 +93,7 @@ const OnlineStats: React.FC<{ data: Online[]; showOnline: ShowOnline }> = ({
             }}
             fill="url(#colorOnline)"
             type="monotone"
-            dataKey="value"
+            dataKey="avg"
           />
         )}
         {showOnline.max && (

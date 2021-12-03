@@ -32,8 +32,8 @@ export type Query = {
   __typename?: "Query";
   users?: Maybe<UsersConnection>;
   donateItems?: Maybe<DonateItemsConnection>;
-  siteOnlineLogs: Array<Siteonlinelog>;
-  serverOnlineLogs: Array<Serveronlinelog>;
+  siteOnlineLogs: Array<Online>;
+  serverOnlineLogs: Array<Online>;
   top: Array<User>;
   discordRoles: Array<UserDiscordRole>;
   status: UserStatus;
@@ -66,13 +66,11 @@ export type QueryDonateItemsArgs = {
 };
 
 export type QuerySiteOnlineLogsArgs = {
-  where?: Maybe<SiteonlinelogFilterInput>;
-  order?: Maybe<Array<SiteonlinelogSortInput>>;
+  type: OnlineTypes;
 };
 
 export type QueryServerOnlineLogsArgs = {
-  where?: Maybe<ServeronlinelogFilterInput>;
-  order?: Maybe<Array<ServeronlinelogSortInput>>;
+  type: OnlineTypes;
 };
 
 export type QueryTopArgs = {
@@ -362,34 +360,6 @@ export type DonateitemSortInput = {
   isShow?: Maybe<SortEnumType>;
   type?: Maybe<SortEnumType>;
   description?: Maybe<SortEnumType>;
-};
-
-export type SiteonlinelogFilterInput = {
-  and?: Maybe<Array<SiteonlinelogFilterInput>>;
-  or?: Maybe<Array<SiteonlinelogFilterInput>>;
-  siteonlinelogId?: Maybe<ComparableInt32OperationFilterInput>;
-  online?: Maybe<ComparableInt32OperationFilterInput>;
-  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
-};
-
-export type SiteonlinelogSortInput = {
-  siteonlinelogId?: Maybe<SortEnumType>;
-  online?: Maybe<SortEnumType>;
-  createdAt?: Maybe<SortEnumType>;
-};
-
-export type ServeronlinelogFilterInput = {
-  and?: Maybe<Array<ServeronlinelogFilterInput>>;
-  or?: Maybe<Array<ServeronlinelogFilterInput>>;
-  serveronlinelogId?: Maybe<ComparableInt32OperationFilterInput>;
-  online?: Maybe<ComparableInt32OperationFilterInput>;
-  createdAt?: Maybe<ComparableDateTimeOperationFilterInput>;
-};
-
-export type ServeronlinelogSortInput = {
-  serveronlinelogId?: Maybe<SortEnumType>;
-  online?: Maybe<SortEnumType>;
-  createdAt?: Maybe<SortEnumType>;
 };
 
 export type ReportFilterInput = {
@@ -1175,18 +1145,19 @@ export type Bill = {
   billnotifications: Array<Billnotification>;
 };
 
-export type Serveronlinelog = {
-  __typename?: "Serveronlinelog";
-  serveronlinelogId: Scalars["Int"];
-  online: Scalars["Int"];
-  createdAt: Scalars["DateTime"];
-};
+export enum OnlineTypes {
+  Hour = "HOUR",
+  Day = "DAY",
+  Week = "WEEK",
+  Month = "MONTH",
+}
 
-export type Siteonlinelog = {
-  __typename?: "Siteonlinelog";
-  siteonlinelogId: Scalars["Int"];
-  online: Scalars["Int"];
-  createdAt: Scalars["DateTime"];
+export type Online = {
+  __typename?: "Online";
+  max: Scalars["Int"];
+  min: Scalars["Int"];
+  avg: Scalars["Int"];
+  time: Scalars["DateTime"];
 };
 
 export enum UserTopEnum {

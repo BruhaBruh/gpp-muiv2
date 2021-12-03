@@ -2,22 +2,24 @@ import { gql, useLazyQuery } from "@apollo/client";
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { Serveronlinelog } from "../../graphql/types";
-import OnlineStats, { Online, OnlineStatType, ShowOnline } from "./OnlineStats";
+import { Online, OnlineTypes } from "../../graphql/types";
+import OnlineStats, { ShowOnline } from "./OnlineStats";
 
 const ServerOnlineStatisticts = () => {
   const [getOnline, { data }] = useLazyQuery<{
-    serverOnlineLogs: Serveronlinelog[];
+    serverOnlineLogs: Online[];
   }>(gql`
-    query onlineLogs($where: ServeronlinelogFilterInput) {
-      serverOnlineLogs(order: { createdAt: ASC }, where: $where) {
-        online
-        createdAt
+    query onlineLogs($type: OnlineTypes!) {
+      serverOnlineLogs(type: $type) {
+        max
+        avg
+        min
+        time
       }
     }
   `);
 
-  const [type, setType] = React.useState<OnlineStatType>(OnlineStatType.Hour);
+  const [type, setType] = React.useState<OnlineTypes>(OnlineTypes.Hour);
   const [showOnline, setShowOnline] = React.useState<ShowOnline>({
     min: false,
     avg: true,
@@ -26,122 +28,12 @@ const ServerOnlineStatisticts = () => {
 
   React.useEffect(() => {
     // 2021-12-02T00:22:22.016Z
-    switch (type) {
-      case OnlineStatType.Hour: {
-        return getOnline({
-          variables: {
-            where: {
-              createdAt: {
-                gte: new Date(new Date().getTime() - 1000 * 60 * 60)
-                  .toISOString()
-                  .replace(/\d\d\.\d*Z/i, "00.000Z"),
-              },
-            },
-          },
-        });
-      }
-      case OnlineStatType.Day: {
-        return getOnline({
-          variables: {
-            where: {
-              createdAt: {
-                gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
-                  .toISOString()
-                  .replace(/\d\d:\d\d:\d\d\.\d*Z/i, "00:00:00.000Z"),
-              },
-            },
-          },
-        });
-      }
-      case OnlineStatType.Week: {
-        return getOnline({
-          variables: {
-            where: {
-              createdAt: {
-                gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 7)
-                  .toISOString()
-                  .replace(/\d\d:\d\d:\d\d\.\d*Z/i, "00:00:00.000Z"),
-              },
-            },
-          },
-        });
-      }
-      case OnlineStatType.Month: {
-        return getOnline({
-          variables: {
-            where: {
-              createdAt: {
-                gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 30)
-                  .toISOString()
-                  .replace(/\d\d:\d\d:\d\d\.\d*Z/i, "00:00:00.000Z"),
-              },
-            },
-          },
-        });
-      }
-    }
-  }, [getOnline, type]);
-
-  const getData = (): Online[] => {
-    if (!data?.serverOnlineLogs) return [];
-    const init: Online[] = [];
-    data.serverOnlineLogs.forEach((c) => {
-      let date = "";
-      switch (type) {
-        case OnlineStatType.Hour: {
-          date = c.createdAt.replace(/\d\d\.\d*Z/i, "00.000Z");
-          break;
-        }
-        case OnlineStatType.Day: {
-          date = c.createdAt.replace(/\d\d:\d\d\.\d*Z/i, "00:00.000Z");
-          break;
-        }
-        case OnlineStatType.Week:
-        case OnlineStatType.Month: {
-          date = c.createdAt.replace(/\d\d:\d\d:\d\d\.\d*Z/i, "00:00:00.000Z");
-          break;
-        }
-      }
-      if (init.filter((o) => o.date === date).length !== 0) return;
-      const online = data.serverOnlineLogs
-        .filter((d) => {
-          switch (type) {
-            case OnlineStatType.Hour: {
-              return d.createdAt.replace(/\d\d\.\d*Z/i, "00.000Z") === date;
-            }
-            case OnlineStatType.Day: {
-              return (
-                d.createdAt.replace(/\d\d:\d\d\.\d*Z/i, "00:00.000Z") === date
-              );
-            }
-            case OnlineStatType.Week:
-            case OnlineStatType.Month: {
-              return (
-                d.createdAt.replace(
-                  /\d\d:\d\d:\d\d\.\d*Z/i,
-                  "00:00:00.000Z"
-                ) === date
-              );
-            }
-          }
-          return false;
-        })
-        .map((d) => d.online);
-
-      const sum = online.reduce((a, b) => a + b, 0);
-      const avg = Math.floor(sum / online.length) || 0;
-      const max = Math.max(...online);
-      const min = Math.min(...online);
-
-      init.push({
-        date,
-        value: avg,
-        max,
-        min,
-      });
+    getOnline({
+      variables: {
+        type: type,
+      },
     });
-    return init;
-  };
+  }, [getOnline, type]);
 
   return (
     <Paper sx={{ padding: (theme) => theme.spacing(2), userSelect: "none" }}>
@@ -165,8 +57,10 @@ const ServerOnlineStatisticts = () => {
         >
           Онлайн на сервере
         </Typography>
-        {data?.serverOnlineLogs && (
-          <OnlineStats data={getData()} showOnline={showOnline} />
+        {data?.serverOnlineLogs ? (
+          <OnlineStats data={data.serverOnlineLogs} showOnline={showOnline} />
+        ) : (
+          <OnlineStats showOnline={showOnline} />
         )}
         <ScrollContainer vertical={false} hideScrollbars>
           <Stack
@@ -177,10 +71,10 @@ const ServerOnlineStatisticts = () => {
           >
             <Stack direction="row" spacing={2}>
               <Box
-                onClick={() => setType(OnlineStatType.Hour)}
+                onClick={() => setType(OnlineTypes.Hour)}
                 sx={{
                   color: (theme) =>
-                    type === OnlineStatType.Hour
+                    type === OnlineTypes.Hour
                       ? theme.palette.text.primary
                       : theme.palette.text.secondary,
                   cursor: "pointer",
@@ -189,10 +83,10 @@ const ServerOnlineStatisticts = () => {
                 Час
               </Box>
               <Box
-                onClick={() => setType(OnlineStatType.Day)}
+                onClick={() => setType(OnlineTypes.Day)}
                 sx={{
                   color: (theme) =>
-                    type === OnlineStatType.Day
+                    type === OnlineTypes.Day
                       ? theme.palette.text.primary
                       : theme.palette.text.secondary,
                   cursor: "pointer",
@@ -201,10 +95,10 @@ const ServerOnlineStatisticts = () => {
                 День
               </Box>
               <Box
-                onClick={() => setType(OnlineStatType.Week)}
+                onClick={() => setType(OnlineTypes.Week)}
                 sx={{
                   color: (theme) =>
-                    type === OnlineStatType.Week
+                    type === OnlineTypes.Week
                       ? theme.palette.text.primary
                       : theme.palette.text.secondary,
                   cursor: "pointer",
@@ -213,10 +107,10 @@ const ServerOnlineStatisticts = () => {
                 Неделя
               </Box>
               <Box
-                onClick={() => setType(OnlineStatType.Month)}
+                onClick={() => setType(OnlineTypes.Month)}
                 sx={{
                   color: (theme) =>
-                    type === OnlineStatType.Month
+                    type === OnlineTypes.Month
                       ? theme.palette.text.primary
                       : theme.palette.text.secondary,
                   cursor: "pointer",
