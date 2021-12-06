@@ -13,7 +13,6 @@
     "dayjs": "^1.10.7",
     "formik": "^2.2.9",
     "graphql": "^16.0.1",
-    "logrocket": "^2.1.2",
     "marksy": "^8.0.0",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
