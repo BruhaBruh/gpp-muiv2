@@ -33,7 +33,7 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
   subtype,
 }) => {
   const userId = useAppSelector((state) => state.userData.userId);
-  const initialForm = `* Ваш Mojang ник: \n* Дата нарушения ДД.ММ.ГГГГ по МСК: \n* Скриншоты или видеозапись с нарушением: \n* Готов нести ответственность в случае обмана[Да/Нет]: \nПричина жалобы: \nДругая информация: `;
+  const initialForm = `* Ник нарушителя [Если нету в профилях на сайте]: \n* Ваш Mojang ник: \n* Дата нарушения ДД.ММ.ГГГГ по МСК: \n* Скриншоты или видеозапись с нарушением: \n* Готов нести ответственность в случае обмана[Да/Нет]: \nПричина жалобы: \nДругая информация: \n`;
   const initialFormAdmin = `* Ваш Mojang ник: \n* Дата вашего азкабана/бана ДД.ММ.ГГГГ по МСК: \n* Скриншоты или видеозапись с нарушением: \n* Какую ошибку совершил Модератор или Хелпер в своих действиях: \n* Готов нести ответственность в случае обмана[Да/Нет]: \nДругая информация: `;
   const [text, setText] = React.useState(
     subtype === ReportSubType.User ? initialForm : initialFormAdmin
@@ -100,7 +100,6 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
           search: debouncedSearch,
           where: {
             userRole: { neq: UserRoleEnum.None },
-            userId: { neq: userId },
           },
         },
       });
@@ -110,7 +109,6 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
           search: debouncedSearch,
           where: {
             userRole: { eq: UserRoleEnum.None },
-            userId: { neq: userId },
           },
         },
       });
@@ -187,6 +185,10 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
                   Логи не будут проверяться, даже если по вашему мнению игрок
                   нарушил больше, но у вас нет на это доказательств.
                 </Typography>
+                <Typography variant="subtitle2">
+                  Рассмотрение жалобы может занять от десяти минут или до двух
+                  недель.
+                </Typography>
               </Stack>
             )}
             {subtype === ReportSubType.Admin && (
@@ -221,6 +223,10 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
                   Модератора или Хелпера. Если правила были нарушены по другим
                   остальным пунктам правила сервера, то отправлять жалобу
                   требуется в раздел жалоб на игроков.
+                </Typography>
+                <Typography variant="subtitle2">
+                  Рассмотрение жалобы может занять от десяти минут или до двух
+                  недель.
                 </Typography>
               </Stack>
             )}
