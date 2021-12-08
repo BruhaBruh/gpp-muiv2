@@ -100,6 +100,7 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
           search: debouncedSearch,
           where: {
             userRole: { neq: UserRoleEnum.None },
+            userId: { neq: userId },
           },
         },
       });
@@ -153,6 +154,10 @@ const ComplaintCreateForm: React.FC<{ subtype: ReportSubType }> = ({
               <Stack spacing={0.5}>
                 <Typography variant="subtitle2">
                   При подаче жалобы, вы соглашаетесь с правилами.
+                </Typography>
+                <Typography variant="subtitle2">
+                  При отсутствии профиля выбрать самого себя, но в форме указать
+                  на кого вы подаете жалобу.
                 </Typography>
                 <Typography variant="subtitle2">
                   При неуважительном отношении к персоналу - жалоба не будет
