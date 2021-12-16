@@ -214,6 +214,7 @@ export enum Permissions {
   Premium = 256,
   ModifyForum = 512,
   ModifyThread = 1024,
+  ModifySocialPoints = 2048,
 }
 
 export enum Settings {

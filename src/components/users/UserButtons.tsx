@@ -6,14 +6,17 @@ import {
   Icon24UnblockOutline,
   Icon24UserAddedOutline,
   Icon24UserAddOutline,
+  Icon24Users3Outline,
 } from "@vkontakte/icons";
 import { useSnackbar } from "notistack";
 import React from "react";
 import { User, UserRoleEnum, UserStatus } from "../../graphql/types";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setUserUpdate } from "../../redux/cache/reducer";
+import { setModal } from "../../redux/ui/reducer";
 import { checkPermissions, Permissions } from "../../redux/userData/types";
 import IconWrapper from "../ui/IconWrapper";
+import EditSocialPoints from "./EditSocialPoints";
 
 const UserButtons = () => {
   const user = useAppSelector((state) => state.cache.user) as User;
@@ -131,6 +134,9 @@ const UserButtons = () => {
     dispatch(setUserUpdate(true));
   }, [startData, endData, removeData, ratingData, dispatch, editData]);
 
+  const openEditSocialPoints = () =>
+    dispatch(setModal(<EditSocialPoints userId={user.userId} />));
+
   return loading ? (
     <LinearProgress />
   ) : (
@@ -237,6 +243,21 @@ const UserButtons = () => {
           }
         >
           Удалить из друзей
+        </Button>
+      )}
+      {checkPermissions(Permissions.ModifySocialPoints, permissions) && (
+        <Button
+          color="info"
+          size="medium"
+          sx={{ whiteSpace: "nowrap" }}
+          onClick={openEditSocialPoints}
+          endIcon={
+            <IconWrapper size={20}>
+              <Icon24Users3Outline />
+            </IconWrapper>
+          }
+        >
+          Соц. Рейтинг
         </Button>
       )}
       {checkPermissions(Permissions.ModifyRoles, permissions) && (

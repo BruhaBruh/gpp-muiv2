@@ -30,6 +30,7 @@ const UserPage = () => {
         users(first: 1, where: { userId: { eq: $userId } }) {
           nodes {
             userId
+            socialPoints
             discordId
             nickname
             userRole

@@ -5,6 +5,7 @@ import React from "react";
 import ScrollContainer from "react-indiana-drag-scroll";
 import TopByFriends from "../../components/tops/TopByFriends";
 import TopByRatings from "../../components/tops/TopByRatings";
+import TopBySocialPoints from "../../components/tops/TopBySocialPoints";
 import TopBySubscribers from "../../components/tops/TopBySubscribers";
 import TopByViews from "../../components/tops/TopByViews";
 import TopByYears from "../../components/tops/TopByYears";
@@ -18,6 +19,7 @@ const TopsPage = () => {
         top(type: $type) {
           userId
           discordId
+          socialPoints
           nickname
           level
           views
@@ -136,6 +138,30 @@ const TopsPage = () => {
             >
               По негативному рейтингу
             </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.SocialPoints)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.SocialPoints
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По социальному рейтингу
+            </Box>
+            <Box
+              onClick={() => setType(UserTopEnum.SocialPointsN)}
+              sx={{
+                color: (theme) =>
+                  type === UserTopEnum.SocialPointsN
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
+                cursor: "pointer",
+              }}
+            >
+              По негативному социальному рейтингу
+            </Box>
           </Stack>
         </ScrollContainer>
       </Paper>
@@ -157,6 +183,12 @@ const TopsPage = () => {
       )}
       {!loading && data?.top && type === UserTopEnum.RatingN && (
         <TopByRatings users={data.top} bad />
+      )}
+      {!loading && data?.top && type === UserTopEnum.SocialPoints && (
+        <TopBySocialPoints users={data.top} />
+      )}
+      {!loading && data?.top && type === UserTopEnum.SocialPointsN && (
+        <TopBySocialPoints users={data.top} bad />
       )}
     </Stack>
   );

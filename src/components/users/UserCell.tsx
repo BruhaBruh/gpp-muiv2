@@ -122,6 +122,25 @@ const UserCell: React.FC<props> = ({ user, type, elevation }) => {
             <RatingBar rating={user.rating} sx={{ marginLeft: "8px" }} />
           </Stack>
         );
+      case UserTopEnum.SocialPoints:
+        return (
+          <Stack direction="row" spacing={1}>
+            <Typography
+              variant="body2"
+              sx={{
+                padding: "0 2px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                textTransform: "none",
+                display: "flex",
+                color: (theme) => theme.palette.text.secondary,
+              }}
+            >
+              Социальных рейтинг: {user.socialPoints}
+            </Typography>
+          </Stack>
+        );
       default:
         return (
           user.discordRoles

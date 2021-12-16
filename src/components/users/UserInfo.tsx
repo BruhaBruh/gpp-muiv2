@@ -4,6 +4,7 @@ import {
   Icon24InfoCircleOutline,
   Icon24StatisticsOutline,
   Icon24UserOutline,
+  Icon24Users3Outline,
   Icon24ViewOutline,
 } from "@vkontakte/icons";
 import React from "react";
@@ -67,6 +68,32 @@ const UserInfo = () => {
           >
             {user.rating.result}
             <RatingBar rating={user.rating} sx={{ marginLeft: "8px" }} />
+          </Cell>
+        </Stack>
+        <Stack>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: (theme) => theme.palette.text.secondary }}
+          >
+            Социальный рейтинг
+          </Typography>
+          <Cell
+            disableRipple
+            startIcon={
+              <IconWrapper
+                size={24}
+                sx={{
+                  color: (theme) => theme.palette.primary.main,
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                <Icon24Users3Outline />
+              </IconWrapper>
+            }
+            sx={{ textTransform: "none" }}
+          >
+            {user.socialPoints}
           </Cell>
         </Stack>
         <Stack>

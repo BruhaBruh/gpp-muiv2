@@ -128,6 +128,7 @@ export type Mutation = {
   __typename?: "Mutation";
   test: Scalars["Boolean"];
   sendSystemNotification: Scalars["Boolean"];
+  addSocialPoints: User;
   login: Scalars["Boolean"];
   initialUsersAdd: Scalars["Boolean"];
   createForum: Forum;
@@ -155,6 +156,11 @@ export type Mutation = {
 export type MutationSendSystemNotificationArgs = {
   toid?: Maybe<Scalars["Int"]>;
   message: Scalars["String"];
+};
+
+export type MutationAddSocialPointsArgs = {
+  id: Scalars["Int"];
+  socialPoints: Scalars["Int"];
 };
 
 export type MutationCreateForumArgs = {
@@ -274,6 +280,7 @@ export type UserFilterInput = {
   permissions?: Maybe<ComparableInt64OperationFilterInput>;
   subscriptionEndAt?: Maybe<ComparableNullableOfDateTimeOperationFilterInput>;
   banreportEndAt?: Maybe<ComparableNullableOfDateTimeOperationFilterInput>;
+  socialPoints?: Maybe<ComparableInt32OperationFilterInput>;
   billnotifications?: Maybe<ListFilterInputTypeOfBillnotificationFilterInput>;
   bills?: Maybe<ListFilterInputTypeOfBillFilterInput>;
   donatelogs?: Maybe<ListFilterInputTypeOfDonatelogFilterInput>;
@@ -322,6 +329,7 @@ export type UserSortInput = {
   permissions?: Maybe<SortEnumType>;
   subscriptionEndAt?: Maybe<SortEnumType>;
   banreportEndAt?: Maybe<SortEnumType>;
+  socialPoints?: Maybe<SortEnumType>;
   nickname?: Maybe<SortEnumType>;
   tag?: Maybe<SortEnumType>;
   work?: Maybe<SortEnumType>;
@@ -834,6 +842,8 @@ export type PageInfo = {
 
 export type User = {
   __typename?: "User";
+  work?: Maybe<Scalars["String"]>;
+  role?: Maybe<Scalars["String"]>;
   level: Scalars["Int"];
   phone?: Maybe<Scalars["Int"]>;
   discordRoles: Array<UserDiscordRole>;
@@ -845,8 +855,6 @@ export type User = {
   nickname: Scalars["String"];
   tag: Scalars["String"];
   avatar: Scalars["String"];
-  work?: Maybe<Scalars["String"]>;
-  role?: Maybe<Scalars["String"]>;
   userId: Scalars["Int"];
   discordId: Scalars["Long"];
   money: Scalars["Int"];
@@ -864,6 +872,7 @@ export type User = {
   permissions: Scalars["Long"];
   subscriptionEndAt?: Maybe<Scalars["DateTime"]>;
   banreportEndAt?: Maybe<Scalars["DateTime"]>;
+  socialPoints: Scalars["Int"];
   billnotifications: Array<Billnotification>;
   donatelogs: Array<Donatelog>;
   friendFriendNavigations: Array<Friend>;
@@ -1167,6 +1176,8 @@ export enum UserTopEnum {
   Subscribers = "SUBSCRIBERS",
   Years = "YEARS",
   RatingN = "RATING_N",
+  SocialPoints = "SOCIAL_POINTS",
+  SocialPointsN = "SOCIAL_POINTS_N",
 }
 
 export type UserDiscordRole = {
