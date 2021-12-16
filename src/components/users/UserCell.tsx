@@ -14,8 +14,8 @@ import {
 } from "@vkontakte/icons";
 import React from "react";
 import { User, UserRoleEnum, UserTopEnum } from "../../graphql/types";
+import yearDeclination from "../../helpers/yearDeclination";
 import {
-  ageToStr,
   checkPermissionsWA,
   getLastOnline,
   getUserRoleString,
@@ -99,7 +99,7 @@ const UserCell: React.FC<props> = ({ user, type, elevation }) => {
               color: (theme) => theme.palette.text.secondary,
             }}
           >
-            {user.level} {ageToStr(user.level)} в городе
+            {user.level} {yearDeclination(user.level)} в городе
           </Typography>
         );
       case UserTopEnum.Rating:
