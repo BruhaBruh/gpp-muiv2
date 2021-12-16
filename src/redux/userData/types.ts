@@ -8,6 +8,7 @@ import hunter from "../../assets/images/roles/hunter.png";
 import lumberjack from "../../assets/images/roles/lumberjack.png";
 import miner from "../../assets/images/roles/miner.png";
 import { UserRoleEnum } from "../../graphql/types";
+import differenceBetweenDates from "../../helpers/differenceBetweenDates";
 import isoTimeToPhrase from "../../helpers/isoTimeToPhrase";
 
 export interface UserDataState {
@@ -78,6 +79,16 @@ export const checkSettings = (
 };
 
 export const getLastOnline = (lo: string): string => {
+  const dif = differenceBetweenDates(new Date(lo), new Date());
+  if (
+    dif.years === 0 &&
+    dif.months === 0 &&
+    dif.days === 0 &&
+    dif.hours === 0 &&
+    dif.minutes < 5 &&
+    dif.minutes >= 0
+  )
+    return "Онлайн";
   return isoTimeToPhrase(lo);
 };
 
