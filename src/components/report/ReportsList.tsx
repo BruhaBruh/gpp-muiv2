@@ -80,21 +80,23 @@ const ReportsList = () => {
       { fetchPolicy: "no-cache" }
     );
 
-  React.useEffect(() => {
-    if (!reportsUpdate) return;
+  const getWhere = (): ReportFilterInput => {
     if (isClosed) {
-      const where: ReportFilterInput = {
+      return {
         isClosed: { eq: true },
         type: { eq: type },
       };
-      getReports({ variables: { where } });
     } else {
-      const where: ReportFilterInput = {
+      return {
         isClosed: { eq: false },
         type: { eq: type },
       };
-      getReports({ variables: { where } });
     }
+  };
+
+  React.useEffect(() => {
+    if (!reportsUpdate) return;
+    getReports({ variables: { where: getWhere() } });
     dispatch(clearReports());
     dispatch(setReportsUpdate(false));
   }, [getReports, reportsUpdate, isClosed, dispatch, type]);
@@ -109,7 +111,7 @@ const ReportsList = () => {
     if (observer.current) observer.current.disconnect();
     const cb: IntersectionObserverCallback = (entries) => {
       if (entries[0].isIntersecting) {
-        getReports({ variables: { after, where } });
+        getReports({ variables: { after, where: getWhere() } });
       }
     };
     observer.current = new IntersectionObserver(cb);
