@@ -13,6 +13,7 @@ import {
   ReportFilterInput,
   ReportsConnection,
   ReportType,
+  SortEnumType,
 } from "../../graphql/types";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
@@ -40,8 +41,12 @@ const ReportsList = () => {
       reports: ReportsConnection;
     }>(
       gql`
-        query reports($after: String, $where: ReportFilterInput) {
-          reports(first: 25, after: $after, where: $where) {
+        query reports(
+          $after: String
+          $where: ReportFilterInput
+          $order: [ReportSortInput!]
+        ) {
+          reports(first: 25, after: $after, where: $where, order: $order) {
             totalCount
             nodes {
               reportId
@@ -77,7 +82,10 @@ const ReportsList = () => {
           }
         }
       `,
-      { fetchPolicy: "no-cache" }
+      {
+        fetchPolicy: "no-cache",
+        variables: { order: [{ reportId: SortEnumType.Desc }] },
+      }
     );
 
   const getWhere = (): ReportFilterInput => {
@@ -117,7 +125,7 @@ const ReportsList = () => {
     observer.current = new IntersectionObserver(cb);
     observer.current.observe(lastElementRef.current);
     // eslint-disable-next-line
-  }, [lastElementRef, getReports]);
+  }, [lastElementRef, getReports, after]);
 
   React.useEffect(() => {
     if (!reportsData) return;
