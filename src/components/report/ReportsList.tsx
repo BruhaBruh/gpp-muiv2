@@ -109,13 +109,13 @@ const ReportsList = () => {
     if (observer.current) observer.current.disconnect();
     const cb: IntersectionObserverCallback = (entries) => {
       if (entries[0].isIntersecting) {
-        getReports({ variables: { after } });
+        getReports({ variables: { after, where } });
       }
     };
     observer.current = new IntersectionObserver(cb);
     observer.current.observe(lastElementRef.current);
     // eslint-disable-next-line
-  }, [lastElementRef, getReports, after]);
+  }, [lastElementRef, getReports]);
 
   React.useEffect(() => {
     if (!reportsData) return;
