@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
+import NewPlayerStatisticts from "../../components/statistics/NewPlayerStatisticts";
 import ServerOnlineStatisticts from "../../components/statistics/ServerOnlineStatisticts";
 import SiteOnlineStatisticts from "../../components/statistics/SiteOnlineStatisticts";
 
@@ -17,6 +18,7 @@ const StatisticsPage = () => {
     >
       <SiteOnlineStatisticts />
       <ServerOnlineStatisticts />
+      <NewPlayerStatisticts />
     </Box>
   );
 };
