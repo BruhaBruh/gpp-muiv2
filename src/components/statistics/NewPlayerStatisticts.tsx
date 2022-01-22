@@ -126,7 +126,7 @@ const NewPlayerStatisticts = () => {
                 sx={{
                   color: (theme) =>
                     showOnline.inc
-                      ? theme.palette.error.main
+                      ? theme.palette.success.main
                       : theme.palette.text.secondary,
                   cursor: "pointer",
                 }}
