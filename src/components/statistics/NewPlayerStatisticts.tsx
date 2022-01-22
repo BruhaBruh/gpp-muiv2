@@ -140,7 +140,7 @@ const NewPlayerStatisticts = () => {
                 sx={{
                   color: (theme) =>
                     showOnline.total
-                      ? theme.palette.success.main
+                      ? theme.palette.info.main
                       : theme.palette.text.secondary,
                   cursor: "pointer",
                 }}
