@@ -135,7 +135,7 @@ const NewPlayerStatisticts = () => {
               </Box>
               <Box
                 onClick={() =>
-                  setShowOnline((prev) => ({ ...prev, avg: !prev.total }))
+                  setShowOnline((prev) => ({ ...prev, total: !prev.total }))
                 }
                 sx={{
                   color: (theme) =>
