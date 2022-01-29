@@ -60,7 +60,6 @@ const DonateConvertToTref = () => {
               Количество
             </Typography>
             <Stack spacing={1} direction={lowerSM ? "column" : "row"}>
-              <Stack spacing={1} direction={lowerSM ? "row-reverse" : "row"}>
                 <IconWrapper
                   size={32}
                   alignSelf="center"
@@ -82,7 +81,6 @@ const DonateConvertToTref = () => {
                   }
                   onChange={(e) => setAmount(e.currentTarget.value)}
                 />
-              </Stack>
             </Stack>
           </Stack>
           <Button
