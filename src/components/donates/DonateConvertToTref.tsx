@@ -83,43 +83,6 @@ const DonateConvertToTref = () => {
                   onChange={(e) => setAmount(e.currentTarget.value)}
                 />
               </Stack>
-              <Stack spacing={1} direction="row">
-                <TextField
-                  margin="none"
-                  size="small"
-                  fullWidth
-                  variant="outlined"
-                  disabled
-                  value={/^\d*$/.test(amount) ? Number(amount) * 2 : ""}
-                  error={!/^\d*$/.test(amount)}
-                  onChange={(e) => setAmount(e.currentTarget.value)}
-                />
-                <IconWrapper
-                  size={24}
-                  alignSelf="center"
-                  sx={{
-                    color: (theme) => theme.palette.text.secondary,
-                    minWidth: 32,
-                    width: 32,
-                    justifyContent: "center",
-                    alignItems: "center",
-
-                    display: "flex",
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="512px"
-                    height="512px"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M477.443 295.143a104.45 104.45 0 0 1-202.26 36.67c-.08 68.73 4.33 114.46 69.55 149h-177.57c65.22-34.53 69.63-80.25 69.55-149a104.41 104.41 0 1 1-66.34-136.28 104.45 104.45 0 1 1 171.14 0 104.5 104.5 0 0 1 135.93 99.61z"
-                    />
-                  </svg>
-                </IconWrapper>
-              </Stack>
             </Stack>
           </Stack>
           <Button
