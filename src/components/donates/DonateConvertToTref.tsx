@@ -59,7 +59,7 @@ const DonateConvertToTref = () => {
             >
               Количество
             </Typography>
-            <Stack spacing={1} direction={lowerSM ? "column" : "row"}>
+            <Stack spacing={1} direction={lowerSM ? "column" : "row"} sx={{width: "100%"}}>
                 <IconWrapper
                   size={32}
                   alignSelf="center"
